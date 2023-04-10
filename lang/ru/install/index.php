@@ -1,6 +1,6 @@
 <?php
-$MESS ['UP_PROJECTOR_MODULE_NAME'] = "Tasks";
-$MESS ['UP_PROJECTOR_MODULE_DESCRIPTION'] = "Модуль для управления своими задачами";
-$MESS ['UP_PROJECTOR_INSTALL_TITLE'] = "Установка модуля";
-$MESS ['UP_PROJECTOR_UNINSTALL_TITLE'] = "Удаление модуля";
-$MESS ['UP_PROJECTOR_DENIED'] = "Доступ закрыт";
+$MESS ['UP_CALENDAR_MODULE_NAME'] = "Календарь Хобби";
+$MESS ['UP_CALENDAR_MODULE_DESCRIPTION'] = "Модуль для отслеживания запланированных хобби";
+$MESS ['UP_CALENDAR_INSTALL_TITLE'] = "Установка модуля";
+$MESS ['UP_CALENDAR_UNINSTALL_TITLE'] = "Удаление модуля";
+$MESS ['UP_CALENDAR_DENIED'] = "Доступ закрыт";

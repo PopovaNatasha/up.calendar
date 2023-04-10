@@ -1,6 +1,6 @@
 <?php
-$MESS ['UP_PROJECTOR_MODULE_NAME'] = "ForPeoples";
-$MESS ['UP_PROJECTOR_MODULE_DESCRIPTION'] = "Yet another task management tool";
-$MESS ['UP_PROJECTOR_INSTALL_TITLE'] = "Isntall module";
-$MESS ['UP_PROJECTOR_UNINSTALL_TITLE'] = "Delete module";
-$MESS ['UP_PROJECTOR_DENIED'] = "Access denied";
+$MESS ['UP_CALENDAR_MODULE_NAME'] = "Calendar Hobby Plan";
+$MESS ['UP_CALENDAR_MODULE_DESCRIPTION'] = "Module for your hobby";
+$MESS ['UP_CALENDAR_INSTALL_TITLE'] = "Install module";
+$MESS ['UP_CALENDAR_UNINSTALL_TITLE'] = "Delete module";
+$MESS ['UP_CALENDAR_DENIED'] = "Access denied";

@@ -1,7 +1,5 @@
 <?php
 
-
-
 class CalendarCalendarComponent extends CBitrixComponent
 {
     public function executeComponent()
