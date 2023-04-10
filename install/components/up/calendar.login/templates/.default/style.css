@@ -1,0 +1,18 @@
+.inputs{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input.is-link {
+    width: 250px;
+    margin: 10px;
+}
+
+.Abutton {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
