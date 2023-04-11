@@ -1,0 +1,111 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
+
+.navbar-brand .logo {
+    position: relative;
+    top: -2px;
+}
+
+.navbar-brand .logo span {
+    margin-right: 10px;
+    font-size: 36px;
+}
+
+.project-card .icon.disabled {
+    filter: grayscale(100%);
+}
+
+.tabs-content > div {
+    display: none;
+}
+
+.tabs-content > div.active {
+    display: flex;
+}
+
+.tabs-content .pagination {
+    justify-content: center;
+}
+
+.tabs-content .pagination-list {
+    flex-grow: 0;
+}
+
+/* Кастомизация */
+
+:root {
+	--brandColor: hsl(166, 67%, 51%);
+	--background: rgb(247, 247, 247);
+	--textDark: hsla(0, 0%, 0%, 0.66);
+	--textLight: hsla(0, 0%, 0%, 0.33);
+}
+
+body {
+	background: var(--background);
+	height: 100vh;
+	color: var(--textDark);
+}
+
+.field:not(:last-child) {
+	margin-bottom: 1rem;
+}
+
+.register,
+.login {
+	margin-top: 10rem;
+	background: white;
+	border-radius: 10px;
+}
+
+.left {
+	padding: 4.5rem;
+	border-right: 5px solid var(--background);
+}
+
+.right,
+.login {
+	padding: 4.5rem;
+}
+
+.left .title,
+.login .title {
+	font-weight: 800;
+	letter-spacing: -2px;
+}
+
+.left .colored {
+	color: var(--brandColor);
+	font-weight: 500;
+	margin-top: 1rem !important;
+	letter-spacing: -1px;
+}
+
+.left p {
+	color: var(--textLight);
+	font-size: 1.15rem;
+}
+
+.right .title {
+	font-weight: 800;
+	letter-spacing: -1px;
+}
+
+.right .description,
+.login .description {
+	margin-top: 1rem;
+	margin-bottom: 1rem !important;
+	color: var(--textLight);
+	font-size: 1.15rem;
+}
+
+.right small {
+	color: var(--textLight);
+}
+
+input {
+	font-size: 1rem;
+}
+
+input:focus {
+	border-color: var(--brandColor) !important;
+	box-shadow: 0 0 0 1px var(--brandColor) !important;
+}

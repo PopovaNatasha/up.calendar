@@ -1,7 +1,7 @@
 <?php
 
-use Bitrix\Main\Routing\Controllers\PublicPageController;
-use Bitrix\Main\Routing\RoutingConfigurator;
+use Bitrix\Main\Routing\Controllers\PublicPageController,
+	Bitrix\Main\Routing\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes) {
     $routes->get('/', new PublicPageController('/local/modules/up.calendar/views/calendar-main.php'))->where('query', '/^[a-zа-яё\d]{1}[a-zа-яё\d\s]*[a-zа-яё\d]{1}$/i');
