@@ -110,7 +110,6 @@ CJSCore::Init();
 								<br />
 								<input type="submit" name="Login" value="Login" class="button is-block is-primary is-fullwidth is-medium"/>
 								<br />
-								<? var_dump($arResult["NEW_USER_REGISTRATION"]);?>
 
 								<!--		<tr>-->
 								<!--			<td colspan="2"><input type="submit" name="Login" value="--><?//=GetMessage("AUTH_LOGIN_BUTTON")?><!--" /></td>-->
@@ -175,7 +174,7 @@ CJSCore::Init();
 
 		<form name="system_auth_form<?=$arResult["RND"]?>" method="post" target="_top" action="<?=$arResult["AUTH_URL"]?>">
 			<?if($arResult["BACKURL"] <> ''):?>
-				<input type="hidden" name="backurl" value="<?=$arResult["BACKURL"]?>" />
+				<input type="hidden" name="backurl" value="/" />
 			<?endif?>
 			<input type="hidden" name="AUTH_FORM" value="Y" />
 			<input type="hidden" name="TYPE" value="OTP" />

@@ -11,13 +11,12 @@ if (!$USER->IsAuthorized())
 {
 	$APPLICATION->SetTitle("auth");
 	$APPLICATION->IncludeComponent("bitrix:system.auth.form", "template", Array(
-	"FORGOT_PASSWORD_URL" => "",	// Страница забытого пароля
-	"PROFILE_URL" => "",	// Страница профиля
-	"REGISTER_URL" => "",	// Страница регистрации
-	"SHOW_ERRORS" => "N",	// Показывать ошибки
-),
-									   false
-);
+		"FORGOT_PASSWORD_URL" => "",	// Страница забытого пароля
+		"PROFILE_URL" => "",	// Страница профиля
+		"REGISTER_URL" => "",	// Страница регистрации
+		"SHOW_ERRORS" => "Y",	// Показывать ошибки
+	), false
+	);
 }
 else
 {
