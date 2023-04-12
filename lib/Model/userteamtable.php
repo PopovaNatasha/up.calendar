@@ -3,6 +3,8 @@ namespace Up\Calendar\Model;
 
 use Bitrix\Main\Localization\Loc,
     Bitrix\Main\ORM\Data\DataManager,
+    Bitrix\Main\ORM\Fields\Relations\Reference,
+    Bitrix\Main\ORM\Query\Join,
     Bitrix\Main\ORM\Fields\IntegerField;
 
 Loc::loadMessages(__FILE__);

@@ -1,4 +1,5 @@
 <?php
+global $USER;
 /**
  * @var CMain $APPLICATION
  */

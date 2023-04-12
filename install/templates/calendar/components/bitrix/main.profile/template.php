@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var object $USER
+ */
+?>
 <style>
     .user-info {
         display: flex;
@@ -14,8 +19,7 @@
             <figure class="image is-64x64">
                 <img src="upload/medialibrary/8e7/j453jq7oxokaehkf0buohve9zrc7yrc7.jpg">
             </figure>
-            <div class="FirstName">Лидия</div>
-            <div class="LastName">Иванова</div>
+            <div class="FirstName"><?= $USER->GetFullName() ?></div>
         </div>
     </div>
 </div>
