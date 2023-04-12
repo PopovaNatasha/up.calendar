@@ -126,15 +126,16 @@ if($arResult["BACKURL"] <> ''):
 endif;
 ?>
 
-<table>
-	<thead>
-		<tr>
-			<td colspan="2"><b><?=GetMessage("AUTH_REGISTER")?></b></td>
-		</tr>
-	</thead>
-	<tbody>
+<!--<table>-->
+<!--	<thead>-->
+<!--		<tr>-->
+<!--			<td colspan="2"><b>--><?//=GetMessage("AUTH_REGISTER")?><!--</b></td>-->
+<!--		</tr>-->
+<!--	</thead>-->
+<!--	<tbody>-->
 <?foreach ($arResult["SHOW_FIELDS"] as $FIELD):?>
 	<?if($FIELD == "AUTO_TIME_ZONE" && $arResult["TIME_ZONE_ENABLED"] == true):?>
+
 		<tr>
 			<td><?echo GetMessage("main_profile_time_zones_auto")?><?if ($arResult["REQUIRED_FIELDS_FLAGS"][$FIELD] == "Y"):?><span class="starrequired">*</span><?endif?></td>
 			<td>
@@ -156,13 +157,21 @@ endif;
 			</td>
 		</tr>
 	<?else:?>
-		<tr>
-			<td><?=GetMessage("REGISTER_FIELD_".$FIELD)?>:<?if ($arResult["REQUIRED_FIELDS_FLAGS"][$FIELD] == "Y"):?><span class="starrequired">*</span><?endif?></td>
-			<td><?
+<!--		<tr>-->
+<!--			<td>--><?//=GetMessage("REGISTER_FIELD_".$FIELD)?><!--:--><?//if ($arResult["REQUIRED_FIELDS_FLAGS"][$FIELD] == "Y"):?><!--<span class="starrequired">*</span>--><?//endif?><!--</td>-->
+<!--			<td>--><?//
 	switch ($FIELD)
 	{
 		case "PASSWORD":
-			?><input size="30" type="password" name="REGISTER[<?=$FIELD?>]" value="<?=$arResult["VALUES"][$FIELD]?>" autocomplete="off" class="bx-auth-input" />
+			?>
+
+		<div class="field">
+			<p class="control">
+				<input class="input bx-auth-input" type="password" placeholder="Password" name="REGISTER[<?=$FIELD?>]" value="<?=$arResult["VALUES"][$FIELD]?>" autocomplete="off">
+			</p>
+		</div>
+
+<!--	<input size="30" type="password" name="REGISTER[--><?//=$FIELD?><!--]" value="--><?//=$arResult["VALUES"][$FIELD]?><!--" autocomplete="off" class="bx-auth-input" />-->
 <?if($arResult["SECURE_AUTH"]):?>
 				<span class="bx-auth-secure" id="bx_auth_secure" title="<?echo GetMessage("AUTH_SECURE_NOTE")?>" style="display:none">
 					<div class="bx-auth-secure-icon"></div>
@@ -179,14 +188,22 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 <?
 			break;
 		case "CONFIRM_PASSWORD":
-			?><input size="30" type="password" name="REGISTER[<?=$FIELD?>]" value="<?=$arResult["VALUES"][$FIELD]?>" autocomplete="off" /><?
+			?>
+
+		<div class="field">
+			<p class="control">
+				<input class="input" type="password" placeholder="Confirm password" name="REGISTER[<?=$FIELD?>]" value="<?=$arResult["VALUES"][$FIELD]?>" autocomplete="off">
+			</p>
+		</div>
+
+<!--		<input size="30" type="password" name="REGISTER[--><?//=$FIELD?><!--]" value="--><?//=$arResult["VALUES"][$FIELD]?><!--" autocomplete="off" />--><?//
 			break;
 
 		case "PERSONAL_GENDER":
 			?><select name="REGISTER[<?=$FIELD?>]">
 				<option value=""><?=GetMessage("USER_DONT_KNOW")?></option>
-				<option value="M"<?=$arResult["VALUES"][$FIELD] == "M" ? " selected=\"selected\"" : ""?>><?=GetMessage("USER_MALE")?></option>
-				<option value="F"<?=$arResult["VALUES"][$FIELD] == "F" ? " selected=\"selected\"" : ""?>><?=GetMessage("USER_FEMALE")?></option>
+				<option value="M"<?=$arResult["VALUES"][$FIELD] === "M" ? " selected=\"selected\"" : ""?>><?=GetMessage("USER_MALE")?></option>
+				<option value="F"<?=$arResult["VALUES"][$FIELD] === "F" ? " selected=\"selected\"" : ""?>><?=GetMessage("USER_FEMALE")?></option>
 			</select><?
 			break;
 
@@ -211,9 +228,17 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 			?><textarea cols="30" rows="5" name="REGISTER[<?=$FIELD?>]"><?=$arResult["VALUES"][$FIELD]?></textarea><?
 			break;
 		default:
-			if ($FIELD == "PERSONAL_BIRTHDAY"):?><small><?=$arResult["DATE_FORMAT"]?></small><br /><?endif;
-			?><input size="30" type="text" name="REGISTER[<?=$FIELD?>]" value="<?=$arResult["VALUES"][$FIELD]?>" /><?
-				if ($FIELD == "PERSONAL_BIRTHDAY")
+			if ($FIELD === "PERSONAL_BIRTHDAY"):?><small><?=$arResult["DATE_FORMAT"]?></small><br /><?endif; ?>
+
+<!--			<input size="30" type="text" name="REGISTER[--><?//=$FIELD?><!--]" value="--><?//=$arResult["VALUES"][$FIELD]?><!--" />-->
+
+			<div class="field">
+				<p class="control">
+					<input class="input" type="text" placeholder="<?=ucfirst(strtolower($FIELD))?>" name="REGISTER[<?=$FIELD?>]" value="<?=$arResult["VALUES"][$FIELD]?>">
+				</p>
+			</div>
+
+			<? if ($FIELD === "PERSONAL_BIRTHDAY")
 					$APPLICATION->IncludeComponent(
 						'bitrix:main.calendar',
 						'',
@@ -226,9 +251,8 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 						null,
 						array("HIDE_ICONS"=>"Y")
 					);
-				?><?
-	}?></td>
-		</tr>
+			?><?
+	}?>
 	<?endif?>
 <?endforeach?>
 <?// ********************* User properties ***************************************************?>
@@ -266,16 +290,13 @@ if ($arResult["USE_CAPTCHA"] == "Y")
 }
 /* !CAPTCHA */
 ?>
-	</tbody>
-	<tfoot>
-		<tr>
-			<td></td>
-			<td><input type="submit" name="register_submit_button" value="<?=GetMessage("AUTH_REGISTER")?>" /></td>
-		</tr>
-	</tfoot>
+
 </table>
 </form>
-
+						<br />
+						<button class="button is-block is-primary is-fullwidth is-medium">Submit</button>
+						<br />
+						<small><em>Уже есть аккаунт? <a>Войти</a></em></small>
 
 <!--Кастомизация-->
 					</div>
