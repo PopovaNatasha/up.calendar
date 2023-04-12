@@ -74,6 +74,11 @@ class ChangedEventTable extends DataManager
                     'title' => Loc::getMessage('CHANGED_EVENT_ENTITY_DATE_TIME_FIELD')
                 ]
             ),
+            new Reference(
+                'TEAM',
+                TeamTable::class,
+                Join::on('this.ID_TEAM', 'ref.ID')
+            ),
         ];
     }
 

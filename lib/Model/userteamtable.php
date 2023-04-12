@@ -53,6 +53,16 @@ class UserTeamTable extends DataManager
                     'title' => Loc::getMessage('USER_TEAM_ENTITY_ID_TEAM_FIELD')
                 ]
             ),
+            new Reference(
+                'TEAM',
+                TeamTable::class,
+                Join::on('this.ID_TEAM', 'ref.ID')
+            ),
+            new Reference(
+                'TEAM',
+                UserTable::class,
+                Join::on('this.ID_USER', 'ref.ID')
+            ),
         ];
     }
 }

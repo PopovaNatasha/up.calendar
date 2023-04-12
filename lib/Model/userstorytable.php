@@ -91,6 +91,11 @@ class UserStoryTable extends DataManager
                     'title' => Loc::getMessage('USER_STORY_ENTITY_TITLE_EVENT_FIELD')
                 ]
             ),
+            new Reference(
+                'TEAM',
+                TeamTable::class,
+                Join::on('this.ID_TEAM', 'ref.ID')
+            ),
         ];
     }
 

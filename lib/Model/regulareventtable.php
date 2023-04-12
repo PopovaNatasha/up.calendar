@@ -90,6 +90,11 @@ class RegularEventTable extends DataManager
                     'title' => Loc::getMessage('REGULAR_EVENT_ENTITY_DATE_END_FIELD')
                 ]
             ),
+            new Reference(
+                'TEAM',
+                TeamTable::class,
+                Join::on('this.ID_TEAM', 'ref.ID')
+            ),
         ];
     }
 

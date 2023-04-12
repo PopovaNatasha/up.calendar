@@ -10,6 +10,7 @@ use Bitrix\Main\Localization\Loc,
     Bitrix\Main\ORM\Fields\StringField,
     Bitrix\Main\ORM\Fields\TextField,
     Bitrix\Main\ORM\Fields\Validators\LengthValidator;
+use Bitrix\Main\ORM\Fields\Relations\Reference;
 
 Loc::loadMessages(__FILE__);
 
@@ -537,6 +538,21 @@ class UserTable extends DataManager
                     'default' => 'N',
                     'title' => Loc::getMessage('USER_ENTITY_PASSWORD_EXPIRED_FIELD')
                 ]
+            ),
+            new Reference(
+                'STORY',
+                UserStoryTable::class,
+                Join::on('this.ID','ref.ID_USER')
+            ),
+            new Reference(
+                'PHOTO',
+                FileTable::class,
+                Join::on('this.PERSONAL_PHOTO','ref.ID')
+            ),
+            new Reference(
+                'USER_TEAM',
+                UserTeamTable::class,
+                Join::on('this.ID','ref.ID_USER')
             ),
         ];
     }

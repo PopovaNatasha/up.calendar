@@ -88,6 +88,16 @@ class TeamTable extends DataManager
                     'title' => Loc::getMessage('TEAM_ENTITY_IS_PRIVATE_FIELD')
                 ]
 			),
+            new Reference(
+                'ADMIN',
+                UserTable::class,
+                Join::on('this.ID_ADMIN', 'ref.ID')
+            ),
+            new Reference(
+                'TEAM_PHOTO',
+                FileTable::class,
+                Join::on('this.PERSONAL_PHOTO', 'ref.ID')
+            ),
 		];
 	}
 
