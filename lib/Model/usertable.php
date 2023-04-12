@@ -1,5 +1,5 @@
 <?php
-namespace Up\Tasks\Model;
+namespace Up\Calendar\Model;
 
 use Bitrix\Main\Localization\Loc,
     Bitrix\Main\ORM\Data\DataManager,
