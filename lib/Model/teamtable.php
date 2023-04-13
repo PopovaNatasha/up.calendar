@@ -100,6 +100,11 @@ class TeamTable extends DataManager
                 FileTable::class,
                 Join::on('this.PERSONAL_PHOTO', 'ref.ID')
             ),
+			new Reference(
+				'USER',
+				UserTeamTable::class,
+				Join::on('this.ID', 'ref.ID_TEAM')
+			),
 		];
 	}
 

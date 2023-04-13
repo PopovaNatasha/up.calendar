@@ -109,3 +109,10 @@ input:focus {
 	border-color: var(--brandColor) !important;
 	box-shadow: 0 0 0 1px var(--brandColor) !important;
 }
+
+.block.group{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+}

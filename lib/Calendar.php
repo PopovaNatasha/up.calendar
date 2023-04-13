@@ -11,16 +11,18 @@ Class Calendar
     {
         if (!$query)
         {
-            $result = TeamTable::getList(['select' => ['*']]);
+            $result = TeamTable::getList(['select' => ['TITLE']]);
         } else
         {
-            $result = TeamTable::getList([
-                'filter' => [
-                    'LOGIC' => 'OR',
-                    '=%TITLE' => "%$query%",
-                    '=%DESCRIPTION' => "%$query%",
-                ]
-            ]);
+			$result = TeamTable::getList([
+				'select' => ['TITLE'],
+                // 'filter' => [
+                //     'LOGIC' => 'OR',
+                //     '=%TITLE' => "%$query%",
+                //     '=%DESCRIPTION' => "%$query%",
+                // ]
+				'filter' => ['USER.ID_USER' => $query]
+            ])->fetchAll();
         }
         return $result->fetchAll();
     }

@@ -1,6 +1,7 @@
 <?php
 /**
  * @var object $USER
+ * @var array $arResult
  */
 ?>
 <div class="columns is-mobile">
@@ -11,13 +12,20 @@
     </div>
 </div>
 
-<a class="group-card" href="">
-    <figure class="image is-64x64">
-        <img class="GroupPhoto" src="upload/medialibrary/61d/e3qzx1q2eooofim1tkwrp3itfgimg131.png">
-    </figure>
-    <div class="GroupName">Lorem ipsum dolor sit amet</div>
-</a>
-
+<div class="block">
+	<?php foreach ($arResult['Teams'] as $team):?>
+	<a class="group-card block" href="#">
+		<div class="block group">
+			<div>
+				<figure class="image is-64x64">
+					<img class="is-rounded" src="https://bulma.io/images/placeholders/64x64.png">
+				</figure>
+			</div>
+			<p style="margin-left: 15px; font-size: large"><?= $team['TITLE'] ?></p>
+		</div>
+	</a>
+	<?php endforeach; ?>
+</div>
 
 <form name="Create Team" action="" method="post">
     <input name="adminId" type="hidden" value="<?= $USER->getID() ?>">
@@ -47,7 +55,6 @@
                     Публичная группа
                 </label>
 
-
             </section>
             <footer class="modal-card-foot">
                 <button class="button is-success" type="submit">Создать</button>
@@ -56,3 +63,4 @@
         </div>
     </div>
 </form>
+
