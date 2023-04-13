@@ -31,8 +31,9 @@ Class Calendar
                     ->setTitle($arguments['title'])
                    ->setDescription($arguments['description'] ?: '')
                     ->setIdAdmin($arguments['adminId'])
-                    ->setIsPrivate($arguments['isPrivate'] ?: 0)
+                    ->setIsPrivate(!$arguments['isPrivate'])
                     ->save();
+	   var_dump($arguments['isPrivate']);
 
 
            $title = $arguments['title'];
