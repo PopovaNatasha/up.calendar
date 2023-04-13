@@ -9,6 +9,7 @@ return function (RoutingConfigurator $routes) {
     $routes->get('/MyGroups', new PublicPageController('/local/modules/up.calendar/views/calendar-my-teams.php'));
     $routes->get('/AllGroups', new PublicPageController('/local/modules/up.calendar/views/calendar-teams.php'));
     $routes->get('/Profile', new PublicPageController('/local/modules/up.calendar/views/calendar-profile.php'));
+    $routes->get('/Registration', new PublicPageController('/local/modules/up.calendar/views/registration.php'));
 
 //    $routes->post('/', new PublicPageController('/local/modules/up.people/views/task-list.php'));
 //    $routes->get('/delete/{id}/', new PublicPageController('/local/modules/up.people/views/task-delete.php'))->where('id', '[0-9]+');

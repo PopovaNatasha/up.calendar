@@ -289,7 +289,7 @@ if($arResult["SHOW_SMS_FIELD"] == true)
 						<br />
 						<input class="button is-block is-primary is-fullwidth is-medium" type="submit" name="register_submit_button" value="<?=GetMessage("AUTH_REGISTER")?>" />
 						<br />
-						<small><em>Уже есть аккаунт? <a>Войти</a></em></small>
+						<small><em>Уже есть аккаунт? <a href="/">Войти</a></em></small>
 
 						<!--Кастомизация-->
 					</form>

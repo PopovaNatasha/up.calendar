@@ -116,7 +116,7 @@ CJSCore::Init();
 								<!--		</tr>-->
 								<?if($arResult["NEW_USER_REGISTRATION"] === "Y"):?>
 
-									<small><em>Нет аккаунта? </em><a href="<?=$arResult["AUTH_REGISTER_URL"]?>" rel="nofollow">Зарегистрироваться</a></small>
+									<small><em>Нет аккаунта? </em><a href="/Registration" rel="nofollow">Зарегистрироваться</a></small>
 									<!--		<tr>-->
 									<!--			<td colspan="2"><noindex><a href="--><?//=$arResult["AUTH_REGISTER_URL"]?><!--" rel="nofollow">--><?//=GetMessage("AUTH_REGISTER")?><!--</a></noindex><br /></td>-->
 									<!--		</tr>-->
