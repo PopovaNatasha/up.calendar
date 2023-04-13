@@ -33,25 +33,12 @@ Class Calendar
                     ->setIdAdmin($arguments['adminId'])
                     ->setIsPrivate(!$arguments['isPrivate'])
                     ->save();
-	   var_dump($arguments['isPrivate']);
 
-
-           $title = $arguments['title'];
-           $idAdmin = $arguments['adminId'];
-           $team = TeamTable::getList([
-               'filter' => [
-                   'LOGIC' => 'AND',
-                   '=TITLE' => $title,
-                   '=ID_ADMIN' => $idAdmin,
-               ]
-           ]);
-           $team->fetch();
-           $idTeam = $team->{'ID'};
-            var_dump($idTeam); die;
-           UserTeamTable::createObject()
-                        ->setIdUser($arguments['adminId'])
-                        ->setIdTeam($idTeam)
-                        ->save();
+	   $idTeam = $result->getId();
+	   UserTeamTable::createObject()
+					->setIdUser($arguments['adminId'])
+					->setIdTeam($idTeam)
+					->save();
 
     }
 
