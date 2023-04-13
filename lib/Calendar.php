@@ -29,7 +29,7 @@ Class Calendar
     {
        $result = TeamTable::createObject()
                     ->setTitle($arguments['title'])
-//                    ->setDescription($arguments['description'] ?: '')
+                   ->setDescription($arguments['description'] ?: '')
                     ->setIdAdmin($arguments['adminId'])
                     ->setIsPrivate($arguments['isPrivate'] ?: 0)
                     ->save();
@@ -40,8 +40,8 @@ Class Calendar
            $team = TeamTable::getList([
                'filter' => [
                    'LOGIC' => 'AND',
-                   '=TITLE' => "$title",
-                   '=ID_ADMIN' => "$idAdmin",
+                   '=TITLE' => $title,
+                   '=ID_ADMIN' => $idAdmin,
                ]
            ]);
            $team->fetch();

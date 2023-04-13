@@ -65,10 +65,10 @@ class TeamTable extends DataManager
                 ]
             ),
             new StringField(
-                'DESCRIPTON',
+                'DESCRIPTION',
                 [
                     'validation' => [__CLASS__, 'validateDescripton'],
-                    'title' => Loc::getMessage('TEAM_ENTITY_DESCRIPTON_FIELD')
+                    'title' => Loc::getMessage('TEAM_ENTITY_DESCRIPTION_FIELD')
                 ]
             ),
             new IntegerField(
