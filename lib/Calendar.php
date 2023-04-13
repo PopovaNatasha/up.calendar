@@ -11,16 +11,18 @@ Class Calendar
     {
         if (!$query)
         {
-            $result = TeamTable::getList(['select' => ['*']]);
+            $result = TeamTable::getList(['select' => ['TITLE']]);
         } else
         {
-            $result = TeamTable::getList([
-                'filter' => [
-                    'LOGIC' => 'OR',
-                    '=%TITLE' => "%$query%",
-                    '=%DESCRIPTION' => "%$query%",
-                ]
-            ]);
+			$result = TeamTable::getList([
+				'select' => ['TITLE'],
+                // 'filter' => [
+                //     'LOGIC' => 'OR',
+                //     '=%TITLE' => "%$query%",
+                //     '=%DESCRIPTION' => "%$query%",
+                // ]
+				'filter' => ['USER.ID_USER' => $query]
+            ])->fetchAll();
         }
         return $result->fetchAll();
     }
@@ -29,28 +31,16 @@ Class Calendar
     {
        $result = TeamTable::createObject()
                     ->setTitle($arguments['title'])
-//                    ->setDescription($arguments['description'] ?: '')
+                   ->setDescription($arguments['description'] ?: '')
                     ->setIdAdmin($arguments['adminId'])
-                    ->setIsPrivate($arguments['isPrivate'] ?: 0)
+                    ->setIsPrivate(!$arguments['isPrivate'])
                     ->save();
 
-
-           $title = $arguments['title'];
-           $idAdmin = $arguments['adminId'];
-           $team = TeamTable::getList([
-               'filter' => [
-                   'LOGIC' => 'AND',
-                   '=TITLE' => "$title",
-                   '=ID_ADMIN' => "$idAdmin",
-               ]
-           ]);
-           $team->fetch();
-           $idTeam = $team->{'ID'};
-            var_dump($idTeam); die;
-           UserTeamTable::createObject()
-                        ->setIdUser($arguments['adminId'])
-                        ->setIdTeam($idTeam)
-                        ->save();
+	   $idTeam = $result->getId();
+	   UserTeamTable::createObject()
+					->setIdUser($arguments['adminId'])
+					->setIdTeam($idTeam)
+					->save();
 
     }
 

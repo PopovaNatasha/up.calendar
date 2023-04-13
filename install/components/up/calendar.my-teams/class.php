@@ -1,12 +1,13 @@
 <?php
 
-use Up\Calendar\Calendar;
+use Bitrix\Main\Loader,
+	Up\Calendar\Calendar;
 
 class CalendarMyTeamsComponent extends CBitrixComponent
 {
     public function executeComponent()
     {
-        \Bitrix\Main\Loader::includeModule('up.calendar');
+        Loader::includeModule('up.calendar');
         $this->fetchTeamList();
         $this->includeComponentTemplate();
     }

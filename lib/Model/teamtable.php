@@ -65,10 +65,10 @@ class TeamTable extends DataManager
                 ]
             ),
             new StringField(
-                'DESCRIPTON',
+                'DESCRIPTION',
                 [
                     'validation' => [__CLASS__, 'validateDescripton'],
-                    'title' => Loc::getMessage('TEAM_ENTITY_DESCRIPTON_FIELD')
+                    'title' => Loc::getMessage('TEAM_ENTITY_DESCRIPTION_FIELD')
                 ]
             ),
             new IntegerField(
@@ -100,6 +100,11 @@ class TeamTable extends DataManager
                 FileTable::class,
                 Join::on('this.PERSONAL_PHOTO', 'ref.ID')
             ),
+			new Reference(
+				'USER',
+				UserTeamTable::class,
+				Join::on('this.ID', 'ref.ID_TEAM')
+			),
 		];
 	}
 
