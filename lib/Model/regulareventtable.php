@@ -7,6 +7,8 @@ use Bitrix\Main\Localization\Loc,
     Bitrix\Main\ORM\Fields\DatetimeField,
     Bitrix\Main\ORM\Fields\IntegerField,
     Bitrix\Main\ORM\Fields\StringField,
+    Bitrix\Main\ORM\Fields\Relations\Reference,
+    Bitrix\Main\ORM\Query\Join,
     Bitrix\Main\ORM\Fields\Validators\LengthValidator;
 
 Loc::loadMessages(__FILE__);

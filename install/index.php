@@ -23,8 +23,8 @@ class up_calendar extends CModule
             $this->MODULE_VERSION_DATE = $arModuleVersion['VERSION_DATE'];
         }
 
-        $this->MODULE_NAME = Loc::getMessage('UP_PROJECTOR_MODULE_NAME');
-        $this->MODULE_DESCRIPTION = Loc::getMessage('UP_PROJECTOR_MODULE_DESCRIPTION');
+        $this->MODULE_NAME = Loc::getMessage('UP_CALENDAR_MODULE_NAME');
+        $this->MODULE_DESCRIPTION = Loc::getMessage('UP_CALENDAR_MODULE_DESCRIPTION');
     }
 
     public function installDB(): void

@@ -113,3 +113,11 @@ input:focus {
 .bx-auth {
 	max-width: fit-content;
 }
+
+
+.block.group{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+}
