@@ -97,6 +97,12 @@ body {
 	font-size: 1.15rem;
 }
 
+p.description.register-pass {
+	margin-bottom: 0 !important;
+	margin-top: auto;
+	font-size: medium !important;
+}
+
 .right small {
 	color: var(--textLight);
 }
@@ -112,4 +118,8 @@ input:focus {
 
 .bx-auth {
 	max-width: fit-content;
+}
+
+label.label {
+	text-align: initial;
 }
