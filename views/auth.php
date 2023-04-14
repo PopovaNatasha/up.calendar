@@ -1,13 +1,15 @@
-<?
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("auth");
-?><?$APPLICATION->IncludeComponent(
-	"bitrix:system.auth.form",
-	"template",
-	Array(
-		"FORGOT_PASSWORD_URL" => "",
-		"PROFILE_URL" => "",
-		"REGISTER_URL" => "",
-		"SHOW_ERRORS" => "N"
-	)
-);?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+<?php
+
+/**
+ * @var CMain $APPLICATION
+ */
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
+$APPLICATION->SetTitle("Authorization");
+if ($USER->IsAuthorized())
+{
+	LocalRedirect('/');
+}
+?>
+
+<?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>

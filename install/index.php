@@ -94,7 +94,7 @@ class up_calendar extends CModule
         $this->installEvents();
 
         $APPLICATION->IncludeAdminFile(
-            Loc::getMessage('UP_PROJECTOR_INSTALL_TITLE'),
+            Loc::getMessage('UP_CALENDAR_INSTALL_TITLE'),
             $_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/step.php'
         );
     }
@@ -110,7 +110,7 @@ class up_calendar extends CModule
         $step = (int)$step;
         if ($step < 2) {
             $APPLICATION->IncludeAdminFile(
-                Loc::getMessage('UP_PROJECTOR_UNINSTALL_TITLE'),
+                Loc::getMessage('UP_CALENDAR_UNINSTALL_TITLE'),
                 $_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/unstep1.php'
             );
         } elseif ($step === 2) {
@@ -119,7 +119,7 @@ class up_calendar extends CModule
             $this->uninstallEvents();
 
             $APPLICATION->IncludeAdminFile(
-                Loc::getMessage('UP_PROJECTOR_UNINSTALL_TITLE'),
+                Loc::getMessage('UP_CALENDAR_UNINSTALL_TITLE'),
                 $_SERVER['DOCUMENT_ROOT'] . '/local/modules/' . $this->MODULE_ID . '/install/unstep2.php'
             );
         }
