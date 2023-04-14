@@ -36,7 +36,7 @@ ShowMessage($arParams["~AUTH_RESULT"]);
 
 <?if($arResult["SHOW_SMS_FIELD"] == true):?>
 
-<form method="post" action="<?=$arResult["AUTH_URL"]?>" name="regform">
+<form method="post" action="/profile/" name="regform">
 <input type="hidden" name="SIGNED_DATA" value="<?=htmlspecialcharsbx($arResult["SIGNED_DATA"])?>" />
 <table class="data-table bx-registration-table">
 	<tbody>
