@@ -41,7 +41,8 @@
 
 body {
 	background: var(--background);
-	height: 100vh;
+	/*height: 100%;*/
+	min-height: 100vh;
 	color: var(--textDark);
 }
 
@@ -49,8 +50,7 @@ body {
 	margin-bottom: 1rem;
 }
 
-.register,
-.login {
+.register {
 	margin-top: 10rem;
 	background: white;
 	border-radius: 10px;
@@ -61,9 +61,16 @@ body {
 	border-right: 5px solid var(--background);
 }
 
-.right,
-.login {
+.right {
 	padding: 4.5rem;
+}
+
+.login {
+	margin-top: 3rem;
+	margin-bottom: 3rem;
+	padding: 2.8rem;
+	background: white;
+	border-radius: 10px;
 }
 
 .left .title,

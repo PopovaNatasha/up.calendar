@@ -74,20 +74,22 @@ ShowMessage($arResult['ERROR_MESSAGE']);
 				</div>
 
 
-<?if ($arParams["NOT_SHOW_LINKS"] != "Y"):?>
-		<noindex>
-			<p>
-				<a href="<?=$arResult["AUTH_FORGOT_PASSWORD_URL"]?>" rel="nofollow"><?=GetMessage("AUTH_FORGOT_PASSWORD_2")?></a>
-			</p>
-		</noindex>
-<?endif?>
+<?//if ($arParams["NOT_SHOW_LINKS"] != "Y"):?>
+<!--		<noindex>-->
+<!--			<p>-->
+<!--				<a href="--><?//=$arResult["AUTH_FORGOT_PASSWORD_URL"]?><!--" rel="nofollow">--><?//=GetMessage("AUTH_FORGOT_PASSWORD_2")?><!--</a>-->
+<!--			</p>-->
+<!--		</noindex>-->
+<?//endif?>
 
 <?if($arParams["NOT_SHOW_LINKS"] != "Y" && $arResult["NEW_USER_REGISTRATION"] == "Y" && $arParams["AUTHORIZE_REGISTRATION"] != "Y"):?>
 		<noindex>
-			<p>
-				<a href="<?=$arResult["AUTH_REGISTER_URL"]?>" rel="nofollow"><?=GetMessage("AUTH_REGISTER")?></a><br />
-				<?=GetMessage("AUTH_FIRST_ONE")?>
-			</p>
+			<br />
+			<small><em>Уже есть аккаунт? </em><a href="<?=$arResult["AUTH_REGISTER_URL"]?>" rel="nofollow"><?=GetMessage("AUTH_REGISTER")?></a></small>
+<!--			<p>-->
+<!--				<a href="--><?//=$arResult["AUTH_REGISTER_URL"]?><!--" rel="nofollow">--><?//=GetMessage("AUTH_REGISTER")?><!--</a><br />-->
+				<?//=GetMessage("AUTH_FIRST_ONE")?>
+<!--			</p>-->
 		</noindex>
 <?endif?>
 
