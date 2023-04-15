@@ -1,33 +1,33 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 
 .navbar-brand .logo {
-    position: relative;
-    top: -2px;
+	position: relative;
+	top: -2px;
 }
 
 .navbar-brand .logo span {
-    margin-right: 10px;
-    font-size: 36px;
+	margin-right: 10px;
+	font-size: 36px;
 }
 
 .project-card .icon.disabled {
-    filter: grayscale(100%);
+	filter: grayscale(100%);
 }
 
 .tabs-content > div {
-    display: none;
+	display: none;
 }
 
 .tabs-content > div.active {
-    display: flex;
+	display: flex;
 }
 
 .tabs-content .pagination {
-    justify-content: center;
+	justify-content: center;
 }
 
 .tabs-content .pagination-list {
-    flex-grow: 0;
+	flex-grow: 0;
 }
 
 /* Кастомизация */
@@ -41,7 +41,8 @@
 
 body {
 	background: var(--background);
-	height: 100vh;
+	/*height: 100%;*/
+	min-height: 100vh;
 	color: var(--textDark);
 }
 
@@ -49,8 +50,7 @@ body {
 	margin-bottom: 1rem;
 }
 
-.register,
-.login {
+.register {
 	margin-top: 10rem;
 	background: white;
 	border-radius: 10px;
@@ -61,9 +61,16 @@ body {
 	border-right: 5px solid var(--background);
 }
 
-.right,
-.login {
+.right {
 	padding: 4.5rem;
+}
+
+.login {
+	margin-top: 3rem;
+	margin-bottom: 3rem;
+	padding: 2.8rem;
+	background: white;
+	border-radius: 10px;
 }
 
 .left .title,
@@ -97,6 +104,12 @@ body {
 	font-size: 1.15rem;
 }
 
+p.description.register-pass {
+	margin-bottom: 0 !important;
+	margin-top: auto;
+	font-size: medium !important;
+}
+
 .right small {
 	color: var(--textLight);
 }
@@ -114,10 +127,6 @@ input:focus {
 	max-width: fit-content;
 }
 
-
-.block.group{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-start;
+label.label {
+	text-align: initial;
 }

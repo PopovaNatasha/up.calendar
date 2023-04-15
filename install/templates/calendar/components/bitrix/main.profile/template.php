@@ -34,7 +34,7 @@
         </a>
     </div>
     <div class="column is-link is-2">
-        <a class="box" href="/MyGroups" style="display:block; height: 100%;">
+        <a class="box" href="/groups/my/" style="display:block; height: 100%;">
             <figure class="image is-32x32">
                 <img src="<?= SITE_TEMPLATE_PATH ?>/images/groups.png">
             </figure>
@@ -42,7 +42,7 @@
         </a>
     </div>
     <div class="column is-link is-2">
-        <a class="box" href="/AllGroups" style="display:block; height: 100%;">
+        <a class="box" href="/groups/all/" style="display:block; height: 100%;">
             <figure class="image is-32x32 ">
                 <img src="<?= SITE_TEMPLATE_PATH ?>/images/groups.png">
             </figure>
@@ -50,7 +50,7 @@
         </a>
     </div>
     <div class="column is-link is-2">
-        <a class="box" href="/Profile" style="display:block; height: 100%;">
+        <a class="box" href="/profile/" style="display:block; height: 100%;">
             <figure class="image is-32x32">
                 <img src="<?= SITE_TEMPLATE_PATH ?>/images/profile.jpg">
             </figure>
