@@ -16,4 +16,6 @@ return function (RoutingConfigurator $routes) {
 //    $routes->get('/task/{id}/', new PublicPageController('/local/modules/up.people/views/task-details.php'))->where('id', '[0-9]+');
 //    $routes->post('/task/{id}/', new PublicPageController('/local/modules/up.people/views/task-details.php'))->where('id', '[0-9]+');
 //    $routes->get('/documentation/', new PublicPageController('/local/modules/up.people/views/task-documentation.php'));
+
+	$routes->get('/group/{id}/', new PublicPageController('/local/modules/up.calendar/views/calendar-team-detail.php'));
 };

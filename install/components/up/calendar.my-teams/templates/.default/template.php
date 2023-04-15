@@ -14,7 +14,7 @@
 
 <div class="block">
 	<?php foreach ($arResult['Teams'] as $team):?>
-	<a class="group-card block" href="#">
+	<a class="group-card block" href="/group/1/">
 		<div class="block group">
 			<div>
 				<figure class="image is-64x64">
