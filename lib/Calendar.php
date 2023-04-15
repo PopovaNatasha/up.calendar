@@ -7,22 +7,39 @@ use Up\Calendar\Model\UserTeamTable;
 
 Class Calendar
 {
-    public static function getTeams($query = '')
+    public static function getTeams($id = '', $query = '')
     {
-        if (!$query)
-        {
-            $result = TeamTable::getList(['select' => ['TITLE']]);
+        if (!$id) {
+        if (!$query) {
+            $result = TeamTable::getList(['select' => ['TITLE']]); // Тут Каталог групп с тегом паблик
         } else
         {
-			$result = TeamTable::getList([
-				'select' => ['TITLE'],
-                // 'filter' => [
-                //     'LOGIC' => 'OR',
-                //     '=%TITLE' => "%$query%",
-                //     '=%DESCRIPTION' => "%$query%",
-                // ]
-				'filter' => ['USER.ID_USER' => $query]
+			$result = TeamTable::getList(['select' => ['TITLE'], // Тут Каталог групп с тегом паблик с поиском
+                 'filter' => [
+                     'LOGIC' => 'OR',
+                     '=%TITLE' => "%$query%",
+                     '=%DESCRIPTION' => "%$query%",
+                 ]
+
             ])->fetchAll();
+        }
+        }
+        else {
+            if (!$query)
+            {
+                $result = TeamTable::getList(['select' => ['TITLE']]); // Тут выводятся мои группы
+            } else
+            {
+                $result = TeamTable::getList([   // Тут выводятся мои группы с поиском
+                    'select' => ['TITLE'],
+                    // 'filter' => [
+                    //     'LOGIC' => 'OR',
+                    //     '=%TITLE' => "%$query%",
+                    //     '=%DESCRIPTION' => "%$query%",
+                    // ]
+                    'filter' => ['USER.ID_USER' => $query]
+                ])->fetchAll();
+            }
         }
         return $result->fetchAll();
     }

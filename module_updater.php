@@ -26,7 +26,7 @@ function __projectorMigrate(int $nextVersion, callable $callback)
 	}
 }
 
-__projectorMigrate(2, function($updater, $DB)
+__projectorMigrate(3, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && !$updater->TableExists('up_calendar_team'))
 	{
