@@ -41,7 +41,7 @@
 
 body {
 	background: var(--background);
-	height: 100vh;
+	min-height: 100vh;
 	color: var(--textDark);
 }
 
@@ -105,7 +105,8 @@ input {
 	font-size: 1rem;
 }
 
-input:focus {
+input:focus,
+textarea:focus {
 	border-color: var(--brandColor) !important;
 	box-shadow: 0 0 0 1px var(--brandColor) !important;
 }
