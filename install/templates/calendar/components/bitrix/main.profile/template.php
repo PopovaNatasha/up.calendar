@@ -12,17 +12,13 @@
     .FirstName {
         padding: 10px;
     }
+
+    .section.content {
+        padding-top: 0px;
+        background-color: #fafafa;
+        margin-bottom: 0;
+    }
 </style>
-<div class="columns">
-    <div class="column is-two-fifths">
-        <div class="user-info is-left">
-            <figure class="image is-64x64">
-                <img src="<?= SITE_TEMPLATE_PATH ?>/images/ico.jpg">
-            </figure>
-            <div class="FirstName"><?= $USER->GetFullName() ?></div>
-        </div>
-    </div>
-</div>
 
 <div class="columns">
     <div class="column is-link is-2">
@@ -42,7 +38,7 @@
         </a>
     </div>
     <div class="column is-link is-2">
-        <a class="box" href="/groups/all/" style="display:block; height: 100%;">
+        <a class="box" href="/groups/" style="display:block; height: 100%;">
             <figure class="image is-32x32 ">
                 <img src="<?= SITE_TEMPLATE_PATH ?>/images/groups.png">
             </figure>

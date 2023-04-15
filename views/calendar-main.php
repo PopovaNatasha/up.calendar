@@ -7,7 +7,6 @@ global $USER;
 // define('NEED_AUTH', true);
 
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
-global $USER;
 
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 

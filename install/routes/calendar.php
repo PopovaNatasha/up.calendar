@@ -10,7 +10,7 @@ return function (RoutingConfigurator $routes) {
     $routes->get('/groups/my/', new PublicPageController('/local/modules/up.calendar/views/calendar-my-teams.php'))->where('query', '/^[a-zа-яё\d]{1}[a-zа-яё\d\s]*[a-zа-яё\d]{1}$/i');
     $routes->post('/groups/my/', new PublicPageController('/local/modules/up.calendar/views/calendar-my-teams.php'));
 
-    $routes->get('/groups/all/', new PublicPageController('/local/modules/up.calendar/views/calendar-teams.php'));
+    $routes->get('/groups/', new PublicPageController('/local/modules/up.calendar/views/calendar-teams.php'));
     $routes->get('/profile/', new PublicPageController('/local/modules/up.calendar/views/calendar-profile.php'));
 
 	$routes->any('/auth', new PublicPageController('/local/modules/up.calendar/views/auth.php'));

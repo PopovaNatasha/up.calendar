@@ -1,5 +1,4 @@
 <?php
-
 use Bitrix\Main\Loader,
 	Up\Calendar\Calendar;
 
@@ -9,25 +8,41 @@ class CalendarMyTeamsComponent extends CBitrixComponent
     {
         Loader::includeModule('up.calendar');
         $this->fetchTeamList();
-        $this->includeComponentTemplate();
+
     }
 
     protected function fetchTeamList()
     {
+        global $USER;
+        global $APPLICATION;
         $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
         if ($request->getRequestMethod() === 'POST') {
             Calendar::createTeam($request->getPostList());
-            LocalRedirect('/MyGroups');
+            LocalRedirect('/groups/my/');
             exit;
         } elseif ($request->getRequestMethod() === 'GET') {
             if ($request->get('query')) {
                 $query = $request->get('query');
-                $teams = Calendar::getTeams($query);
+                $result = Calendar::getTeams($USER->getID(),$query);
+                $teams = $result['teams'];
+                $nav = $result['nav'];
                 $this->arResult['Teams'] = $teams;
             } else {
-                $teams = Calendar::getTeams();
+                $result = Calendar::getTeams($USER->getID());
+                $teams = $result['teams'];
+                $nav = $result['nav'];
                 $this->arResult['Teams'] = $teams;
             }
         }
+        $this->includeComponentTemplate();
+        $APPLICATION->IncludeComponent(
+            "bitrix:main.pagenavigation",
+            "",
+            array(
+                "NAV_OBJECT" => $nav,
+                "SEF_MODE" => "N",
+            ),
+            false
+        );
     }
 }

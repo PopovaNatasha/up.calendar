@@ -1,1 +1,19 @@
+.group-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 
+.GroupPhoto {
+
+}
+
+.GroupName {
+    margin: 10px;
+    color: black;
+}
+
+.group-card.block.admined:after {
+    content: "       👑";
+
+}

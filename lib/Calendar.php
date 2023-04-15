@@ -11,44 +11,91 @@ Class Calendar
     {
         if (!$id) {
         if (!$query) {
-            $result = TeamTable::getList(['select' => ['TITLE']]); // Тут Каталог групп с тегом паблик
+            $nav = new \Bitrix\Main\UI\PageNavigation("page");
+            $nav->allowAllRecords(false)
+                ->setPageSize(5)
+                ->initFromUri();
+
+            $result = \Up\Calendar\Model\TeamTable::getList([    // // Тут Каталог групп с тегом паблик
+                'select' => ['TITLE', 'ID_ADMIN'],
+                'filter' => ['IS_PRIVATE' => false],
+                'count_total' => true,
+                'offset' => $nav->getOffset(),
+                'limit' => $nav->getLimit(),
+            ],
+            );
+            $nav->setRecordCount($result->getCount());
         } else
         {
-			$result = TeamTable::getList(['select' => ['TITLE'], // Тут Каталог групп с тегом паблик с поиском
-                 'filter' => [
-                     'LOGIC' => 'OR',
-                     '=%TITLE' => "%$query%",
-                     '=%DESCRIPTION' => "%$query%",
-                 ]
+            $nav = new \Bitrix\Main\UI\PageNavigation("page");
+            $nav->allowAllRecords(false)
+                ->setPageSize(5)
+                ->initFromUri();
 
-            ])->fetchAll();
+            $result = \Up\Calendar\Model\TeamTable::getList([    // Тут Каталог групп с тегом паблик и поиском
+                'select' => ['TITLE', 'ID_ADMIN'],
+                'filter' => [
+                    'LOGIC' => 'AND',
+                    '=%TITLE' => "%$query%",
+                    ['IS_PRIVATE' => false]
+                ],
+                'count_total' => true,
+                'offset' => $nav->getOffset(),
+                'limit' => $nav->getLimit(),
+            ],
+            );
+            $nav->setRecordCount($result->getCount());
         }
         }
         else {
             if (!$query)
             {
-                $result = TeamTable::getList(['select' => ['TITLE']]); // Тут выводятся мои группы
+                $nav = new \Bitrix\Main\UI\PageNavigation("page");
+                $nav->allowAllRecords(false)
+                    ->setPageSize(5)
+                    ->initFromUri();
+
+                $result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя
+                    'select' => ['TITLE', 'ID_ADMIN'],
+                    'filter' => ['USER.ID_USER' => $id],
+                    'count_total' => true,
+                    'offset' => $nav->getOffset(),
+                    'limit' => $nav->getLimit(),
+                ],
+                );
+                $nav->setRecordCount($result->getCount());
+
+
             } else
             {
-                $result = TeamTable::getList([   // Тут выводятся мои группы с поиском
-                    'select' => ['TITLE'],
-                    // 'filter' => [
-                    //     'LOGIC' => 'OR',
-                    //     '=%TITLE' => "%$query%",
-                    //     '=%DESCRIPTION' => "%$query%",
-                    // ]
-                    'filter' => ['USER.ID_USER' => $query]
-                ])->fetchAll();
+                $nav = new \Bitrix\Main\UI\PageNavigation("page");
+                $nav->allowAllRecords(false)
+                    ->setPageSize(5)
+                    ->initFromUri();
+
+                $result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя с поиском
+                    'select' => ['TITLE', 'ID_ADMIN'],
+                    'filter' => [
+                        'LOGIC' => 'AND',
+                        '=%TITLE' => "%$query%",
+                        'USER.ID_USER' => $id
+                    ],
+                    'count_total' => true,
+                    'offset' => $nav->getOffset(),
+                    'limit' => $nav->getLimit(),
+                ],
+                );
+                $nav->setRecordCount($result->getCount());
             }
         }
-        return $result->fetchAll();
+        return ['teams' => $result, 'nav' => $nav];
     }
 
     public static function createTeam($arguments) : void
     {
        $result = TeamTable::createObject()
                     ->setTitle($arguments['title'])
-                   ->setDescription($arguments['description'] ?: '')
+                    ->setDescription($arguments['description'] ?: '')
                     ->setIdAdmin($arguments['adminId'])
                     ->setIsPrivate(!$arguments['isPrivate'])
                     ->save();

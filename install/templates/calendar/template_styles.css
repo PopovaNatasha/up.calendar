@@ -10,6 +10,12 @@
     font-size: 36px;
 }
 
+.navbar.has-shadow {
+	display: flex;
+	justify-content: space-between;
+}
+
+
 .project-card .icon.disabled {
     filter: grayscale(100%);
 }
