@@ -26,9 +26,7 @@
 
                 <div class="user-info">
 
-                    <figure class="image is-64x64">
-                        <img src="<?= SITE_TEMPLATE_PATH ?>/images/ico.jpg">
-                    </figure>
+
                     <div class="FirstName"><?= $USER->GetFullName() ?></div>
                     <a class="button is-danger" href="/?logout=yes&<?=bitrix_sessid_get()?>">Выйти</a>
                 </div>

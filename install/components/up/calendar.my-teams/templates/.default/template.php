@@ -7,7 +7,7 @@
 <div class="columns is-mobile">
     <div class="column is-three-fifths">
         <form action="/groups/my/?" method="get">
-        <input class="input is-primary" type="text" placeholder="Поиск по группам" name="query" value="<?= htmlspecialchars($_GET['query'])?>">
+            <input class="input is-primary" type="text" placeholder="Поиск по группам" name="query" value="<?= htmlspecialchars($_GET['query'])?>">
         </form>
     </div>
     <div class="column ">

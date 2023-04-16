@@ -17,7 +17,7 @@ Class Calendar
                 ->initFromUri();
 
             $result = \Up\Calendar\Model\TeamTable::getList([    // // Тут Каталог групп с тегом паблик
-                'select' => ['TITLE', 'ID_ADMIN'],
+                'select' => ['TITLE', 'ID_ADMIN', 'ID'],
                 'filter' => ['IS_PRIVATE' => false],
                 'count_total' => true,
                 'offset' => $nav->getOffset(),
@@ -33,7 +33,7 @@ Class Calendar
                 ->initFromUri();
 
             $result = \Up\Calendar\Model\TeamTable::getList([    // Тут Каталог групп с тегом паблик и поиском
-                'select' => ['TITLE', 'ID_ADMIN'],
+                'select' => ['TITLE', 'ID_ADMIN', 'ID'],
                 'filter' => [
                     'LOGIC' => 'AND',
                     '=%TITLE' => "%$query%",
@@ -56,7 +56,7 @@ Class Calendar
                     ->initFromUri();
 
                 $result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя
-                    'select' => ['TITLE', 'ID_ADMIN'],
+                    'select' => ['TITLE', 'ID_ADMIN', 'ID'],
                     'filter' => ['USER.ID_USER' => $id],
                     'count_total' => true,
                     'offset' => $nav->getOffset(),
@@ -74,7 +74,7 @@ Class Calendar
                     ->initFromUri();
 
                 $result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя с поиском
-                    'select' => ['TITLE', 'ID_ADMIN'],
+                    'select' => ['TITLE', 'ID_ADMIN', 'ID'],
                     'filter' => [
                         'LOGIC' => 'AND',
                         '=%TITLE' => "%$query%",
