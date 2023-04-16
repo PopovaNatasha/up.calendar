@@ -118,7 +118,7 @@
 			</div>
 		</div>
 
-		<form name="settings" action="" method="post">
+		<form name="settings" action="" method="post" enctype="multipart/form-data">
 			<div class="modal" id="modal-js-example2" >
 				<div class="modal-background"></div>
 				<div class="modal-card">

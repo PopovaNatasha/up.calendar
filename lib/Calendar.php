@@ -2,6 +2,7 @@
 
 namespace Up\Calendar;
 
+use Bitrix\Main\FileTable;
 use Up\Calendar\Model\TeamTable;
 use Up\Calendar\Model\UserTeamTable;
 
@@ -176,14 +177,19 @@ Class Calendar
         {
             LocalRedirect('/');
         }
-//        $imgID = \CFile::SaveFile($arguments['img'],'/local/modules/up.calendar/upload/');
 
+//            $arFile['MODULE_ID'] = 'up.calendar';
+//            $arFile['content'] = $arguments['img'];
+//            $arFile["name"] = (string)$arguments['img'];
+//            $imgID = \CFile::SaveFile($arFile, '/up.calendar/');
+//            var_dump($imgID); die;
 
-        $result
-            ->setTitle($arguments['title'])
-            ->setDescription($arguments['description'] ?: '')
-            ->setIsPrivate(!$arguments['isPrivate'])
-//            ->setPersonalPhoto($imgID)
-            ->save();
+            $result
+                ->setTitle($arguments['title'])
+                ->setDescription($arguments['description'] ?: '')
+                ->setIsPrivate(!$arguments['isPrivate'])
+    //            ->setPersonalPhoto($imgID)
+                ->save();
+
     }
 }
