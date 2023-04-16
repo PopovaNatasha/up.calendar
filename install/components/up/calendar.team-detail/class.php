@@ -25,8 +25,17 @@ class CalendarCalendarComponent extends CBitrixComponent
 		$request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
 		if ($request->get('id'))
 		{
-			$idTeam = (int)$request->get('id');
+			$idTeam = $request->get('id');
+            if(!is_numeric($idTeam))
+            {
+                $idTeam = (int)Calendar::getTeamByLink($idTeam);
+            }
+            else
+            {
+                $idTeam = (int)$idTeam;
+            }
 			$team = Calendar::getTeamById($idTeam);
+            $team['link'] = Calendar::createInviteLink($idTeam);
 			$participants = Calendar::getParticipantsTeam($idTeam);
 			$this->arResult = $team;
 			$this->arResult['PARTICIPANTS'] = $participants;

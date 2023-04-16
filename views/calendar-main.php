@@ -27,5 +27,4 @@ else
 	$APPLICATION->SetTitle("HobbyPlan");
 	$APPLICATION->IncludeComponent('up:calendar.calendar', '', []);
 }
-
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");

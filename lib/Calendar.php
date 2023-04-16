@@ -146,6 +146,26 @@ Class Calendar
 
     public static function createInviteLink($idTeam)
     {
-        // togo
+        $array = array(rand(100,999) => array('a' => rand(01,99)), rand(100,999) => array('a' => rand(01,99)));
+        $crc32 = sprintf('%u', crc32(serialize($array)));
+        $inviteStr = base_convert($crc32, 10, 36);
+        $result = TeamTable::getById($idTeam)->fetchObject();
+        $result->setInviteLink($inviteStr)->save();
+        return $inviteStr;
+    }
+
+    public static function getTeamByLink($link)
+    {
+        $team = TeamTable::getList([
+            'select' => ['ID'],
+            'filter' => [
+                'INVITE_LINK' => $link
+            ]
+        ]);
+        if($team)
+        {
+            $team->fetchObject();
+        }
+        return $team;
     }
 }
