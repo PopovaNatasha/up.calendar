@@ -12,10 +12,20 @@ class CalendarCalendarComponent extends CBitrixComponent
 		$this->getTeam();
 		$this->includeComponentTemplate();
 
-		if (Context::getCurrent()->getRequest()->isPost())
+		$request = Context::getCurrent()->getRequest();
+		if ($request->isPost())
 		{
-			$this->actionTeam();
-			header("Refresh: 0");
+			$post = $request->getPostList()->toArray();
+			if ($post['action'])
+			{
+				$this->actionTeam();
+				header("Refresh: 0");
+			}
+			elseif ($post['title'] && $post['description'] && $post['isPrivate'])
+			{
+				$this->updateTeam($request->get('id'), $post);
+				header("Refresh: 0");
+			}
 		}
 
 	}
@@ -53,5 +63,10 @@ class CalendarCalendarComponent extends CBitrixComponent
 		{
 			Calendar::leaveTeam((int)$request['idTeam']);
 		}
+	}
+
+	protected function updateTeam($idTeam, $post)
+	{
+		Calendar::updateTeam($idTeam, $post);
 	}
 }

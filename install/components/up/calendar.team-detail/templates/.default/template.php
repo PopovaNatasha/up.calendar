@@ -3,7 +3,6 @@
  * @var $arResult
  * @var $USER
  */
-var_dump($arResult);
 ?>
 <section class="container">
 
@@ -120,7 +119,6 @@ var_dump($arResult);
 		</div>
 
 		<form name="settings" action="" method="post">
-			<input name="adminId" type="hidden" value="<?= $USER->getID() ?>">
 			<div class="modal" id="modal-js-example2" >
 				<div class="modal-background"></div>
 				<div class="modal-card">

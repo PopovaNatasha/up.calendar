@@ -169,9 +169,9 @@ Class Calendar
         return $team;
     }
 
-    public static function updateTeam($arguments)
+    public static function updateTeam($idTeam, $arguments)
     {
-        $result = TeamTable::getById((int)$arguments['id'])->fetchObject();
+        $result = TeamTable::getByPrimary(['ID' => (int)$idTeam])->fetchObject();
         if (!$result)
         {
             LocalRedirect('/');
