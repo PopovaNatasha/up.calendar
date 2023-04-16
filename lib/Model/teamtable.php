@@ -90,6 +90,12 @@ class TeamTable extends DataManager
                     'title' => Loc::getMessage('TEAM_ENTITY_IS_PRIVATE_FIELD')
                 ]
 			),
+            new StringField(
+                'INVITE_LINK',
+                [
+                    'title' => Loc::getMessage('TEAM_ENTITY_IS_PRIVATE_FIELD')
+                ]
+            ),
             new Reference(
                 'ADMIN',
                 UserTable::class,

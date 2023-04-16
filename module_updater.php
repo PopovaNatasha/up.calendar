@@ -26,12 +26,12 @@ function __projectorMigrate(int $nextVersion, callable $callback)
 	}
 }
 
-__projectorMigrate(5, function($updater, $DB)
+
+
+__projectorMigrate(4, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_team'))
 	{
-		$DB->query("ALTER TABLE up_calendar_team
-                    ADD INVITE_LINK VARCHAR(255)
-	");
+		$DB->query("ALTER TABLE up_calendar_team ADD INVITE_LINK varchar(255)");
 	}
 });

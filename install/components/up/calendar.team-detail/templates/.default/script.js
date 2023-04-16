@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	// Add a click event on buttons to open a specific modal
 	(document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
 		const modal = $trigger.dataset.target;
-		console.log(modal);
 		const $target = document.getElementById(modal);
 
 		$trigger.addEventListener('click', () => {

@@ -2,6 +2,7 @@
 
 namespace Up\Calendar;
 
+use Bitrix\Main\FileTable;
 use Up\Calendar\Model\TeamTable;
 use Up\Calendar\Model\UserTeamTable;
 
@@ -111,5 +112,84 @@ Class Calendar
     public static function deleteTeam($id) : void
     {
         TeamTable::delete($id);
+    }
+
+	public static function getTeamById($id)
+	{
+		return TeamTable::getRowById($id);
+	}
+
+	public static function getParticipantsTeam($idTeam)
+	{
+		return UserTeamTable::getList([
+			'select' => ['ID_USER'],
+			'filter' => [
+				'ID_TEAM' => $idTeam
+			],
+		])->fetchAll();
+	}
+
+	public static function leaveTeam($idTeam)
+	{
+		global $USER;
+		$row = UserTeamTable::getByPrimary(['ID_USER' => $USER->getID(), 'ID_TEAM' => $idTeam])->fetchObject();
+		$row->delete();
+	}
+
+	public static function joinTheTeam($idTeam)
+	{
+		global $USER;
+		UserTeamTable::createObject()
+					 ->setIdUser($USER->getID())
+					 ->setIdTeam($idTeam)
+					 ->save();
+	}
+
+    public static function createInviteLink($idTeam)
+    {
+        $array = array(rand(100,999) => array('a' => rand(01,99)), rand(100,999) => array('a' => rand(01,99)));
+        $crc32 = sprintf('%u', crc32(serialize($array)));
+        $inviteStr = base_convert($crc32, 10, 36);
+        $result = TeamTable::getById($idTeam)->fetchObject();
+        $result->setInviteLink($inviteStr)->save();
+        return $inviteStr;
+    }
+
+    public static function getTeamByLink($link)
+    {
+        $team = TeamTable::getList([
+            'select' => ['ID'],
+            'filter' => [
+                'INVITE_LINK' => $link
+            ]
+        ]);
+        if($team)
+        {
+            $team->fetchObject();
+        }
+        return $team;
+    }
+
+    public static function updateTeam($idTeam, $arguments)
+    {
+        $result = TeamTable::getByPrimary(['ID' => (int)$idTeam])->fetchObject();
+        if (!$result)
+        {
+            LocalRedirect('/');
+        }
+
+//            $arFile['MODULE_ID'] = 'up.calendar';
+//            $arFile['content'] = $arguments['img'];
+//            $arFile["name"] = (string)$arguments['img'];
+//            $imgID = \CFile::SaveFile($arFile, '/up.calendar/');
+//            var_dump($imgID); die;
+
+            $result
+                ->setTitle($arguments['title'])
+                ->setDescription($arguments['description'] ?: '')
+                ->setIsPrivate(!$arguments['isPrivate'])
+    //            ->setPersonalPhoto($imgID)
+                ->save();
+
     }
 }
