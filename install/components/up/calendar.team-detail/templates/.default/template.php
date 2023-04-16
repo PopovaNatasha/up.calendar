@@ -33,13 +33,13 @@
 					<?php $result .= in_array($USER->getID(), $participant, true); ?>
 				<?php endforeach; ?>
 				<?php if ($result): ?>
-					<form class="buttons" action="<?=POST_FORM_ACTION_URI?>" method="post">
+					<form class="buttons" method="post">
 						<input type="hidden" name="idTeam" value="<?= $arResult['ID'] ?>"/>
 						<input type="hidden" name="action" value="out"/>
 						<button class="button is-primary is-light" style="margin-left: auto">Покинуть</button>
 					</form>
 				<?php else: ?>
-					<form class="buttons" action="<?=POST_FORM_ACTION_URI?>" method="post">
+					<form class="buttons" method="post">
 						<input type="hidden" name="idTeam" value="<?= $arResult['ID'] ?>"/>
 						<input type="hidden" name="action" value="in"/>
 						<button class="button is-primary is-light" style="margin-left: auto">Вcтупить</button>

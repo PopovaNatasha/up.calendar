@@ -143,4 +143,9 @@ Class Calendar
 					 ->setIdTeam($idTeam)
 					 ->save();
 	}
+
+    public static function createInviteLink($idTeam)
+    {
+        // togo
+    }
 }
