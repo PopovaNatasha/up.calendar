@@ -26,7 +26,6 @@ class CalendarCalendarComponent extends CBitrixComponent
 		if ($request->get('id'))
 		{
 			$idTeam = (int)$request->get('id');
-			var_dump($idTeam);
 			$team = Calendar::getTeamById($idTeam);
 			$participants = Calendar::getParticipantsTeam($idTeam);
 			$this->arResult = $team;
@@ -37,7 +36,6 @@ class CalendarCalendarComponent extends CBitrixComponent
 	protected function actionTeam(): void
 	{
 		$request = Context::getCurrent()->getRequest()->getPostList()->toArray();
-		var_dump($request);
 		if ($request['action'] === 'in')
 		{
 			Calendar::joinTheTeam($request['idTeam']);

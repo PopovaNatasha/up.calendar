@@ -3,7 +3,6 @@
  * @var $arResult
  * @var $USER
  */
-var_dump($arResult);
 ?>
 <section class="container">
 
@@ -89,10 +88,35 @@ var_dump($arResult);
 
 		<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
 			<div class="buttons admin">
-				<button class="button is-primary">Пригласить</button>
+				<button class="button is-primary js-modal-trigger" data-target="modal-js-example">Пригласить</button>
 				<button class="button is-primary">Настройки</button>
 			</div>
 		<?php endif ?>
+
+		<div>
+			<div class="modal" id="modal-js-example" >
+				<div class="modal-background"></div>
+				<div class="modal-card">
+					<header class="modal-card-head">
+						<p class="modal-card-title">Ссылка для приглашения</p>
+						<button class="delete" type="reset" aria-label="close"></button>
+					</header>
+
+					<section class="modal-card-body">
+						<div class="field">
+							<label class="label">Ссылка</label>
+							<div class="control">
+								<input name="title" class="input is-primary mb-4 is-large" type="text" readonly value="Link">
+							</div>
+						</div>
+
+					</section>
+					<footer class="modal-card-foot">
+						<button class="button" type="reset" >Закрыть</button>
+					</footer>
+				</div>
+			</div>
+		</div>
 
 	</div>
 </div>
