@@ -3,6 +3,7 @@
  * @var $arResult
  * @var $USER
  */
+var_dump($arResult);
 ?>
 <section class="container">
 
@@ -18,7 +19,7 @@
 			</div>
 			<div class="card-content">
 				<p class="description">Подписчиков</p>
-				<h1 class="title is-4">34</h1>
+				<h1 class="title is-4"><?= count($arResult['PARTICIPANTS']) ?></h1>
 			</div>
 		</div>
 	</div>
@@ -88,13 +89,13 @@
 
 		<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
 			<div class="buttons admin">
-				<button class="button is-primary js-modal-trigger" data-target="modal-js-example">Пригласить</button>
-				<button class="button is-primary">Настройки</button>
+				<button class="button is-primary js-modal-trigger" data-target="modal-js-example1">Пригласить</button>
+				<button class="button is-primary js-modal-trigger" data-target="modal-js-example2">Настройки</button>
 			</div>
 		<?php endif ?>
 
 		<div>
-			<div class="modal" id="modal-js-example" >
+			<div class="modal" id="modal-js-example1" >
 				<div class="modal-background"></div>
 				<div class="modal-card">
 					<header class="modal-card-head">
@@ -118,6 +119,42 @@
 			</div>
 		</div>
 
+		<form name="settings" action="" method="post">
+			<input name="adminId" type="hidden" value="<?= $USER->getID() ?>">
+			<div class="modal" id="modal-js-example2" >
+				<div class="modal-background"></div>
+				<div class="modal-card">
+					<header class="modal-card-head">
+						<p class="modal-card-title">Редактирование группы</p>
+						<button class="delete" type="reset" aria-label="close"></button>
+					</header>
+
+					<section class="modal-card-body">
+						<div class="field">
+							<label class="label">Название</label>
+							<div class="control">
+								<input name="title" class="input is-primary mb-4 is-large" type="text" value="<?= $arResult['TITLE'] ?>">
+							</div>
+						</div>
+						<div class="field">
+							<label class="label">Описание</label>
+							<div class="control">
+								<input name="description" class="input is-primary mb-4 " type="text" value="<?= $arResult['DESCRIPTION'] ?>">
+							</div>
+						</div>
+						<label class="checkbox">
+							<input name="isPrivate" type="checkbox" <?= ($arResult['IS_PRIVATE'] === '0') ? 'checked' : '' ?>>
+							Публичная группа
+						</label>
+
+					</section>
+					<footer class="modal-card-foot">
+						<button class="button is-success" type="submit">Сохранить</button>
+						<button class="button" type="reset" >Отмена</button>
+					</footer>
+				</div>
+			</div>
+		</form>
 	</div>
 </div>
 </section>
