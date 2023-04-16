@@ -168,4 +168,22 @@ Class Calendar
         }
         return $team;
     }
+
+    public static function updateTeam($arguments)
+    {
+        $result = TeamTable::getById((int)$arguments['id'])->fetchObject();
+        if (!$result)
+        {
+            LocalRedirect('/');
+        }
+//        $imgID = \CFile::SaveFile($arguments['img'],'/local/modules/up.calendar/upload/');
+
+
+        $result
+            ->setTitle($arguments['title'])
+            ->setDescription($arguments['description'] ?: '')
+            ->setIsPrivate(!$arguments['isPrivate'])
+//            ->setPersonalPhoto($imgID)
+            ->save();
+    }
 }
