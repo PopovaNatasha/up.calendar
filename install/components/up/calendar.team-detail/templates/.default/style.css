@@ -30,3 +30,8 @@
 .wrapper {
 	width: 100%;
 }
+
+.buttons.admin {
+	display: flex;
+	justify-content: center;
+}

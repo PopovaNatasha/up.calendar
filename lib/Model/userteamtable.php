@@ -61,7 +61,7 @@ class UserTeamTable extends DataManager
                 Join::on('this.ID_TEAM', 'ref.ID')
             ),
             new Reference(
-                'TEAM',
+                'USER',
                 UserTable::class,
                 Join::on('this.ID_USER', 'ref.ID')
             ),

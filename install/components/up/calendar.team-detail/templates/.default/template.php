@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var $arResult
+ * @var $USER
+ */
+var_dump($arResult);
+?>
 <section class="container">
 
 <div class="columns is-multiline">
@@ -18,41 +25,75 @@
 	</div>
 
 	<div class="column is-half">
-			<form class="box">
-				<div class="field">
-					<div class="control">
-						<textarea class="textarea" placeholder="Введите сообщение" rows="2"></textarea>
-					</div>
+		<div class="box">
+			<h1 class="title is-4"><?= $arResult['TITLE'] ?></h1>
+			<p><?= $arResult['DESCRIPTION'] ?></p>
+
+			<?php if ($USER->getID() !== $arResult['ID_ADMIN']): ?>
+				<?php foreach ($arResult['PARTICIPANTS'] as $participant): ?>
+					<?php $result .= in_array($USER->getID(), $participant, true); ?>
+				<?php endforeach; ?>
+				<?php if ($result): ?>
+					<form class="buttons" action="<?=POST_FORM_ACTION_URI?>" method="post">
+						<input type="hidden" name="idTeam" value="<?= $arResult['ID'] ?>"/>
+						<input type="hidden" name="action" value="out"/>
+						<button class="button is-primary is-light" style="margin-left: auto">Покинуть</button>
+					</form>
+				<?php else: ?>
+					<form class="buttons" action="<?=POST_FORM_ACTION_URI?>" method="post">
+						<input type="hidden" name="idTeam" value="<?= $arResult['ID'] ?>"/>
+						<input type="hidden" name="action" value="in"/>
+						<button class="button is-primary is-light" style="margin-left: auto">Вcтупить</button>
+					</form>
+				<?php endif; ?>
+			<?php endif; ?>
+
+		</div>
+
+		<form class="box">
+			<div class="field">
+				<div class="control">
+					<textarea class="textarea" placeholder="Введите сообщение" rows="2"></textarea>
 				</div>
-				<button class="button is-primary">Отправить</button>
-			</form>
+			</div>
+			<button class="button is-primary is-light">Отправить</button>
+		</form>
 	</div>
 
 	<div class="column">
+
 		<div class="box">
 		<input type="text" class='date-input'>
-		<div class="wrapper">
-			<div class="level header is-marginless">
-				<span class="left-arrow"><</span>
-				<span class="year-month"></span>
-				<span class="right-arrow">></span>
-			</div>
-
-			<div class="date-wrapper">
-				<div class="level-left day-nums">
-					<span class='date-item'>Sun</span>
-					<span class='date-item'>Mon</span>
-					<span class='date-item'>Tue</span>
-					<span class='date-item'>Wen</span>
-					<span class='date-item'>Thu</span>
-					<span class='date-item'>Fri</span>
-					<span class='date-item'>Sat</span>
+			<div class="wrapper">
+				<div class="level header is-marginless">
+					<span class="left-arrow"><</span>
+					<span class="year-month"></span>
+					<span class="right-arrow">></span>
 				</div>
-				<div class="dates">
+
+				<div class="date-wrapper">
+					<div class="level-left day-nums">
+						<span class='date-item'>Sun</span>
+						<span class='date-item'>Mon</span>
+						<span class='date-item'>Tue</span>
+						<span class='date-item'>Wen</span>
+						<span class='date-item'>Thu</span>
+						<span class='date-item'>Fri</span>
+						<span class='date-item'>Sat</span>
+					</div>
+					<div class="dates">
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+
+		<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
+			<div class="buttons admin">
+				<button class="button is-primary">Пригласить</button>
+				<button class="button is-primary">Настройки</button>
+			</div>
+		<?php endif ?>
+
 	</div>
 </div>
 </section>

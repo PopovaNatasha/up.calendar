@@ -112,4 +112,35 @@ Class Calendar
     {
         TeamTable::delete($id);
     }
+
+	public static function getTeamById($id)
+	{
+		return TeamTable::getRowById($id);
+	}
+
+	public static function getParticipantsTeam($idTeam)
+	{
+		return UserTeamTable::getList([
+			'select' => ['ID_USER'],
+			'filter' => [
+				'ID_TEAM' => $idTeam
+			],
+		])->fetchAll();
+	}
+
+	public static function leaveTeam($idTeam)
+	{
+		global $USER;
+		$row = UserTeamTable::getByPrimary(['ID_USER' => $USER->getID(), 'ID_TEAM' => $idTeam])->fetchObject();
+		$row->delete();
+	}
+
+	public static function joinTheTeam($idTeam)
+	{
+		global $USER;
+		UserTeamTable::createObject()
+					 ->setIdUser($USER->getID())
+					 ->setIdTeam($idTeam)
+					 ->save();
+	}
 }
