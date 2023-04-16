@@ -12,3 +12,8 @@
     margin: 10px;
     color: black;
 }
+
+.group-card.block.admined:after {
+    content: "       👑";
+
+}

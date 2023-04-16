@@ -5,7 +5,12 @@
  */
 ?>
 <div class="columns is-mobile">
-    <div class="column is-4 is-offset-11">
+    <div class="column is-three-fifths">
+        <form action="/groups/my/?" method="get">
+            <input class="input is-primary" type="text" placeholder="Поиск по группам" name="query" value="<?= htmlspecialchars($_GET['query'])?>">
+        </form>
+    </div>
+    <div class="column ">
         <button class="js-modal-trigger button is-primary" data-target="modal-js-example">
             Создать группу
         </button>
@@ -14,7 +19,7 @@
 
 <div class="block">
 	<?php foreach ($arResult['Teams'] as $team):?>
-	<a class="group-card block" href="/group/1/">
+	<a class="group-card block <?= ($team['ID_ADMIN'] == $USER->getID()) ? 'admined' : ''; ?>" href="#">
 		<div class="block group">
 			<div>
 				<figure class="image is-64x64">

@@ -26,15 +26,12 @@ function __projectorMigrate(int $nextVersion, callable $callback)
 	}
 }
 
-__projectorMigrate(2, function($updater, $DB)
+__projectorMigrate(5, function($updater, $DB)
 {
-	if ($updater->CanUpdateDatabase() && !$updater->TableExists('up_calendar_team'))
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_team'))
 	{
-		$DB->query("CREATE TABLE IF NOT EXISTS up_people
-            (
-                ID INT AUTO_INCREMENT NOT NULL,
-                TITLE VARCHAR(255) NOT NULL,
-            );
+		$DB->query("ALTER TABLE up_calendar_team
+                    ADD INVITE_LINK VARCHAR(255)
 	");
 	}
 });

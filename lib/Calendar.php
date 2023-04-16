@@ -7,31 +7,95 @@ use Up\Calendar\Model\UserTeamTable;
 
 Class Calendar
 {
-    public static function getTeams($query = '')
+    public static function getTeams($id = '', $query = '')
     {
-        if (!$query)
-        {
-            $result = TeamTable::getList(['select' => ['TITLE']]);
+        if (!$id) {
+        if (!$query) {
+            $nav = new \Bitrix\Main\UI\PageNavigation("page");
+            $nav->allowAllRecords(false)
+                ->setPageSize(5)
+                ->initFromUri();
+
+            $result = \Up\Calendar\Model\TeamTable::getList([    // // Тут Каталог групп с тегом паблик
+                'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+                'filter' => ['IS_PRIVATE' => false],
+                'count_total' => true,
+                'offset' => $nav->getOffset(),
+                'limit' => $nav->getLimit(),
+            ],
+            );
+            $nav->setRecordCount($result->getCount());
         } else
         {
-			$result = TeamTable::getList([
-				'select' => ['TITLE'],
-                // 'filter' => [
-                //     'LOGIC' => 'OR',
-                //     '=%TITLE' => "%$query%",
-                //     '=%DESCRIPTION' => "%$query%",
-                // ]
-				'filter' => ['USER.ID_USER' => $query]
-            ])->fetchAll();
+            $nav = new \Bitrix\Main\UI\PageNavigation("page");
+            $nav->allowAllRecords(false)
+                ->setPageSize(5)
+                ->initFromUri();
+
+            $result = \Up\Calendar\Model\TeamTable::getList([    // Тут Каталог групп с тегом паблик и поиском
+                'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+                'filter' => [
+                    'LOGIC' => 'AND',
+                    '=%TITLE' => "%$query%",
+                    ['IS_PRIVATE' => false]
+                ],
+                'count_total' => true,
+                'offset' => $nav->getOffset(),
+                'limit' => $nav->getLimit(),
+            ],
+            );
+            $nav->setRecordCount($result->getCount());
         }
-        return $result->fetchAll();
+        }
+        else {
+            if (!$query)
+            {
+                $nav = new \Bitrix\Main\UI\PageNavigation("page");
+                $nav->allowAllRecords(false)
+                    ->setPageSize(5)
+                    ->initFromUri();
+
+                $result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя
+                    'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+                    'filter' => ['USER.ID_USER' => $id],
+                    'count_total' => true,
+                    'offset' => $nav->getOffset(),
+                    'limit' => $nav->getLimit(),
+                ],
+                );
+                $nav->setRecordCount($result->getCount());
+
+
+            } else
+            {
+                $nav = new \Bitrix\Main\UI\PageNavigation("page");
+                $nav->allowAllRecords(false)
+                    ->setPageSize(5)
+                    ->initFromUri();
+
+                $result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя с поиском
+                    'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+                    'filter' => [
+                        'LOGIC' => 'AND',
+                        '=%TITLE' => "%$query%",
+                        'USER.ID_USER' => $id
+                    ],
+                    'count_total' => true,
+                    'offset' => $nav->getOffset(),
+                    'limit' => $nav->getLimit(),
+                ],
+                );
+                $nav->setRecordCount($result->getCount());
+            }
+        }
+        return ['teams' => $result, 'nav' => $nav];
     }
 
     public static function createTeam($arguments) : void
     {
        $result = TeamTable::createObject()
                     ->setTitle($arguments['title'])
-                   ->setDescription($arguments['description'] ?: '')
+                    ->setDescription($arguments['description'] ?: '')
                     ->setIdAdmin($arguments['adminId'])
                     ->setIsPrivate(!$arguments['isPrivate'])
                     ->save();
