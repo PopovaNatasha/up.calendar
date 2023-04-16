@@ -140,6 +140,12 @@
 								<input name="description" class="input is-primary mb-4 " type="text" value="<?= $arResult['DESCRIPTION'] ?>">
 							</div>
 						</div>
+						<div class="field">
+							<label class="label">Изображение</label>
+							<div class="control">
+								<input name="img" class="input is-primary mb-4 " type="file" accept="image/png, image/jpeg">
+							</div>
+						</div>
 						<label class="checkbox">
 							<input name="isPrivate" type="checkbox" <?= ($arResult['IS_PRIVATE'] === '0') ? 'checked' : '' ?>>
 							Публичная группа

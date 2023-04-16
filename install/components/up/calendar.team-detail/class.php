@@ -21,7 +21,7 @@ class CalendarCalendarComponent extends CBitrixComponent
 				$this->actionTeam();
 				header("Refresh: 0");
 			}
-			elseif ($post['title'] && $post['description'] && $post['isPrivate'])
+			elseif ($post['title'] && $post['description'])
 			{
 				$this->updateTeam($request->get('id'), $post);
 				header("Refresh: 0");
@@ -67,6 +67,7 @@ class CalendarCalendarComponent extends CBitrixComponent
 
 	protected function updateTeam($idTeam, $post)
 	{
+		var_dump($idTeam, $post);
 		Calendar::updateTeam($idTeam, $post);
 	}
 }
