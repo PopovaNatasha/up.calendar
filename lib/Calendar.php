@@ -183,22 +183,22 @@ Class Calendar
 		if ($arImage["name"] !== '')
 		{
 			$idImage = \CFile::SaveFile($arImage, "up.calendar");
-			// if ((int)$fid >0)
-			// {
-			// 	$arFields["IMAGE_ID"] = (int)$fid;
-			// }
-			// else
-			// {
-			// 	$arFields["IMAGE_ID"] = "null";
-			// 	$DB->Update("b_vote",$arFields,"WHERE ID='".$ID."'",$err_mess.__LINE__);
-			// }
+			if ((int)$idImage > 0)
+			{
+				$arguments["idImage"] = (int)$idImage;
+			}
+			else
+			{
+				$arguments["idImage"] = "null";
+				throw new \Exception('Failed to save file');
+			}
 		}
 
             $result
                 ->setTitle($arguments['title'])
                 ->setDescription($arguments['description'] ?: '')
                 ->setIsPrivate(!$arguments['isPrivate'])
-    //            ->setPersonalPhoto($imgID)
+                ->setPersonalPhoto($arguments["idImage"])
                 ->save();
 
 
