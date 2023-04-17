@@ -2,9 +2,9 @@
 
 namespace Up\Calendar;
 
-use Bitrix\Main\FileTable;
-use Up\Calendar\Model\TeamTable;
-use Up\Calendar\Model\UserTeamTable;
+use Up\Calendar\Model\TeamTable,
+	Up\Calendar\Model\UserTeamTable;
+	// Bitrix\Main\CFile;
 
 Class Calendar
 {
@@ -178,11 +178,21 @@ Class Calendar
             LocalRedirect('/');
         }
 
-//            $arFile['MODULE_ID'] = 'up.calendar';
-//            $arFile['content'] = $arguments['img'];
-//            $arFile["name"] = (string)$arguments['img'];
-//            $imgID = \CFile::SaveFile($arFile, '/up.calendar/');
-//            var_dump($imgID); die;
+		$arImage = $_FILES['img'];
+		$arImage['MODULE_ID'] = 'up.calendar';
+		if ($arImage["name"] !== '')
+		{
+			$idImage = \CFile::SaveFile($arImage, "up.calendar");
+			// if ((int)$fid >0)
+			// {
+			// 	$arFields["IMAGE_ID"] = (int)$fid;
+			// }
+			// else
+			// {
+			// 	$arFields["IMAGE_ID"] = "null";
+			// 	$DB->Update("b_vote",$arFields,"WHERE ID='".$ID."'",$err_mess.__LINE__);
+			// }
+		}
 
             $result
                 ->setTitle($arguments['title'])
@@ -190,6 +200,8 @@ Class Calendar
                 ->setIsPrivate(!$arguments['isPrivate'])
     //            ->setPersonalPhoto($imgID)
                 ->save();
+
+
 
     }
 }

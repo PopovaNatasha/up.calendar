@@ -21,7 +21,7 @@ class CalendarCalendarComponent extends CBitrixComponent
 				$this->actionTeam();
 				header("Refresh: 0");
 			}
-			elseif ($post['title'])
+			elseif ($post['settings'])
 			{
 				$this->updateTeam($request->get('id'), $post);
 				header("Refresh: 0");

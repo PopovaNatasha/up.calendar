@@ -17,7 +17,7 @@
 				</figure>
 			</div>
 			<div class="card-content">
-				<p class="description">Подписчиков</p>
+				<p class="description">Участников</p>
 				<h1 class="title is-4"><?= count($arResult['PARTICIPANTS']) ?></h1>
 			</div>
 		</div>
@@ -62,6 +62,13 @@
 	<div class="column">
 
 		<div class="box">
+
+				<div class="container">
+					<p>
+						<input type="date" class="input" id="date" name="date" value="2019-10-22">
+					</p>
+				</div>
+
 		<input type="text" class='date-input'>
 			<div class="wrapper">
 				<div class="level header is-marginless">
@@ -119,6 +126,7 @@
 		</div>
 
 		<form name="settings" action="" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="settings" value="1"/>
 			<div class="modal" id="modal-js-example2" >
 				<div class="modal-background"></div>
 				<div class="modal-card">
@@ -162,6 +170,16 @@
 	</div>
 </div>
 </section>
+
+<script>
+	bulmaCalendar.attach('#date', {
+		dateFormat: "DD-MMM-YYYY",
+		type: 'date',
+		showClearButton: false
+	});
+	document.querySelector('#date').bulmaCalendar.on('select', date => {console.log(date)});
+
+</script>
 
 <script>
 
