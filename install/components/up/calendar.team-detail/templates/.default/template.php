@@ -3,6 +3,7 @@
  * @var $arResult
  * @var $USER
  */
+var_dump($arResult);
 ?>
 <section class="container">
 
@@ -13,7 +14,11 @@
 		<div class="card">
 			<div class="card-image">
 				<figure class="image is-4by3">
-					<img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+					<?php if ($arResult['PERSONAL_PHOTO']): ?>
+						<?= \CFile::ShowImage($arResult['PERSONAL_PHOTO'], 1280, 960)?>
+					<?php else: ?>
+						<img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+					<?php endif; ?>
 				</figure>
 			</div>
 			<div class="card-content">

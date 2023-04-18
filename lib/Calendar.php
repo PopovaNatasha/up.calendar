@@ -178,10 +178,11 @@ Class Calendar
             throw new \Exception('Group not found');
         }
 
+		$idOldImage = $team->getPersonalPhoto();
 		if ($_FILES['img']['name'] !== '')
 		{
-			$idImage = self::saveTeamImage($team->getPersonalPhoto());
-			$team->setsetPersonalPhoto($idImage);
+			$idImage = self::saveTeamImage();
+			$team->setPersonalPhoto($idImage);
 		}
 
 		$teamTitle = trim($arguments['title']);
@@ -194,35 +195,21 @@ Class Calendar
 			 ->setDescription($arguments['description'] ?: '')
 			 ->setIsPrivate(!$arguments['isPrivate'])
 			 ->save();
-		// if ($team->isSuccess)
-		// {
-		// 	// var_dump($team);
-		// }
+
+		\CFile::Delete($idOldImage);
     }
 
-	public static function saveTeamImage($idOldImage)
+	public static function saveTeamImage()
 	{
 		$arImage = $_FILES['img'];
 		$arImage['MODULE_ID'] = 'up.calendar';
-		if ($idOldImage)
-		{
-			var_dump($idOldImage);
-			$arImage["old_file"] = $idOldImage;
-			$arImage["del"] = 'Y';
-		}
-		$idImage = \CFile::SaveFile($arImage, 'up.calendar', false, false, '/team_image');
+		$idImage = \CFile::SaveFile($arImage, 'up.calendar', false, false, 'team_image');
+
 		if (!((int)$idImage > 0))
 		{
-			// $arguments["idImage"] = null;
 			throw new \Exception('Failed to save file');
-
 		}
-		// $arguments["idImage"] = (int)$idImage;
+
 		return (int)$idImage;
-	}
-
-	public static function deleteTeamImage($idOldImage)
-	{
-
 	}
 }
