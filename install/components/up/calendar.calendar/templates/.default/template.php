@@ -12,13 +12,13 @@
         const Calendar = tui.Calendar;
         const calendar = new Calendar('#calendar', {
             // Whether to use the default form popup when creating/modifying events.
-            useFormPopup: true,
+            useFormPopup: false,
             // Whether to use the default detail popup when clicking events.
-            useDetailPopup: true,
+            useDetailPopup: false,
             // whether use default creation popup or not
-            useCreationPopup: true,
+            useCreationPopup: false,
             // 'day', 'week', 'month'
-            defaultView: 'month',
+            defaultView: 'week',
             // shows the milestone and task in weekly, daily view
             taskView: false,
             // shows the all day and time grid in weekly, daily view
@@ -51,7 +51,9 @@
             week: {
                 dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
                 startDayOfWeek: 1,
-                narrowWeekend: true
+                narrowWeekend: false,
+				taskView: false,
+				eventView: ['time']
             },
             month: {
                 dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],

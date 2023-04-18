@@ -23,5 +23,6 @@ return function (RoutingConfigurator $routes) {
     $routes->get('/invite/{link}/', new PublicPageController('/local/modules/up.calendar/views/calendar-team-invite.php'));
     $routes->post('/invite/{link}/', new PublicPageController('/local/modules/up.calendar/views/calendar-team-invite.php'));
 
-
+	$routes->get('/group/{id}/schedule/', new PublicPageController('/local/modules/up.calendar/views/calendar-team-schedule.php'));
+	$routes->post('/group/{id}/schedule/', new PublicPageController('/local/modules/up.calendar/views/calendar-team-schedule.php'));
 };

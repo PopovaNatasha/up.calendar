@@ -84,6 +84,11 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="buttons">
+				<a class="button is-primary" href="/group/<?= $arResult['ID'] ?>/schedule/">Расписание</a>
+			</div>
+
 		</div>
 
 		<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
