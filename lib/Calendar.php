@@ -157,16 +157,13 @@ Class Calendar
 
     public static function getTeamByLink($link)
     {
+
         $team = TeamTable::getList([
-            'select' => ['ID'],
+            'select' => ['ID','TITLE','DESCRIPTION'],
             'filter' => [
                 'INVITE_LINK' => $link
-            ]
-        ]);
-        if($team)
-        {
-            $team->fetchObject();
-        }
+            ],
+        ])->fetch();
         return $team;
     }
 
