@@ -18,7 +18,7 @@ class CalendarCalendarComponent extends CBitrixComponent
 			$post = $request->getPostList()->toArray();
 			if ($post['action'])
 			{
-				$this->actionTeam();
+				$this->actionTeam((int)$request->get('id'));
 			}
 			elseif ($post['settings'])
 			{
@@ -51,16 +51,16 @@ class CalendarCalendarComponent extends CBitrixComponent
 		}
 	}
 
-	protected function actionTeam(): void
+	protected function actionTeam($idTeam): void
 	{
 		$request = Context::getCurrent()->getRequest()->getPostList()->toArray();
 		if ($request['action'] === 'in')
 		{
-			Calendar::joinTheTeam($request['idTeam']);
+			Calendar::joinTheTeam($idTeam);
 		}
 		elseif ($request['action'] === 'out')
 		{
-			Calendar::leaveTeam((int)$request['idTeam']);
+			Calendar::leaveTeam($idTeam);
 		}
 	}
 

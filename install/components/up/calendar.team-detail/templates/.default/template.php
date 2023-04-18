@@ -3,7 +3,6 @@
  * @var $arResult
  * @var $USER
  */
-var_dump($arResult);
 ?>
 <section class="container">
 
@@ -38,14 +37,11 @@ var_dump($arResult);
 					<?php $result .= in_array($USER->getID(), $participant, true); ?>
 				<?php endforeach; ?>
 				<?php if ($result): ?>
-					<form class="buttons" method="post">
-						<input type="hidden" name="idTeam" value="<?= $arResult['ID'] ?>"/>
-						<input type="hidden" name="action" value="out"/>
-						<button class="button is-primary is-light" style="margin-left: auto">Покинуть</button>
-					</form>
+					<div class="buttons">
+						<button class="button is-primary is-light js-modal-trigger" data-target="modal-js-leave-team" style="margin-left: auto">Покинуть</button>
+					</div>
 				<?php else: ?>
 					<form class="buttons" method="post">
-						<input type="hidden" name="idTeam" value="<?= $arResult['ID'] ?>"/>
 						<input type="hidden" name="action" value="in"/>
 						<button class="button is-primary is-light" style="margin-left: auto">Вcтупить</button>
 					</form>
@@ -167,6 +163,27 @@ var_dump($arResult);
 					</section>
 					<footer class="modal-card-foot">
 						<button class="button is-success" type="submit">Сохранить</button>
+						<button class="button" type="reset" >Отмена</button>
+					</footer>
+				</div>
+			</div>
+		</form>
+
+		<form name="confirmation" action="" method="post">
+			<input type="hidden" name="action" value="out"/>
+			<div class="modal" id="modal-js-leave-team">
+				<div class="modal-background"></div>
+				<div class="modal-card">
+					<header class="modal-card-head">
+						<p class="modal-card-title">Подтверждение</p>
+						<button class="delete" type="reset" aria-label="close"></button>
+					</header>
+
+					<section class="modal-card-body">
+						<p>Вы уверены, что хотите покинуть группу?</p>
+					</section>
+					<footer class="modal-card-foot">
+						<button class="button is-danger" type="submit">Покинуть</button>
 						<button class="button" type="reset" >Отмена</button>
 					</footer>
 				</div>
