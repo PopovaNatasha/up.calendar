@@ -145,6 +145,21 @@ Class Calendar
 					 ->save();
 	}
 
+    public static function getInviteLink($idTeam)
+    {
+        $result = TeamTable::getList([
+            'select' => ['INVITE_LINK'],
+            'filter' => [
+                'ID' => $idTeam
+            ],
+        ])->fetch();
+
+        if ($result['INVITE_LINK'] === null)
+        {
+            $result['INVITE_LINK'] =  Calendar::createInviteLink($idTeam);
+        }
+        return $result['INVITE_LINK'];
+    }
     public static function createInviteLink($idTeam)
     {
         $array = array(rand(100,999) => array('a' => rand(01,99)), rand(100,999) => array('a' => rand(01,99)));
