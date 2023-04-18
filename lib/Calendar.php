@@ -172,36 +172,57 @@ Class Calendar
 
     public static function updateTeam($idTeam, $arguments)
     {
-        $result = TeamTable::getByPrimary(['ID' => (int)$idTeam])->fetchObject();
-        if (!$result)
+        $team = TeamTable::getByPrimary(['ID' => (int)$idTeam])->fetchObject();
+        if (!$team)
         {
-            LocalRedirect('/');
+            throw new \Exception('Group not found');
         }
 
-		$arImage = $_FILES['img'];
-		$arImage['MODULE_ID'] = 'up.calendar';
-		if ($arImage["name"] !== '')
+		if ($_FILES['img']['name'] !== '')
 		{
-			$idImage = \CFile::SaveFile($arImage, "up.calendar");
-			if ((int)$idImage > 0)
-			{
-				$arguments["idImage"] = (int)$idImage;
-			}
-			else
-			{
-				$arguments["idImage"] = "null";
-				throw new \Exception('Failed to save file');
-			}
+			$idImage = self::saveTeamImage($team->getPersonalPhoto());
+			$team->setsetPersonalPhoto($idImage);
 		}
 
-            $result
-                ->setTitle($arguments['title'])
-                ->setDescription($arguments['description'] ?: '')
-                ->setIsPrivate(!$arguments['isPrivate'])
-                ->setPersonalPhoto($arguments["idImage"])
-                ->save();
+		$teamTitle = trim($arguments['title']);
+		if ($teamTitle === '')
+		{
+			throw new \Exception('Title can not be empty');
+		}
 
-
-
+		$team->setTitle($teamTitle)
+			 ->setDescription($arguments['description'] ?: '')
+			 ->setIsPrivate(!$arguments['isPrivate'])
+			 ->save();
+		// if ($team->isSuccess)
+		// {
+		// 	// var_dump($team);
+		// }
     }
+
+	public static function saveTeamImage($idOldImage)
+	{
+		$arImage = $_FILES['img'];
+		$arImage['MODULE_ID'] = 'up.calendar';
+		if ($idOldImage)
+		{
+			var_dump($idOldImage);
+			$arImage["old_file"] = $idOldImage;
+			$arImage["del"] = 'Y';
+		}
+		$idImage = \CFile::SaveFile($arImage, 'up.calendar', false, false, '/team_image');
+		if (!((int)$idImage > 0))
+		{
+			// $arguments["idImage"] = null;
+			throw new \Exception('Failed to save file');
+
+		}
+		// $arguments["idImage"] = (int)$idImage;
+		return (int)$idImage;
+	}
+
+	public static function deleteTeamImage($idOldImage)
+	{
+
+	}
 }

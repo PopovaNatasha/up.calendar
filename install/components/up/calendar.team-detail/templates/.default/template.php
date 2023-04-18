@@ -139,7 +139,7 @@
 						<div class="field">
 							<label class="label">Название</label>
 							<div class="control">
-								<input name="title" class="input is-primary mb-4 is-large" type="text" value="<?= $arResult['TITLE'] ?>">
+								<input name="title" class="input is-primary mb-4 is-large" type="text" value="<?= $arResult['TITLE'] ?>" required>
 							</div>
 						</div>
 						<div class="field">
@@ -151,7 +151,7 @@
 						<div class="field">
 							<label class="label">Изображение</label>
 							<div class="control">
-								<input name="img" class="input is-primary mb-4 " type="file" accept="image/png,image/jpeg">
+								<input name="img" class="input is-primary mb-4 " type="file" accept="image/*">
 							</div>
 						</div>
 						<label class="checkbox">
