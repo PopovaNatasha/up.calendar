@@ -121,6 +121,7 @@
 								<div class="control">
 									<input name="title" class="input is-primary mb-4 is-large" type="text" readonly value="<?= $_SERVER['HTTP_HOST']?>/invite/<?=$arResult['link']?>/">
 								</div>
+								<button class="button is-primary">Создать новую ссылку</button>
 							</div>
 
 						</section>
