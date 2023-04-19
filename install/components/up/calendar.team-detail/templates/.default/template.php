@@ -3,172 +3,211 @@
  * @var $arResult
  * @var $USER
  */
-var_dump($_FILES);
 ?>
 <section class="container">
 
-<div class="columns is-multiline">
+	<div class="columns is-multiline">
 
-	<div class="column has-text-centered">
+		<div class="column has-text-centered">
 
-		<div class="card">
-			<div class="card-image">
-				<figure class="image is-4by3">
-					<img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-				</figure>
-			</div>
-			<div class="card-content">
-				<p class="description">Подписчиков</p>
-				<h1 class="title is-4"><?= count($arResult['PARTICIPANTS']) ?></h1>
+			<div class="card">
+				<div class="card-image">
+					<figure class="image is-4by3">
+						<?php if ($arResult['PERSONAL_PHOTO']): ?>
+							<?= \CFile::ShowImage($arResult['PERSONAL_PHOTO'], 1280, 960)?>
+						<?php else: ?>
+							<img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+						<?php endif; ?>
+					</figure>
+				</div>
+				<div class="card-content">
+					<p class="description">Участников</p>
+					<h1 class="title is-4"><?= count($arResult['PARTICIPANTS']) ?></h1>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="column is-half">
-		<div class="box">
-			<h1 class="title is-4"><?= $arResult['TITLE'] ?></h1>
-			<p><?= $arResult['DESCRIPTION'] ?></p>
+		<div class="column is-half">
+			<div class="box">
+				<h1 class="title is-4"><?= $arResult['TITLE'] ?></h1>
+				<p><?= $arResult['DESCRIPTION'] ?></p>
 
-			<?php if ($USER->getID() !== $arResult['ID_ADMIN']): ?>
-				<?php foreach ($arResult['PARTICIPANTS'] as $participant): ?>
-					<?php $result .= in_array($USER->getID(), $participant, true); ?>
-				<?php endforeach; ?>
-				<?php if ($result): ?>
-					<form class="buttons" method="post">
-						<input type="hidden" name="idTeam" value="<?= $arResult['ID'] ?>"/>
-						<input type="hidden" name="action" value="out"/>
-						<button class="button is-primary is-light" style="margin-left: auto">Покинуть</button>
-					</form>
-				<?php else: ?>
-					<form class="buttons" method="post">
-						<input type="hidden" name="idTeam" value="<?= $arResult['ID'] ?>"/>
-						<input type="hidden" name="action" value="in"/>
-						<button class="button is-primary is-light" style="margin-left: auto">Вcтупить</button>
-					</form>
+				<?php if ($USER->getID() !== $arResult['ID_ADMIN']): ?>
+					<?php foreach ($arResult['PARTICIPANTS'] as $participant): ?>
+						<?php $result .= in_array($USER->getID(), $participant, true); ?>
+					<?php endforeach; ?>
+					<?php if ($result): ?>
+						<div class="buttons">
+							<button class="button is-primary is-light js-modal-trigger" data-target="modal-js-leave-team" style="margin-left: auto">Покинуть</button>
+						</div>
+					<?php else: ?>
+						<form class="buttons" method="post">
+							<input type="hidden" name="action" value="in"/>
+							<button class="button is-primary is-light" style="margin-left: auto">Вcтупить</button>
+						</form>
+					<?php endif; ?>
 				<?php endif; ?>
-			<?php endif; ?>
 
-		</div>
-
-		<form class="box">
-			<div class="field">
-				<div class="control">
-					<textarea class="textarea" placeholder="Введите сообщение" rows="2"></textarea>
-				</div>
 			</div>
-			<button class="button is-primary is-light">Отправить</button>
-		</form>
-	</div>
 
-	<div class="column">
-
-		<div class="box">
-		<input type="text" class='date-input'>
-			<div class="wrapper">
-				<div class="level header is-marginless">
-					<span class="left-arrow"><</span>
-					<span class="year-month"></span>
-					<span class="right-arrow">></span>
-				</div>
-
-				<div class="date-wrapper">
-					<div class="level-left day-nums">
-						<span class='date-item'>Sun</span>
-						<span class='date-item'>Mon</span>
-						<span class='date-item'>Tue</span>
-						<span class='date-item'>Wen</span>
-						<span class='date-item'>Thu</span>
-						<span class='date-item'>Fri</span>
-						<span class='date-item'>Sat</span>
-					</div>
-					<div class="dates">
+			<form class="box">
+				<div class="field">
+					<div class="control">
+						<textarea class="textarea" placeholder="Введите сообщение" rows="2"></textarea>
 					</div>
 				</div>
-			</div>
-
-			<div class="buttons">
-				<a class="button is-primary" href="/group/<?= $arResult['ID'] ?>/schedule/">Расписание</a>
-			</div>
-
+				<button class="button is-primary is-light">Отправить</button>
+			</form>
 		</div>
 
-		<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
-			<div class="buttons admin">
-				<button class="button is-primary js-modal-trigger" data-target="modal-js-example1">Пригласить</button>
-				<button class="button is-primary js-modal-trigger" data-target="modal-js-example2">Настройки</button>
-			</div>
-		<?php endif ?>
+		<div class="column">
 
-		<div>
-			<div class="modal" id="modal-js-example1" >
-				<div class="modal-background"></div>
-				<div class="modal-card">
-					<header class="modal-card-head">
-						<p class="modal-card-title">Ссылка для приглашения</p>
-						<button class="delete" type="reset" aria-label="close"></button>
-					</header>
+			<div class="box">
 
-					<section class="modal-card-body">
-						<div class="field">
-							<label class="label">Ссылка</label>
-							<div class="control">
-								<input name="title" class="input is-primary mb-4 is-large" type="text" readonly value="<?= $_SERVER['HTTP_HOST']?>/invite/<?=$arResult['link']?>/">
-							</div>
-							<button class="button is-primary">Создать новую ссылку</button>
+				<div class="container">
+					<p>
+						<input type="date" class="input" id="date" name="date" value="2019-10-22">
+					</p>
+				</div>
+
+				<input type="text" class='date-input'>
+				<div class="wrapper">
+					<div class="level header is-marginless">
+						<span class="left-arrow"><</span>
+						<span class="year-month"></span>
+						<span class="right-arrow">></span>
+					</div>
+
+					<div class="date-wrapper">
+						<div class="level-left day-nums">
+							<span class='date-item'>Sun</span>
+							<span class='date-item'>Mon</span>
+							<span class='date-item'>Tue</span>
+							<span class='date-item'>Wen</span>
+							<span class='date-item'>Thu</span>
+							<span class='date-item'>Fri</span>
+							<span class='date-item'>Sat</span>
 						</div>
+						<div class="dates">
+						</div>
+					</div>
+				</div>
 
-					</section>
-					<footer class="modal-card-foot">
-						<button class="button" type="reset" >Закрыть</button>
-					</footer>
+				<div class="buttons">
+					<a class="button is-primary" href="/group/<?= $arResult['ID'] ?>/schedule/">Расписание</a>
+				</div>
+
+			</div>
+
+			<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
+				<div class="buttons admin">
+					<button class="button is-primary js-modal-trigger" data-target="modal-js-example1">Пригласить</button>
+					<button class="button is-primary js-modal-trigger" data-target="modal-js-example2">Настройки</button>
+				</div>
+			<?php endif ?>
+
+			<div>
+				<div class="modal" id="modal-js-example1" >
+					<div class="modal-background"></div>
+					<div class="modal-card">
+						<header class="modal-card-head">
+							<p class="modal-card-title">Ссылка для приглашения</p>
+							<button class="delete" type="reset" aria-label="close"></button>
+						</header>
+
+						<section class="modal-card-body">
+							<div class="field">
+								<label class="label">Ссылка</label>
+								<div class="control">
+									<input name="title" class="input is-primary mb-4 is-large" type="text" readonly value="<?= $_SERVER['HTTP_HOST']?>/invite/<?=$arResult['link']?>/">
+								</div>
+								<button class="button is-primary">Создать новую ссылку</button>
+							</div>
+
+						</section>
+						<footer class="modal-card-foot">
+							<button class="button" type="reset" >Закрыть</button>
+						</footer>
+					</div>
 				</div>
 			</div>
+
+			<form name="settings" action="" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="settings" value="1"/>
+				<div class="modal" id="modal-js-example2" >
+					<div class="modal-background"></div>
+					<div class="modal-card">
+						<header class="modal-card-head">
+							<p class="modal-card-title">Редактирование группы</p>
+							<button class="delete" type="reset" aria-label="close"></button>
+						</header>
+
+						<section class="modal-card-body">
+							<div class="field">
+								<label class="label">Название</label>
+								<div class="control">
+									<input name="title" class="input is-primary mb-4 is-large" type="text" value="<?= $arResult['TITLE'] ?>" required>
+								</div>
+							</div>
+							<div class="field">
+								<label class="label">Описание</label>
+								<div class="control">
+									<input name="description" class="input is-primary mb-4 " type="text" value="<?= $arResult['DESCRIPTION'] ?>">
+								</div>
+							</div>
+							<div class="field">
+								<label class="label">Изображение</label>
+								<div class="control">
+									<input name="img" class="input is-primary mb-4 " type="file" accept="image/*">
+								</div>
+							</div>
+							<label class="checkbox">
+								<input name="isPrivate" type="checkbox" <?= ($arResult['IS_PRIVATE'] === '0') ? 'checked' : '' ?>>
+								Публичная группа
+							</label>
+
+						</section>
+						<footer class="modal-card-foot">
+							<button class="button is-success" type="submit">Сохранить</button>
+							<button class="button" type="reset" >Отмена</button>
+						</footer>
+					</div>
+				</div>
+			</form>
+
+			<form name="confirmation" action="" method="post">
+				<input type="hidden" name="action" value="out"/>
+				<div class="modal" id="modal-js-leave-team">
+					<div class="modal-background"></div>
+					<div class="modal-card">
+						<header class="modal-card-head">
+							<p class="modal-card-title">Подтверждение</p>
+							<button class="delete" type="reset" aria-label="close"></button>
+						</header>
+
+						<section class="modal-card-body">
+							<p>Вы уверены, что хотите покинуть группу?</p>
+						</section>
+						<footer class="modal-card-foot">
+							<button class="button is-danger" type="submit">Покинуть</button>
+							<button class="button" type="reset" >Отмена</button>
+						</footer>
+					</div>
+				</div>
+			</form>
 		</div>
-
-		<form name="settings" action="" method="post" enctype="multipart/form-data">
-			<div class="modal" id="modal-js-example2" >
-				<div class="modal-background"></div>
-				<div class="modal-card">
-					<header class="modal-card-head">
-						<p class="modal-card-title">Редактирование группы</p>
-						<button class="delete" type="reset" aria-label="close"></button>
-					</header>
-
-					<section class="modal-card-body">
-						<div class="field">
-							<label class="label">Название</label>
-							<div class="control">
-								<input name="title" class="input is-primary mb-4 is-large" type="text" value="<?= $arResult['TITLE'] ?>">
-							</div>
-						</div>
-						<div class="field">
-							<label class="label">Описание</label>
-							<div class="control">
-								<input name="description" class="input is-primary mb-4 " type="text" value="<?= $arResult['DESCRIPTION'] ?>">
-							</div>
-						</div>
-						<div class="field">
-							<label class="label">Изображение</label>
-							<div class="control">
-								<input name="img" class="input is-primary mb-4 " type="file" accept="image/png, image/jpeg">
-							</div>
-						</div>
-						<label class="checkbox">
-							<input name="isPrivate" type="checkbox" <?= ($arResult['IS_PRIVATE'] === '0') ? 'checked' : '' ?>>
-							Публичная группа
-						</label>
-
-					</section>
-					<footer class="modal-card-foot">
-						<button class="button is-success" type="submit">Сохранить</button>
-						<button class="button" type="reset" >Отмена</button>
-					</footer>
-				</div>
-			</div>
-		</form>
 	</div>
-</div>
 </section>
+
+<script>
+	bulmaCalendar.attach('#date', {
+		dateFormat: "DD-MMM-YYYY",
+		type: 'date',
+		showClearButton: false
+	});
+	document.querySelector('#date').bulmaCalendar.on('select', date => {console.log(date)});
+
+</script>
 
 <script>
 
