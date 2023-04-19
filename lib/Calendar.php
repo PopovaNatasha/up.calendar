@@ -193,7 +193,10 @@ Class Calendar
 			 ->setIsPrivate(!$arguments['isPrivate'])
 			 ->save();
 
-		\CFile::Delete($idOldImage);
+		if ($_FILES['img']['name'] !== '')
+		{
+			\CFile::Delete($idOldImage);
+		}
 	}
 
 	public static function saveTeamImage()
