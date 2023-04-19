@@ -2,117 +2,116 @@
 
 namespace Up\Calendar;
 
-use Bitrix\Main\FileTable;
-use Up\Calendar\Model\TeamTable;
-use Up\Calendar\Model\UserTeamTable;
+use Up\Calendar\Model\TeamTable,
+	Up\Calendar\Model\UserTeamTable;
 
 Class Calendar
 {
-    public static function getTeams($id = '', $query = '')
-    {
-        if (!$id) {
-        if (!$query) {
-            $nav = new \Bitrix\Main\UI\PageNavigation("page");
-            $nav->allowAllRecords(false)
-                ->setPageSize(5)
-                ->initFromUri();
+	public static function getTeams($id = '', $query = '')
+	{
+		if (!$id) {
+			if (!$query) {
+				$nav = new \Bitrix\Main\UI\PageNavigation("page");
+				$nav->allowAllRecords(false)
+					->setPageSize(5)
+					->initFromUri();
 
-            $result = \Up\Calendar\Model\TeamTable::getList([    // // Тут Каталог групп с тегом паблик
-                'select' => ['TITLE', 'ID_ADMIN', 'ID'],
-                'filter' => ['IS_PRIVATE' => false],
-                'count_total' => true,
-                'offset' => $nav->getOffset(),
-                'limit' => $nav->getLimit(),
-            ],
-            );
-            $nav->setRecordCount($result->getCount());
-        } else
-        {
-            $nav = new \Bitrix\Main\UI\PageNavigation("page");
-            $nav->allowAllRecords(false)
-                ->setPageSize(5)
-                ->initFromUri();
+				$result = \Up\Calendar\Model\TeamTable::getList([    // // Тут Каталог групп с тегом паблик
+					'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+					'filter' => ['IS_PRIVATE' => false],
+					'count_total' => true,
+					'offset' => $nav->getOffset(),
+					'limit' => $nav->getLimit(),
+					],
+				);
+				$nav->setRecordCount($result->getCount());
+			} else
+			{
+				$nav = new \Bitrix\Main\UI\PageNavigation("page");
+				$nav->allowAllRecords(false)
+					->setPageSize(5)
+					->initFromUri();
 
-            $result = \Up\Calendar\Model\TeamTable::getList([    // Тут Каталог групп с тегом паблик и поиском
-                'select' => ['TITLE', 'ID_ADMIN', 'ID'],
-                'filter' => [
-                    'LOGIC' => 'AND',
-                    '=%TITLE' => "%$query%",
-                    ['IS_PRIVATE' => false]
-                ],
-                'count_total' => true,
-                'offset' => $nav->getOffset(),
-                'limit' => $nav->getLimit(),
-            ],
-            );
-            $nav->setRecordCount($result->getCount());
-        }
-        }
-        else {
-            if (!$query)
-            {
-                $nav = new \Bitrix\Main\UI\PageNavigation("page");
-                $nav->allowAllRecords(false)
-                    ->setPageSize(5)
-                    ->initFromUri();
+				$result = \Up\Calendar\Model\TeamTable::getList([    // Тут Каталог групп с тегом паблик и поиском
+					'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+					'filter' => [
+						'LOGIC' => 'AND',
+						'=%TITLE' => "%$query%",
+						['IS_PRIVATE' => false]
+					],
+					'count_total' => true,
+					'offset' => $nav->getOffset(),
+					'limit' => $nav->getLimit(),
+					],
+				);
+				$nav->setRecordCount($result->getCount());
+			}
+		}
+		else {
+			if (!$query)
+			{
+				$nav = new \Bitrix\Main\UI\PageNavigation("page");
+				$nav->allowAllRecords(false)
+					->setPageSize(5)
+					->initFromUri();
 
-                $result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя
-                    'select' => ['TITLE', 'ID_ADMIN', 'ID'],
-                    'filter' => ['USER.ID_USER' => $id],
-                    'count_total' => true,
-                    'offset' => $nav->getOffset(),
-                    'limit' => $nav->getLimit(),
-                ],
-                );
-                $nav->setRecordCount($result->getCount());
+				$result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя
+					'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+					'filter' => ['USER.ID_USER' => $id],
+					'count_total' => true,
+					'offset' => $nav->getOffset(),
+					'limit' => $nav->getLimit(),
+					],
+				);
+				$nav->setRecordCount($result->getCount());
 
 
-            } else
-            {
-                $nav = new \Bitrix\Main\UI\PageNavigation("page");
-                $nav->allowAllRecords(false)
-                    ->setPageSize(5)
-                    ->initFromUri();
+			} else
+			{
+				$nav = new \Bitrix\Main\UI\PageNavigation("page");
+				$nav->allowAllRecords(false)
+					->setPageSize(5)
+					->initFromUri();
 
-                $result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя с поиском
-                    'select' => ['TITLE', 'ID_ADMIN', 'ID'],
-                    'filter' => [
-                        'LOGIC' => 'AND',
-                        '=%TITLE' => "%$query%",
-                        'USER.ID_USER' => $id
-                    ],
-                    'count_total' => true,
-                    'offset' => $nav->getOffset(),
-                    'limit' => $nav->getLimit(),
-                ],
-                );
-                $nav->setRecordCount($result->getCount());
-            }
-        }
-        return ['teams' => $result, 'nav' => $nav];
-    }
+				$result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя с поиском
+					'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+					'filter' => [
+						'LOGIC' => 'AND',
+						'=%TITLE' => "%$query%",
+						'USER.ID_USER' => $id
+					],
+					'count_total' => true,
+					'offset' => $nav->getOffset(),
+					'limit' => $nav->getLimit(),
+					],
+				);
+				$nav->setRecordCount($result->getCount());
+			}
+		}
+		return ['teams' => $result, 'nav' => $nav];
+	}
 
-    public static function createTeam($arguments) : void
-    {
-       $result = TeamTable::createObject()
-                    ->setTitle($arguments['title'])
-                    ->setDescription($arguments['description'] ?: '')
-                    ->setIdAdmin($arguments['adminId'])
-                    ->setIsPrivate(!$arguments['isPrivate'])
-                    ->save();
+	public static function createTeam($arguments) : void
+	{
+		$result = TeamTable::createObject()
+						   ->setTitle($arguments['title'])
+						   ->setDescription($arguments['description'] ?: '')
+						   ->setIdAdmin($arguments['adminId'])
+						   ->setIsPrivate(!$arguments['isPrivate'])
+						   ->save();
 
-	   $idTeam = $result->getId();
-	   UserTeamTable::createObject()
-					->setIdUser($arguments['adminId'])
-					->setIdTeam($idTeam)
-					->save();
+		$idTeam = $result->getId();
+		UserTeamTable::createObject()
+					 ->setIdUser($arguments['adminId'])
+					 ->setIdTeam($idTeam)
+					 ->save();
 
-    }
+	}
 
-    public static function deleteTeam($id) : void
-    {
-        TeamTable::delete($id);
-    }
+	public static function deleteTeam($id) : void
+	{
+		TeamTable::delete($id);
+	}
 
 	public static function getTeamById($id)
 	{
@@ -122,11 +121,11 @@ Class Calendar
 	public static function getParticipantsTeam($idTeam)
 	{
 		return UserTeamTable::getList([
-			'select' => ['ID_USER'],
-			'filter' => [
-				'ID_TEAM' => $idTeam
-			],
-		])->fetchAll();
+										  'select' => ['ID_USER'],
+										  'filter' => [
+											  'ID_TEAM' => $idTeam
+										  ],
+									  ])->fetchAll();
 	}
 
 	public static function leaveTeam($idTeam)
@@ -145,63 +144,68 @@ Class Calendar
 					 ->save();
 	}
 
-    public static function getInviteLink($idTeam)
-    {
-        $result = TeamTable::getList([
-            'select' => ['INVITE_LINK'],
-            'filter' => [
-                'ID' => $idTeam
-            ],
-        ])->fetch();
+	public static function createInviteLink($idTeam)
+	{
+		$array = array(rand(100,999) => array('a' => rand(01,99)), rand(100,999) => array('a' => rand(01,99)));
+		$crc32 = sprintf('%u', crc32(serialize($array)));
+		$inviteStr = base_convert($crc32, 10, 36);
+		$result = TeamTable::getById($idTeam)->fetchObject();
+		$result->setInviteLink($inviteStr)->save();
+		return $inviteStr;
+	}
 
-        if ($result['INVITE_LINK'] === null)
-        {
-            $result['INVITE_LINK'] =  Calendar::createInviteLink($idTeam);
-        }
-        return $result['INVITE_LINK'];
-    }
-    public static function createInviteLink($idTeam)
-    {
-        $array = array(rand(100,999) => array('a' => rand(01,99)), rand(100,999) => array('a' => rand(01,99)));
-        $crc32 = sprintf('%u', crc32(serialize($array)));
-        $inviteStr = base_convert($crc32, 10, 36);
-        $result = TeamTable::getById($idTeam)->fetchObject();
-        $result->setInviteLink($inviteStr)->save();
-        return $inviteStr;
-    }
+	public static function getTeamByLink($link)
+	{
 
-    public static function getTeamByLink($link)
-    {
+		$team = TeamTable::getList([
+			'select' => ['ID','TITLE','DESCRIPTION'],
+			'filter' => [
+			'INVITE_LINK' => $link
+			],
+		])->fetch();
+		return $team;
+	}
 
-        $team = TeamTable::getList([
-            'select' => ['ID','TITLE','DESCRIPTION'],
-            'filter' => [
-                'INVITE_LINK' => $link
-            ],
-        ])->fetch();
-        return $team;
-    }
+	public static function updateTeam($idTeam, $arguments)
+	{
+		$team = TeamTable::getByPrimary(['ID' => (int)$idTeam])->fetchObject();
+		if (!$team)
+		{
+			throw new \Exception('Group not found');
+		}
 
-    public static function updateTeam($idTeam, $arguments)
-    {
-        $result = TeamTable::getByPrimary(['ID' => (int)$idTeam])->fetchObject();
-        if (!$result)
-        {
-            LocalRedirect('/');
-        }
+		$idOldImage = $team->getPersonalPhoto();
+		if ($_FILES['img']['name'] !== '')
+		{
+			$idImage = self::saveTeamImage();
+			$team->setPersonalPhoto($idImage);
+		}
 
-//            $arFile['MODULE_ID'] = 'up.calendar';
-//            $arFile['content'] = $arguments['img'];
-//            $arFile["name"] = (string)$arguments['img'];
-//            $imgID = \CFile::SaveFile($arFile, '/up.calendar/');
-//            var_dump($imgID); die;
+		$teamTitle = trim($arguments['title']);
+		if ($teamTitle === '')
+		{
+			throw new \Exception('Title can not be empty');
+		}
 
-            $result
-                ->setTitle($arguments['title'])
-                ->setDescription($arguments['description'] ?: '')
-                ->setIsPrivate(!$arguments['isPrivate'])
-    //            ->setPersonalPhoto($imgID)
-                ->save();
+		$team->setTitle($teamTitle)
+			 ->setDescription($arguments['description'] ?: '')
+			 ->setIsPrivate(!$arguments['isPrivate'])
+			 ->save();
 
-    }
+		\CFile::Delete($idOldImage);
+	}
+
+	public static function saveTeamImage()
+	{
+		$arImage = $_FILES['img'];
+		$arImage['MODULE_ID'] = 'up.calendar';
+		$idImage = \CFile::SaveFile($arImage, 'up.calendar', false, false, 'team_image');
+
+		if (!((int)$idImage > 0))
+		{
+			throw new \Exception('Failed to save file');
+		}
+
+		return (int)$idImage;
+	}
 }
