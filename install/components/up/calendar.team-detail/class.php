@@ -18,13 +18,14 @@ class CalendarCalendarComponent extends CBitrixComponent
 			$post = $request->getPostList()->toArray();
 			if ($post['action'])
 			{
-				$this->actionTeam((int)$request->get('id'));
+				$this->actionTeam();
+				header("Refresh: 0");
 			}
-			elseif ($post['settings'])
+			elseif ($post['title'])
 			{
 				$this->updateTeam($request->get('id'), $post);
+				header("Refresh: 0");
 			}
-			header("Refresh: 0");
 		}
 
 	}
@@ -36,23 +37,23 @@ class CalendarCalendarComponent extends CBitrixComponent
 		{
 			$idTeam = (int)$request->get('id');
 			$team = Calendar::getTeamById($idTeam);
-            $team['link'] = Calendar::createInviteLink($idTeam);
+            $team['link'] = Calendar::getInviteLink($idTeam);
 			$participants = Calendar::getParticipantsTeam($idTeam);
 			$this->arResult = $team;
 			$this->arResult['PARTICIPANTS'] = $participants;
 		}
 	}
 
-	protected function actionTeam($idTeam): void
+	protected function actionTeam(): void
 	{
 		$request = Context::getCurrent()->getRequest()->getPostList()->toArray();
 		if ($request['action'] === 'in')
 		{
-			Calendar::joinTheTeam($idTeam);
+			Calendar::joinTheTeam($request['idTeam']);
 		}
 		elseif ($request['action'] === 'out')
 		{
-			Calendar::leaveTeam($idTeam);
+			Calendar::leaveTeam((int)$request['idTeam']);
 		}
 	}
 

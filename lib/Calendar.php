@@ -2,9 +2,9 @@
 
 namespace Up\Calendar;
 
-use Up\Calendar\Model\TeamTable,
-	Up\Calendar\Model\UserTeamTable;
-	// Bitrix\Main\CFile;
+use Bitrix\Main\FileTable;
+use Up\Calendar\Model\TeamTable;
+use Up\Calendar\Model\UserTeamTable;
 
 Class Calendar
 {
@@ -145,6 +145,21 @@ Class Calendar
 					 ->save();
 	}
 
+    public static function getInviteLink($idTeam)
+    {
+        $result = TeamTable::getList([
+            'select' => ['INVITE_LINK'],
+            'filter' => [
+                'ID' => $idTeam
+            ],
+        ])->fetch();
+
+        if ($result['INVITE_LINK'] === null)
+        {
+            $result['INVITE_LINK'] =  Calendar::createInviteLink($idTeam);
+        }
+        return $result['INVITE_LINK'];
+    }
     public static function createInviteLink($idTeam)
     {
         $array = array(rand(100,999) => array('a' => rand(01,99)), rand(100,999) => array('a' => rand(01,99)));
@@ -169,44 +184,24 @@ Class Calendar
 
     public static function updateTeam($idTeam, $arguments)
     {
-        $team = TeamTable::getByPrimary(['ID' => (int)$idTeam])->fetchObject();
-        if (!$team)
+        $result = TeamTable::getByPrimary(['ID' => (int)$idTeam])->fetchObject();
+        if (!$result)
         {
-            throw new \Exception('Group not found');
+            LocalRedirect('/');
         }
 
-		$idOldImage = $team->getPersonalPhoto();
-		if ($_FILES['img']['name'] !== '')
-		{
-			$idImage = self::saveTeamImage();
-			$team->setPersonalPhoto($idImage);
-		}
+//            $arFile['MODULE_ID'] = 'up.calendar';
+//            $arFile['content'] = $arguments['img'];
+//            $arFile["name"] = (string)$arguments['img'];
+//            $imgID = \CFile::SaveFile($arFile, '/up.calendar/');
+//            var_dump($imgID); die;
 
-		$teamTitle = trim($arguments['title']);
-		if ($teamTitle === '')
-		{
-			throw new \Exception('Title can not be empty');
-		}
+            $result
+                ->setTitle($arguments['title'])
+                ->setDescription($arguments['description'] ?: '')
+                ->setIsPrivate(!$arguments['isPrivate'])
+    //            ->setPersonalPhoto($imgID)
+                ->save();
 
-		$team->setTitle($teamTitle)
-			 ->setDescription($arguments['description'] ?: '')
-			 ->setIsPrivate(!$arguments['isPrivate'])
-			 ->save();
-
-		\CFile::Delete($idOldImage);
     }
-
-	public static function saveTeamImage()
-	{
-		$arImage = $_FILES['img'];
-		$arImage['MODULE_ID'] = 'up.calendar';
-		$idImage = \CFile::SaveFile($arImage, 'up.calendar', false, false, 'team_image');
-
-		if (!((int)$idImage > 0))
-		{
-			throw new \Exception('Failed to save file');
-		}
-
-		return (int)$idImage;
-	}
 }

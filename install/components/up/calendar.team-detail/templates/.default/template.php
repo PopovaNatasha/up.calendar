@@ -13,15 +13,11 @@
 		<div class="card">
 			<div class="card-image">
 				<figure class="image is-4by3">
-					<?php if ($arResult['PERSONAL_PHOTO']): ?>
-						<?= \CFile::ShowImage($arResult['PERSONAL_PHOTO'], 1280, 960)?>
-					<?php else: ?>
-						<img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-					<?php endif; ?>
+					<img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
 				</figure>
 			</div>
 			<div class="card-content">
-				<p class="description">Участников</p>
+				<p class="description">Подписчиков</p>
 				<h1 class="title is-4"><?= count($arResult['PARTICIPANTS']) ?></h1>
 			</div>
 		</div>
@@ -37,11 +33,14 @@
 					<?php $result .= in_array($USER->getID(), $participant, true); ?>
 				<?php endforeach; ?>
 				<?php if ($result): ?>
-					<div class="buttons">
-						<button class="button is-primary is-light js-modal-trigger" data-target="modal-js-leave-team" style="margin-left: auto">Покинуть</button>
-					</div>
+					<form class="buttons" method="post">
+						<input type="hidden" name="idTeam" value="<?= $arResult['ID'] ?>"/>
+						<input type="hidden" name="action" value="out"/>
+						<button class="button is-primary is-light" style="margin-left: auto">Покинуть</button>
+					</form>
 				<?php else: ?>
 					<form class="buttons" method="post">
+						<input type="hidden" name="idTeam" value="<?= $arResult['ID'] ?>"/>
 						<input type="hidden" name="action" value="in"/>
 						<button class="button is-primary is-light" style="margin-left: auto">Вcтупить</button>
 					</form>
@@ -63,13 +62,6 @@
 	<div class="column">
 
 		<div class="box">
-
-				<div class="container">
-					<p>
-						<input type="date" class="input" id="date" name="date" value="2019-10-22">
-					</p>
-				</div>
-
 		<input type="text" class='date-input'>
 			<div class="wrapper">
 				<div class="level header is-marginless">
@@ -92,6 +84,11 @@
 					</div>
 				</div>
 			</div>
+
+			<div class="buttons">
+				<a class="button is-primary" href="/group/<?= $arResult['ID'] ?>/schedule/">Расписание</a>
+			</div>
+
 		</div>
 
 		<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
@@ -116,6 +113,7 @@
 							<div class="control">
 								<input name="title" class="input is-primary mb-4 is-large" type="text" readonly value="<?= $_SERVER['HTTP_HOST']?>/invite/<?=$arResult['link']?>/">
 							</div>
+							<button class="button is-primary">Создать новую ссылку</button>
 						</div>
 
 					</section>
@@ -127,7 +125,6 @@
 		</div>
 
 		<form name="settings" action="" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="settings" value="1"/>
 			<div class="modal" id="modal-js-example2" >
 				<div class="modal-background"></div>
 				<div class="modal-card">
@@ -140,7 +137,7 @@
 						<div class="field">
 							<label class="label">Название</label>
 							<div class="control">
-								<input name="title" class="input is-primary mb-4 is-large" type="text" value="<?= $arResult['TITLE'] ?>" required>
+								<input name="title" class="input is-primary mb-4 is-large" type="text" value="<?= $arResult['TITLE'] ?>">
 							</div>
 						</div>
 						<div class="field">
@@ -152,7 +149,7 @@
 						<div class="field">
 							<label class="label">Изображение</label>
 							<div class="control">
-								<input name="img" class="input is-primary mb-4 " type="file" accept="image/*">
+								<input name="img" class="input is-primary mb-4 " type="file" accept="image/png, image/jpeg">
 							</div>
 						</div>
 						<label class="checkbox">
@@ -168,40 +165,9 @@
 				</div>
 			</div>
 		</form>
-
-		<form name="confirmation" action="" method="post">
-			<input type="hidden" name="action" value="out"/>
-			<div class="modal" id="modal-js-leave-team">
-				<div class="modal-background"></div>
-				<div class="modal-card">
-					<header class="modal-card-head">
-						<p class="modal-card-title">Подтверждение</p>
-						<button class="delete" type="reset" aria-label="close"></button>
-					</header>
-
-					<section class="modal-card-body">
-						<p>Вы уверены, что хотите покинуть группу?</p>
-					</section>
-					<footer class="modal-card-foot">
-						<button class="button is-danger" type="submit">Покинуть</button>
-						<button class="button" type="reset" >Отмена</button>
-					</footer>
-				</div>
-			</div>
-		</form>
 	</div>
 </div>
 </section>
-
-<script>
-	bulmaCalendar.attach('#date', {
-		dateFormat: "DD-MMM-YYYY",
-		type: 'date',
-		showClearButton: false
-	});
-	document.querySelector('#date').bulmaCalendar.on('select', date => {console.log(date)});
-
-</script>
 
 <script>
 
