@@ -2,7 +2,8 @@
 
 namespace Up\Calendar;
 
-use Up\Calendar\Model\TeamTable,
+use Bitrix\Main\UI\PageNavigation,
+	Up\Calendar\Model\TeamTable,
 	Up\Calendar\Model\UserTeamTable;
 
 Class Calendar
@@ -11,12 +12,12 @@ Class Calendar
 	{
 		if (!$id) {
 			if (!$query) {
-				$nav = new \Bitrix\Main\UI\PageNavigation("page");
+				$nav = new PageNavigation("page");
 				$nav->allowAllRecords(false)
 					->setPageSize(5)
 					->initFromUri();
 
-				$result = \Up\Calendar\Model\TeamTable::getList([    // // Тут Каталог групп с тегом паблик
+				$result = TeamTable::getList([    // // Тут Каталог групп с тегом паблик
 					'select' => ['TITLE', 'ID_ADMIN', 'ID'],
 					'filter' => ['IS_PRIVATE' => false],
 					'count_total' => true,
@@ -27,12 +28,12 @@ Class Calendar
 				$nav->setRecordCount($result->getCount());
 			} else
 			{
-				$nav = new \Bitrix\Main\UI\PageNavigation("page");
+				$nav = new PageNavigation("page");
 				$nav->allowAllRecords(false)
 					->setPageSize(5)
 					->initFromUri();
 
-				$result = \Up\Calendar\Model\TeamTable::getList([    // Тут Каталог групп с тегом паблик и поиском
+				$result = TeamTable::getList([    // Тут Каталог групп с тегом паблик и поиском
 					'select' => ['TITLE', 'ID_ADMIN', 'ID'],
 					'filter' => [
 						'LOGIC' => 'AND',
@@ -50,12 +51,12 @@ Class Calendar
 		else {
 			if (!$query)
 			{
-				$nav = new \Bitrix\Main\UI\PageNavigation("page");
+				$nav = new PageNavigation("page");
 				$nav->allowAllRecords(false)
 					->setPageSize(5)
 					->initFromUri();
 
-				$result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя
+				$result = TeamTable::getList([    // Тут выводятся группы пользователя
 					'select' => ['TITLE', 'ID_ADMIN', 'ID'],
 					'filter' => ['USER.ID_USER' => $id],
 					'count_total' => true,
@@ -68,12 +69,12 @@ Class Calendar
 
 			} else
 			{
-				$nav = new \Bitrix\Main\UI\PageNavigation("page");
+				$nav = new PageNavigation("page");
 				$nav->allowAllRecords(false)
 					->setPageSize(5)
 					->initFromUri();
 
-				$result = \Up\Calendar\Model\TeamTable::getList([    // Тут выводятся группы пользователя с поиском
+				$result = TeamTable::getList([    // Тут выводятся группы пользователя с поиском
 					'select' => ['TITLE', 'ID_ADMIN', 'ID'],
 					'filter' => [
 						'LOGIC' => 'AND',
@@ -121,11 +122,11 @@ Class Calendar
 	public static function getParticipantsTeam($idTeam)
 	{
 		return UserTeamTable::getList([
-										  'select' => ['ID_USER'],
-										  'filter' => [
-											  'ID_TEAM' => $idTeam
-										  ],
-									  ])->fetchAll();
+			'select' => ['ID_USER'],
+			'filter' => [
+				'ID_TEAM' => $idTeam
+			],
+		])->fetchAll();
 	}
 
 	public static function leaveTeam($idTeam)
