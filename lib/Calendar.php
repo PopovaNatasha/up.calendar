@@ -212,4 +212,9 @@ Class Calendar
 
 		return (int)$idImage;
 	}
+
+	public static function createEvent()
+	{
+
+	}
 }

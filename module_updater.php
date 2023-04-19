@@ -26,8 +26,6 @@ function __projectorMigrate(int $nextVersion, callable $callback)
 	}
 }
 
-
-
 __projectorMigrate(4, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_team'))
@@ -35,3 +33,12 @@ __projectorMigrate(4, function($updater, $DB)
 		$DB->query("ALTER TABLE up_calendar_team ADD INVITE_LINK varchar(255)");
 	}
 });
+
+// __projectorMigrate(6, function($updater, $DB)
+// {
+// 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_event'))
+// 	{
+// 		$DB->query("ALTER TABLE up_calendar_event ADD DATE_TIME_START varchar(255)");
+// 	}
+// });
+
