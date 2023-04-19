@@ -3,6 +3,7 @@
  * @var $arResult
  * @var $USER
  */
+var_dump($_FILES);
 ?>
 <section class="container">
 
@@ -152,7 +153,7 @@
 						<div class="field">
 							<label class="label">Изображение</label>
 							<div class="control">
-								<input name="img" class="input is-primary mb-4 " type="file" accept="image/png,image/jpeg">
+								<input name="img" class="input is-primary mb-4 " type="file" accept="image/*">
 							</div>
 						</div>
 						<label class="checkbox">
