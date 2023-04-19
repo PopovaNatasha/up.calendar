@@ -3,6 +3,7 @@
  * @var $arResult
  * @var $USER
  */
+var_dump($_FILES);
 ?>
 <section class="container">
 
