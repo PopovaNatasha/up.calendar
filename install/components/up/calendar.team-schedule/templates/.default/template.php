@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @var $arResult
+ */
 \Bitrix\Main\UI\Extension::load('up.schedule');
 
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
@@ -11,6 +15,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 <link href="https://unpkg.com/bulma-calendar@6.0.7/dist/css/bulma-calendar.min.css" rel="stylesheet">
 <script src="https://unpkg.com/bulma-calendar@6.0.7/dist/js/bulma-calendar.min.js"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
 
 <?php //if ($USER->getID() === $arResult['ID_ADMIN']): ?>
 	<div class="buttons admin">
@@ -164,7 +169,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 			// list of Calendars that can be used to add new schedule
 			calendars: [
 				{
-					id: 'cal1',
+					id: 'team',
 					name: 'Personal',
 					backgroundColor:  'red',
 				}
@@ -236,5 +241,13 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 			console.log(datepicker.data.value());
 		});
 	}
+</script>
 
+<script>
+	BX.ready(function() {
+		window.CalendarEventsList = new BX.Up.Calendar.Schedule({
+			idTeam: '<?= $arResult['idTeam'] ?>',
+			rootNodeId: 'calendar',
+		});
+	});
 </script>

@@ -15,6 +15,7 @@ class CalendarScheduleComponent extends CBitrixComponent
 			$post = $request->getPostList()->toArray();
 			$this->createEvent($post, $request->get('id'));
 		}
+		$this->arResult['idTeam'] = $request->get('id');
 		$this->includeComponentTemplate();
 	}
 

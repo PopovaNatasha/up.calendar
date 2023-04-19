@@ -235,4 +235,27 @@ Class Calendar
 			->setDayStep($arguments['rule_repeat_count'])
 			->save();
 	}
+
+	public static function getEventsForTeam($idTeam)
+	{
+		$events = EventTable::getList([
+			'select' => ['*'],
+			'filter' => [
+				'ID_TEAM' => $idTeam
+			],
+		])->fetchAll();
+
+		$regularEvents = RegularEventTable::getList([
+			'select' => ['*'],
+			'filter' => [
+				'ID_TEAM' => $idTeam
+			],
+		])->fetchAll();
+
+		return [
+			'events' => $events,
+			'regularEvents' => $regularEvents
+		];
+	}
+
 }
