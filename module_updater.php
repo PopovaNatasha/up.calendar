@@ -34,11 +34,30 @@ __projectorMigrate(4, function($updater, $DB)
 	}
 });
 
-// __projectorMigrate(6, function($updater, $DB)
-// {
-// 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_event'))
-// 	{
-// 		$DB->query("ALTER TABLE up_calendar_event ADD DATE_TIME_START varchar(255)");
-// 	}
-// });
+__projectorMigrate(7, function($updater, $DB)
+{
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_event'))
+	{
+		$DB->query("ALTER TABLE up_calendar_event CHANGE COLUMN DATE_TIME DATE_TIME_FROM DATETIME");
+		$DB->query("ALTER TABLE up_calendar_event ADD DATE_TIME_TO DATETIME");
+	}
+});
+
+__projectorMigrate(8, function($updater, $DB)
+{
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_regular_event'))
+	{
+		$DB->query("ALTER TABLE up_calendar_regular_event CHANGE COLUMN DATE_TIME DATE_TIME_FROM DATETIME");
+		$DB->query("ALTER TABLE up_calendar_regular_event ADD DATE_TIME_TO DATETIME");
+	}
+});
+
+__projectorMigrate(9, function($updater, $DB)
+{
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_changed_event'))
+	{
+		$DB->query("ALTER TABLE up_calendar_changed_event CHANGE COLUMN DATE_TIME DATE_TIME_FROM DATETIME");
+		$DB->query("ALTER TABLE up_calendar_changed_event ADD DATE_TIME_TO DATETIME");
+	}
+});
 

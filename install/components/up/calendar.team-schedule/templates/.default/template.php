@@ -49,7 +49,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 									<option value="non">Не повторяется</option>
 									<option value="daily">Каждый день</option>
 									<option value="weekly">Каждую неделю</option>
-									<option value="monthly">Каждый месяц</option>
+<!--									<option value="monthly">Каждый месяц</option>-->
 								</select>
 							</div>
 						</div>
@@ -57,12 +57,12 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 						<div class="column">
 							<span class="rule-daily">каждый</span>
 							<span class="rule-weekly">каждую</span>
-							<span class="rule-monthly">каждый</span>
+<!--							<span class="rule-monthly">каждый</span>-->
 						</div>
 
 						<div class="column control">
 							<div class="select is-primary">
-								<select name="rule_repeat_day">
+								<select name="rule_repeat_count">
 									<option value="1">1</option>
 									<option value="2">2</option>
 									<option value="3">3</option>
@@ -80,15 +80,15 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 						</div>
 					</div>
 
-					<div class="week-day columns">
-						<label class="column"><input name="MO" type="checkbox" value="MO">Пн</label>
-						<label class="column"><input name="TU" type="checkbox" value="TU">Вт</label>
-						<label class="column"><input name="day-of-week" type="checkbox" value="WE">Ср</label>
-						<label class="column"><input name="day-of-week" type="checkbox" value="TH">Чт</label>
-						<label class="column"><input name="day-of-week" type="checkbox" value="FR">Пт</label>
-						<label class="column"><input name="day-of-week" type="checkbox" value="SA">Сб</label>
-						<label class="column"><input name="day-of-week" type="checkbox" value="SU">Вс</label>
-					</div>
+<!--					<div class="week-day columns">-->
+<!--						<label class="column"><input name="MO" type="checkbox" value="MO">Пн</label>-->
+<!--						<label class="column"><input name="TU" type="checkbox" value="TU">Вт</label>-->
+<!--						<label class="column"><input name="day-of-week" type="checkbox" value="WE">Ср</label>-->
+<!--						<label class="column"><input name="day-of-week" type="checkbox" value="TH">Чт</label>-->
+<!--						<label class="column"><input name="day-of-week" type="checkbox" value="FR">Пт</label>-->
+<!--						<label class="column"><input name="day-of-week" type="checkbox" value="SA">Сб</label>-->
+<!--						<label class="column"><input name="day-of-week" type="checkbox" value="SU">Вс</label>-->
+<!--					</div>-->
 				</div>
 
 			</section>

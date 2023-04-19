@@ -25,11 +25,30 @@ class CalendarScheduleComponent extends CBitrixComponent
 			throw new Exception('Not all required fields are filled');
 		}
 
+		var_dump($arguments);
 		$arguments['team_id'] = $teamId;
 		$eventDate = explode(' - ', $arguments['date']);
 		$arguments['date_from'] = new \Bitrix\Main\Type\DateTime($eventDate[0],"m/d/Y H:i");
 		$arguments['date_to'] = new \Bitrix\Main\Type\DateTime($eventDate[1],"m/d/Y H:i");
 		unset($arguments['date']);
+
+		switch ($arguments['rule_repeat'])
+		{
+			case 'non':
+				Calendar::createEvent($arguments);
+				break;
+			case 'daily':
+				Calendar::createRegularEvent($arguments);
+				break;
+			case 'weekly':
+				$arguments['rule_repeat_count'] = 7;
+				Calendar::createRegularEvent($arguments);
+				break;
+			default:
+				throw new Exception('Invalid type repeat rule');
+		}
+
+
 
 		var_dump($arguments);
 		// $dateFrom = strtotime($eventDate[0]);

@@ -5,6 +5,8 @@ namespace Up\Calendar;
 use Bitrix\Main\UI\PageNavigation,
 	Up\Calendar\Model\TeamTable,
 	Up\Calendar\Model\UserTeamTable;
+use Up\Calendar\Model\EventTable;
+use Up\Calendar\Model\RegularEventTable;
 
 Class Calendar
 {
@@ -213,8 +215,24 @@ Class Calendar
 		return (int)$idImage;
 	}
 
-	public static function createEvent()
+	public static function createEvent($arguments)
 	{
+		EventTable::createObject()
+			->setIdTeam($arguments['team_id'])
+			->setTitle($arguments['title'])
+			->setDateTimeFrom($arguments['date_from'])
+			->setDateTimeTo($arguments['date_to'])
+			->save();
+	}
 
+	public static function createRegularEvent($arguments)
+	{
+		RegularEventTable::createObject()
+			->setIdTeam($arguments['team_id'])
+			->setTitle($arguments['title'])
+			->setDateTimeFrom($arguments['date_from'])
+			->setDateTimeTo($arguments['date_to'])
+			->setDayStep($arguments['rule_repeat_count'])
+			->save();
 	}
 }
