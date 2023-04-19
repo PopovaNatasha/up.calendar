@@ -152,7 +152,7 @@
 						<div class="field">
 							<label class="label">Изображение</label>
 							<div class="control">
-								<input name="img" class="input is-primary mb-4 " type="file" accept="image/*">
+								<input name="img" class="input is-primary mb-4 " type="file" accept="image/png,image/jpeg">
 							</div>
 						</div>
 						<label class="checkbox">
