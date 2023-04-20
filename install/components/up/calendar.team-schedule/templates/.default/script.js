@@ -7,7 +7,7 @@ function changeView(evt, tabName)
 	for (i = 0; i < 3; i++) {
 		tablinks[i].className = tablinks[i].className.replace(" is-active", "");
 	}
-	calendar.changeView(tabName);
+	CalendarEventsList.calendar.changeView(tabName);
 	evt.currentTarget.className += " is-active";
 }
 

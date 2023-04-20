@@ -10,12 +10,44 @@ this.BX.Up = this.BX.Up || {};
 	    this.idTeam = options.idTeam;
 	    this.rootNodeId = options.rootNodeId;
 	    this.rootNode = document.getElementById(this.rootNodeId);
-	    // console.log(this.rootNodeId);
-	    this.renderCalendar();
+	    this.eventsList = [];
+	    this.regularEventsList = [];
+	    this.calendar = this.createCalendar();
+	    this.reload();
+	    var calendar = this.calendar;
+	    document.addEventListener("click", function (event) {
+	      if (event.target.matches('li')) {
+	        var elementId = event.target.id;
+	        var tabLinks = document.getElementsByClassName("tab");
+	        for (var i = 0; i < 3; i++) {
+	          tabLinks[i].className = tablinks[i].className.replace(" is-active", "");
+	        }
+	        this.calendar.changeView(elementId);
+	        event.currentTarget.className += " is-active";
+	      }
+	    });
+	    console.log(this);
+	    // this.getEventsList(this.idTeam);
+	    // console.log(this.eventsList);
+	    // this.reload();
+	    // this.addEvents();
 	  }
 	  babelHelpers.createClass(Schedule, [{
-	    key: "getEventsList",
-	    value: function getEventsList(idTeam) {
+	    key: "reload",
+	    value: function reload() {
+	      var _this = this;
+	      this.loadEventsList(this.idTeam).then(function (eventsList) {
+	        _this.eventsList = eventsList;
+	        _this.addEvents();
+	      });
+	      // .then(regularEventsList => {
+	      // 	this.regularEventsList = regularEventsList;
+	      // 	this.addEvents();
+	      // })
+	    }
+	  }, {
+	    key: "loadEventsList",
+	    value: function loadEventsList(idTeam) {
 	      return new Promise(function (resolve, reject) {
 	        BX.ajax.runAction('up:calendar.calendar.getEventsList', {
 	          data: {
@@ -23,30 +55,84 @@ this.BX.Up = this.BX.Up || {};
 	          }
 	        }).then(function (response) {
 	          var eventsList = response.data.events;
-	          var regularEventsList = response.data.regularEvents;
-	          resolve(eventsList, regularEventsList);
+	          resolve(eventsList);
 	        })["catch"](function (error) {
 	          reject(error);
 	        });
 	      });
 	    }
 	  }, {
-	    key: "renderCalendar",
-	    value: function renderCalendar() {
-	      var divCalendar = this.rootNode;
-	      console.log(divCalendar);
+	    key: "createCalendar",
+	    value: function createCalendar() {
+	      return new tui.Calendar("#".concat(this.rootNodeId), {
+	        useFormPopup: false,
+	        useDetailPopup: false,
+	        useCreationPopup: false,
+	        defaultView: 'month',
+	        taskView: true,
+	        scheduleView: false,
+	        template: {
+	          milestone: function milestone(schedule) {
+	            return '<span style="color:red;"><i class="fa fa-flag"></i> ' + schedule.title + '</span>';
+	          },
+	          milestoneTitle: function milestoneTitle() {
+	            return 'Milestone';
+	          },
+	          task: function task(schedule) {
+	            return '&nbsp;&nbsp;#' + schedule.title;
+	          },
+	          taskTitle: function taskTitle() {
+	            return '<label><input type="checkbox" />Task</label>';
+	          },
+	          allday: function allday(schedule) {
+	            return schedule.title + ' <i class="fa fa-refresh"></i>';
+	          },
+	          alldayTitle: function alldayTitle() {
+	            return 'All Day';
+	          },
+	          time: function time(schedule) {
+	            return '<strong>' + moment(schedule.start.getTime()).format('HH:mm') + '</strong> ' + schedule.title;
+	          }
+	        },
+	        week: {
+	          dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+	          startDayOfWeek: 1,
+	          narrowWeekend: false,
+	          // taskView: false,
+	          eventView: ['time']
+	        },
+	        month: {
+	          dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+	          startDayOfWeek: 1,
+	          narrowWeekend: false
+	        },
+	        // list of Calendars that can be used to add new schedule
+	        calendars: [{
+	          id: 'team',
+	          name: 'Personal',
+	          backgroundColor: 'red'
+	        }]
+	      });
 	    }
 	  }, {
-	    key: "setName",
-	    value: function setName(name) {
-	      if (main_core.Type.isString(name)) {
-	        this.name = name;
-	      }
-	    }
-	  }, {
-	    key: "getName",
-	    value: function getName() {
-	      return this.name;
+	    key: "addEvents",
+	    value: function addEvents() {
+	      var eventsList = this.eventsList;
+	      var calendar = this.calendar;
+	      eventsList.forEach(function (event) {
+	        var dayTimeStart = event['DATE_TIME_FROM'].split('+');
+	        var dayTimeEnd = event['DATE_TIME_TO'].split('+');
+	        console.log(Date.parse(String(dayTimeStart[0])));
+	        calendar.createEvents([{
+	          id: event['ID'],
+	          calendarId: 'ream',
+	          title: event['TITLE'],
+	          start: dayTimeStart[0],
+	          end: dayTimeEnd[0],
+	          category: 'time'
+	        }]);
+	      });
+	      console.log(eventsList);
 	    }
 	  }]);
 	  return Schedule;
