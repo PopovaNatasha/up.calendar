@@ -12,14 +12,6 @@ export class Schedule
 		this.regularEventsList = [];
 		this.calendar = this.createCalendar();
 		this.reload();
-
-
-
-		console.log(this);
-		// this.getEventsList(this.idTeam);
-		// console.log(this.eventsList);
-		// this.reload();
-		// this.addEvents();
 	}
 
 	reload()
@@ -29,10 +21,6 @@ export class Schedule
 				this.eventsList = eventsList;
 				this.addEvents();
 			});
-			// .then(regularEventsList => {
-			// 	this.regularEventsList = regularEventsList;
-			// 	this.addEvents();
-			// })
 	}
 
 	loadEventsList(idTeam)
@@ -41,7 +29,28 @@ export class Schedule
 			BX.ajax.runAction(
 					'up:calendar.calendar.getEventsList',
 					{data: {
-							idTeam: Number(idTeam),
+							idTeam: idTeam,
+						},
+					})
+				.then((response) => {
+					const eventsList = response.data.events;
+
+					resolve(eventsList);
+				})
+				.catch((error) => {
+					reject(error);
+				})
+			;
+		});
+	}
+
+	loadRegularEventsList(idTeam)
+	{
+		return new Promise((resolve, reject) => {
+			BX.ajax.runAction(
+					'up:calendar.calendar.getRegularEventsList',
+					{data: {
+							idTeam: idTeam,
 						},
 					})
 				.then((response) => {
@@ -118,7 +127,6 @@ export class Schedule
 		eventsList.forEach(event => {
 			let dayTimeStart = (event['DATE_TIME_FROM']).split('+');
 			let dayTimeEnd = (event['DATE_TIME_TO']).split('+');
-			console.log(Date.parse(String(dayTimeStart[0])));
 			calendar.createEvents([
 				{
 					id: event['ID'],

@@ -15,7 +15,7 @@ class CalendarScheduleComponent extends CBitrixComponent
 			$post = $request->getPostList()->toArray();
 			$this->createEvent($post, $request->get('id'));
 		}
-		$this->arResult['idTeam'] = $request->get('id');
+		$this->arResult[] = $request->get('id');
 		$this->includeComponentTemplate();
 	}
 
@@ -48,14 +48,5 @@ class CalendarScheduleComponent extends CBitrixComponent
 			default:
 				throw new Exception('Invalid type repeat rule');
 		}
-
-
-
-		var_dump($arguments);
-		// $dateFrom = strtotime($eventDate[0]);
-		// $dateTo = strtotime($eventDate[1]);
-
-
-
 	}
 }

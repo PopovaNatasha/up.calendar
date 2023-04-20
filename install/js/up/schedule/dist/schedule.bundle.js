@@ -14,23 +14,6 @@ this.BX.Up = this.BX.Up || {};
 	    this.regularEventsList = [];
 	    this.calendar = this.createCalendar();
 	    this.reload();
-	    var calendar = this.calendar;
-	    document.addEventListener("click", function (event) {
-	      if (event.target.matches('li')) {
-	        var elementId = event.target.id;
-	        var tabLinks = document.getElementsByClassName("tab");
-	        for (var i = 0; i < 3; i++) {
-	          tabLinks[i].className = tablinks[i].className.replace(" is-active", "");
-	        }
-	        this.calendar.changeView(elementId);
-	        event.currentTarget.className += " is-active";
-	      }
-	    });
-	    console.log(this);
-	    // this.getEventsList(this.idTeam);
-	    // console.log(this.eventsList);
-	    // this.reload();
-	    // this.addEvents();
 	  }
 	  babelHelpers.createClass(Schedule, [{
 	    key: "reload",
@@ -40,10 +23,6 @@ this.BX.Up = this.BX.Up || {};
 	        _this.eventsList = eventsList;
 	        _this.addEvents();
 	      });
-	      // .then(regularEventsList => {
-	      // 	this.regularEventsList = regularEventsList;
-	      // 	this.addEvents();
-	      // })
 	    }
 	  }, {
 	    key: "loadEventsList",
@@ -51,7 +30,7 @@ this.BX.Up = this.BX.Up || {};
 	      return new Promise(function (resolve, reject) {
 	        BX.ajax.runAction('up:calendar.calendar.getEventsList', {
 	          data: {
-	            idTeam: Number(idTeam)
+	            idTeam: idTeam
 	          }
 	        }).then(function (response) {
 	          var eventsList = response.data.events;
@@ -122,7 +101,6 @@ this.BX.Up = this.BX.Up || {};
 	      eventsList.forEach(function (event) {
 	        var dayTimeStart = event['DATE_TIME_FROM'].split('+');
 	        var dayTimeEnd = event['DATE_TIME_TO'].split('+');
-	        console.log(Date.parse(String(dayTimeStart[0])));
 	        calendar.createEvents([{
 	          id: event['ID'],
 	          calendarId: 'ream',

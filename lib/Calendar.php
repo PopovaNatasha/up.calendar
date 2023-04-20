@@ -131,6 +131,16 @@ Class Calendar
 		])->fetchAll();
 	}
 
+	public static function getUserTeams($idUser)
+	{
+		return UserTeamTable::getList([
+			'select' => ['ID_TEAM'],
+			'filter' => [
+				'ID_USER' => $idUser
+			],
+		])->fetchAll();
+	}
+
 	public static function leaveTeam($idTeam)
 	{
 		global $USER;
@@ -236,21 +246,25 @@ Class Calendar
 			->save();
 	}
 
-	public static function getEventsForTeam($idTeam)
+	public static function getEventsList($idTeam)
 	{
-		$events = EventTable::getList([
+		return EventTable::getList([
 			'select' => ['*'],
 			'filter' => [
-				'ID_TEAM' => $idTeam
+				'@ID_TEAM' => $idTeam
 			],
 		])->fetchAll();
+	}
+
+	public static function getRegularEventsList($idTeam)
+	{
 
 		$regularEvents = RegularEventTable::getList([
-			'select' => ['*'],
-			'filter' => [
-				'ID_TEAM' => $idTeam
-			],
-		])->fetchAll();
+														'select' => ['*'],
+														'filter' => [
+															'@ID_TEAM' => $idTeam
+														],
+													])->fetchAll();
 
 		return [
 			'events' => $events,

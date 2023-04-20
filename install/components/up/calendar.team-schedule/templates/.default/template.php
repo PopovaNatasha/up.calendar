@@ -4,19 +4,9 @@
  * @var $arResult
  */
 \Bitrix\Main\UI\Extension::load('up.schedule');
-
+var_dump($arResult);
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
-
-<link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css" />
-<script src="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.js"></script>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-<link href="https://unpkg.com/bulma-calendar@6.0.7/dist/css/bulma-calendar.min.css" rel="stylesheet">
-<script src="https://unpkg.com/bulma-calendar@6.0.7/dist/js/bulma-calendar.min.js"></script>
-<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-<script type = "text/JavaScript" src = " https://MomentJS.com/downloads/moment.js"></script>
-
 
 <?php //if ($USER->getID() === $arResult['ID_ADMIN']): ?>
 	<div class="buttons admin">
@@ -154,7 +144,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 <script>
 	BX.ready(function() {
 		window.CalendarEventsList = new BX.Up.Calendar.Schedule({
-			idTeam: '<?= $arResult['idTeam'] ?>',
+			idTeam: <?= json_encode($arResult, JSON_THROW_ON_ERROR) ?>,
 			rootNodeId: 'calendar',
 		});
 	});

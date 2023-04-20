@@ -6,8 +6,13 @@ use Bitrix\Main\Engine\Controller;
 
 class Calendar extends Controller
 {
-	public function getEventsListAction(int $idTeam): ?array
+	public function getEventsListAction($idTeam): ?array
 	{
-		return \Up\Calendar\Calendar::getEventsForTeam($idTeam);
+		return \Up\Calendar\Calendar::getEventsList($idTeam);
+	}
+
+	public function getRegularEventsListAction($idTeam): ?array
+	{
+		return \Up\Calendar\Calendar::getRegularEventsList($idTeam);
 	}
 }
