@@ -10,7 +10,7 @@ this.BX.Up = this.BX.Up || {};
 	    this.idTeam = options.idTeam;
 	    this.rootNodeId = options.rootNodeId;
 	    this.rootNode = document.getElementById(this.rootNodeId);
-	    this.eventsList = [];
+	    this.singleEventsList = [];
 	    this.regularEventsList = [];
 	    this.calendar = this.createCalendar();
 	    this.reload();
@@ -20,7 +20,8 @@ this.BX.Up = this.BX.Up || {};
 	    value: function reload() {
 	      var _this = this;
 	      this.loadEventsList(this.idTeam).then(function (eventsList) {
-	        _this.eventsList = eventsList;
+	        _this.singleEventsList = eventsList['singleEvents'];
+	        console.log(_this.singleEventsList);
 	        _this.addEvents();
 	      });
 	    }
@@ -29,6 +30,23 @@ this.BX.Up = this.BX.Up || {};
 	    value: function loadEventsList(idTeam) {
 	      return new Promise(function (resolve, reject) {
 	        BX.ajax.runAction('up:calendar.calendar.getEventsList', {
+	          data: {
+	            idTeam: idTeam
+	          }
+	        }).then(function (response) {
+	          var eventsList = response.data.events;
+	          console.log(eventsList);
+	          resolve(eventsList);
+	        })["catch"](function (error) {
+	          reject(error);
+	        });
+	      });
+	    }
+	  }, {
+	    key: "loadRegularEventsList",
+	    value: function loadRegularEventsList(idTeam) {
+	      return new Promise(function (resolve, reject) {
+	        BX.ajax.runAction('up:calendar.calendar.getRegularEventsList', {
 	          data: {
 	            idTeam: idTeam
 	          }
@@ -96,7 +114,7 @@ this.BX.Up = this.BX.Up || {};
 	  }, {
 	    key: "addEvents",
 	    value: function addEvents() {
-	      var eventsList = this.eventsList;
+	      var eventsList = this.singleEventsList;
 	      var calendar = this.calendar;
 	      eventsList.forEach(function (event) {
 	        var dayTimeStart = event['DATE_TIME_FROM'].split('+');

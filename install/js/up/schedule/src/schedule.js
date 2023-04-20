@@ -8,7 +8,7 @@ export class Schedule
 		this.rootNodeId = options.rootNodeId;
 		this.rootNode = document.getElementById(this.rootNodeId);
 
-		this.eventsList = [];
+		this.singleEventsList = [];
 		this.regularEventsList = [];
 		this.calendar = this.createCalendar();
 		this.reload();
@@ -18,8 +18,10 @@ export class Schedule
 	{
 		this.loadEventsList(this.idTeam)
 			.then(eventsList => {
-				this.eventsList = eventsList;
+				this.singleEventsList = eventsList['singleEvents'];
+				this.regularEventsList = eventsList['regularEvents']
 				this.addEvents();
+				this.addRegularEvents();
 			});
 	}
 
@@ -34,6 +36,7 @@ export class Schedule
 					})
 				.then((response) => {
 					const eventsList = response.data.events;
+					console.log(eventsList);
 
 					resolve(eventsList);
 				})
@@ -122,7 +125,7 @@ export class Schedule
 
 	addEvents()
 	{
-		let eventsList = this.eventsList;
+		let eventsList = this.singleEventsList;
 		let calendar = this.calendar;
 		eventsList.forEach(event => {
 			let dayTimeStart = (event['DATE_TIME_FROM']).split('+');
@@ -140,4 +143,25 @@ export class Schedule
 		});
 		console.log(eventsList);
 	}
+
+	// addRegularEvents()
+	// {
+	// 	let eventsList = this.regularEventsList;
+	// 	let calendar = this.calendar;
+	// 	eventsList.forEach(event => {
+	// 		let dayTimeStart = (event['DATE_TIME_FROM']).split('+');
+	// 		let dayTimeEnd = (event['DATE_TIME_TO']).split('+');
+	// 		calendar.createEvents([
+	// 			{
+	// 				id: event['ID'],
+	// 				calendarId: 'ream',
+	// 				title: event['TITLE'],
+	// 				start: dayTimeStart[0],
+	// 				end: dayTimeEnd[0],
+	// 				category: 'time',
+	// 			}
+	// 		]);
+	// 	});
+	// 	console.log(eventsList);
+	// }
 }
