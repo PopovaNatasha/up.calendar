@@ -248,28 +248,24 @@ Class Calendar
 
 	public static function getEventsList($idTeam)
 	{
-		return EventTable::getList([
+		$singleEvents = EventTable::getList([
 			'select' => ['*'],
 			'filter' => [
 				'@ID_TEAM' => $idTeam
 			],
 		])->fetchAll();
-	}
-
-	public static function getRegularEventsList($idTeam)
-	{
 
 		$regularEvents = RegularEventTable::getList([
-														'select' => ['*'],
-														'filter' => [
-															'@ID_TEAM' => $idTeam
-														],
-													])->fetchAll();
+			'select' => ['*'],
+			'filter' => [
+				'@ID_TEAM' => $idTeam
+			],
+		])->fetchAll();
 
-		return [
-			'events' => $events,
+		return ['events' => [
+			'singleEvents' => $singleEvents,
 			'regularEvents' => $regularEvents
-		];
+		]];
 	}
 
 }
