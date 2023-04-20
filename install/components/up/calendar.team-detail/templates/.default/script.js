@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
 	// Functions to open and close a modal
 	function openModal($el)
@@ -45,3 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 });
+
+function generateLink(link,idTeam)
+{
+	// var newLink;
+	// newLink = Calendar::createInviteLink(idTeam);
+	//
+	// link.value.replace("dev.bx/invite/newLink/");
+}

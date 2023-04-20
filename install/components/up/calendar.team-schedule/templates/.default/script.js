@@ -11,6 +11,15 @@ function changeView(evt, tabName)
 	evt.currentTarget.className += " is-active";
 }
 
+function display_usgs_change() {
+	if(event.target.value == 'daily') {
+		document.getElementById('daily').style.display = "block";
+	}
+	else {
+		document.getElementById('daily').style.display = "none";
+	}
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 	// Functions to open and close a modal
 	function openModal($el)

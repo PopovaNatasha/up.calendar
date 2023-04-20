@@ -8,6 +8,7 @@ var_dump($arResult);
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
 
+
 <?php //if ($USER->getID() === $arResult['ID_ADMIN']): ?>
 	<div class="buttons admin">
 		<button class="button is-primary js-modal-trigger" data-target="modal-js-crateEvent">Создать событие</button>
@@ -41,19 +42,16 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
 						<div class="column control">
 							<div class="select is-primary">
-								<select name="rule_repeat">
+								<select id="selectRepeat" name="rule_repeat" onchange="display_usgs_change()">
 									<option value="non">Не повторяется</option>
 									<option value="daily">Каждый день</option>
 									<option value="weekly">Каждую неделю</option>
-<!--									<option value="monthly">Каждый месяц</option>-->
 								</select>
 							</div>
 						</div>
-
+						<div id="daily" class="tabcontent">
 						<div class="column">
 							<span class="rule-daily">каждый</span>
-							<span class="rule-weekly">каждую</span>
-<!--							<span class="rule-monthly">каждый</span>-->
 						</div>
 
 						<div class="column control">
@@ -71,9 +69,8 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
 						<div class="column">
 							<span class="rule-daily">день</span>
-							<span class="rule-weekly">неделю</span>
-							<span class="rule-monthly">месяц</span>
 						</div>
+					</div>
 					</div>
 
 <!--					<div class="week-day columns">-->
