@@ -64,38 +64,40 @@
 
 			<div class="box">
 
-				<div class="container">
-					<p>
-						<input type="date" class="input" id="date" name="date" value="2019-10-22">
-					</p>
+<!--				<div class="container">-->
+<!--					<p>-->
+<!--						<input type="date" class="input" id="date" name="date" value="2019-10-22">-->
+<!--					</p>-->
+<!--				</div>-->
+<!---->
+<!--				<input type="text" class='date-input'>-->
+<!--				<div class="wrapper">-->
+<!--					<div class="level header is-marginless">-->
+<!--						<span class="left-arrow"><</span>-->
+<!--						<span class="year-month"></span>-->
+<!--						<span class="right-arrow">></span>-->
+<!--					</div>-->
+<!---->
+<!--					<div class="date-wrapper">-->
+<!--						<div class="level-left day-nums">-->
+<!--							<span class='date-item'>Sun</span>-->
+<!--							<span class='date-item'>Mon</span>-->
+<!--							<span class='date-item'>Tue</span>-->
+<!--							<span class='date-item'>Wen</span>-->
+<!--							<span class='date-item'>Thu</span>-->
+<!--							<span class='date-item'>Fri</span>-->
+<!--							<span class='date-item'>Sat</span>-->
+<!--						</div>-->
+<!--						<div class="dates">-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+
+				<div class="buttons" style="display: flex">
+					<a style="flex: 1" class="button is-primary" href="/group/<?= $arResult['ID'] ?>/schedule/">Расписание</a>
 				</div>
 
-				<input type="text" class='date-input'>
-				<div class="wrapper">
-					<div class="level header is-marginless">
-						<span class="left-arrow"><</span>
-						<span class="year-month"></span>
-						<span class="right-arrow">></span>
-					</div>
 
-					<div class="date-wrapper">
-						<div class="level-left day-nums">
-							<span class='date-item'>Sun</span>
-							<span class='date-item'>Mon</span>
-							<span class='date-item'>Tue</span>
-							<span class='date-item'>Wen</span>
-							<span class='date-item'>Thu</span>
-							<span class='date-item'>Fri</span>
-							<span class='date-item'>Sat</span>
-						</div>
-						<div class="dates">
-						</div>
-					</div>
-				</div>
-
-				<div class="buttons">
-					<a class="button is-primary" href="/group/<?= $arResult['ID'] ?>/schedule/">Расписание</a>
-				</div>
 
 			</div>
 
