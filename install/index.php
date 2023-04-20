@@ -67,6 +67,12 @@ class up_calendar extends CModule
             true,
             true
         );
+        CopyDirFiles(
+            $_SERVER['DOCUMENT_ROOT'] . '/local/modules/up.calendar/install/js',
+            $_SERVER['DOCUMENT_ROOT'] . '/local/routes/',
+            true,
+            true
+        );
     }
 
     public function uninstallFiles(): void

@@ -12,11 +12,15 @@ function changeView(evt, tabName)
 }
 
 function display_usgs_change() {
-	if(event.target.value == 'daily') {
-		document.getElementById('daily').style.display = "block";
+	if(event.target.value === 'daily') {
+		document.getElementById('every').style.display = "block";
+		document.getElementById('day_count').style.display = "block";
+		document.getElementById('day').style.display = "block";
 	}
 	else {
-		document.getElementById('daily').style.display = "none";
+		document.getElementById('every').style.display = "none";
+		document.getElementById('day_count').style.display = "none";
+		document.getElementById('day').style.display = "none";
 	}
 }
 

@@ -1,4 +1,5 @@
-
-.columns .tabcontent {
+#every,
+#day_count,
+#day {
     display: none;
 }

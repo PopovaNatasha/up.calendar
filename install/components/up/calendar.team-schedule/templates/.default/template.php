@@ -48,12 +48,11 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 								</select>
 							</div>
 						</div>
-						<div id="daily" class="tabcontent">
-						<div class="column">
+						<div class="column" id="every">
 							<span class="rule-daily">каждый</span>
 						</div>
 
-						<div class="column control">
+						<div class="column control" id="day_count">
 							<div class="select is-primary">
 								<select name="rule_repeat_count">
 									<option value="1">1</option>
@@ -66,22 +65,10 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 							</div>
 						</div>
 
-						<div class="column">
+						<div class="column" id="day">
 							<span class="rule-daily">день</span>
 						</div>
 					</div>
-					</div>
-
-<!--					<div class="week-day columns">-->
-<!--						<label class="column"><input name="MO" type="checkbox" value="MO">Пн</label>-->
-<!--						<label class="column"><input name="TU" type="checkbox" value="TU">Вт</label>-->
-<!--						<label class="column"><input name="day-of-week" type="checkbox" value="WE">Ср</label>-->
-<!--						<label class="column"><input name="day-of-week" type="checkbox" value="TH">Чт</label>-->
-<!--						<label class="column"><input name="day-of-week" type="checkbox" value="FR">Пт</label>-->
-<!--						<label class="column"><input name="day-of-week" type="checkbox" value="SA">Сб</label>-->
-<!--						<label class="column"><input name="day-of-week" type="checkbox" value="SU">Вс</label>-->
-<!--					</div>-->
-				</div>
 
 			</section>
 			<footer class="modal-card-foot">

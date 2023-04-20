@@ -182,15 +182,14 @@
 				<div class="modal" id="modal-js-leave-team">
 					<div class="modal-background"></div>
 					<div class="modal-card">
-						<header class="modal-card-head">
+						<header class="modal-card-head" style="border: none">
 							<p class="modal-card-title">Подтверждение</p>
 							<button class="delete" type="reset" aria-label="close"></button>
 						</header>
-
-						<section class="modal-card-body">
+						<section class="modal-card-body" style="background-color: #f5f5f5; ">
 							<p>Вы уверены, что хотите покинуть группу?</p>
 						</section>
-						<footer class="modal-card-foot">
+						<footer class="modal-card-foot" style="border: none">
 							<button class="button is-danger" type="submit">Покинуть</button>
 							<button class="button" type="reset" >Отмена</button>
 						</footer>
