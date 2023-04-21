@@ -92,15 +92,9 @@ this.BX.Up = this.BX.Up || {};
 	            return '<strong>' + moment(schedule.start.getTime()).format('HH:mm') + '</strong> ' + schedule.title;
 	          },
 	          timegridDisplayPrimaryTime: function timegridDisplayPrimaryTime(time) {
-	            console.log(time);
-	            console.log(time.time.d.getHours());
 	            return time.time.d.getHours() + ':00';
 	          }
-	          // timegridDisplayTime: function(time) {
-	          // 	return time.hour + ':' + time.minutes;
-	          // },
 	        },
-
 	        week: {
 	          dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 	          startDayOfWeek: 1,
@@ -119,8 +113,8 @@ this.BX.Up = this.BX.Up || {};
 	        // list of Calendars that can be used to add new schedule
 	        calendars: [{
 	          id: 'team',
-	          name: 'Personal',
-	          backgroundColor: 'red'
+	          name: 'Personal'
+	          // backgroundColor:  'red',
 	        }]
 	      });
 	    }
@@ -134,7 +128,7 @@ this.BX.Up = this.BX.Up || {};
 	        var dayTimeEnd = event['DATE_TIME_TO'].split('+');
 	        calendar.createEvents([{
 	          id: event['ID'],
-	          calendarId: 'ream',
+	          calendarId: 'team',
 	          title: event['TITLE'],
 	          start: dayTimeStart[0],
 	          end: dayTimeEnd[0],
@@ -148,19 +142,24 @@ this.BX.Up = this.BX.Up || {};
 	    value: function addRegularEvents() {
 	      var eventsList = this.regularEventsList;
 	      var calendar = this.calendar;
+	      var repeatUntil = '2023-12-31';
 	      eventsList.forEach(function (event) {
-	        var dayTimeStart = event['DATE_TIME_FROM'].split('+');
-	        var dayTimeEnd = event['DATE_TIME_TO'].split('+');
-	        calendar.createEvents([{
-	          id: event['ID'],
-	          calendarId: 'ream',
-	          title: event['TITLE'],
-	          start: dayTimeStart[0],
-	          end: dayTimeEnd[0],
-	          category: 'time'
-	        }]);
+	        var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+	        var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+	        var dayStep = Number(event['DAY_STEP']);
+	        while (moment(dayTimeStart).isBefore(repeatUntil)) {
+	          calendar.createEvents([{
+	            id: event['ID'],
+	            calendarId: 'team',
+	            title: event['TITLE'],
+	            start: dayTimeStart,
+	            end: dayTimeEnd,
+	            category: 'time'
+	          }]);
+	          dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+	          dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+	        }
 	      });
-	      console.log(eventsList);
 	    }
 	  }]);
 	  return Schedule;

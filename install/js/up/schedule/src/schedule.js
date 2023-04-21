@@ -122,7 +122,7 @@ export class Schedule
 				{
 					id: 'team',
 					name: 'Personal',
-					backgroundColor:  'red',
+					// backgroundColor:  'red',
 				}
 			],
 		});
@@ -138,7 +138,7 @@ export class Schedule
 			calendar.createEvents([
 				{
 					id: event['ID'],
-					calendarId: 'ream',
+					calendarId: 'team',
 					title: event['TITLE'],
 					start: dayTimeStart[0],
 					end: dayTimeEnd[0],
@@ -153,20 +153,26 @@ export class Schedule
 	{
 		let eventsList = this.regularEventsList;
 		let calendar = this.calendar;
+		let repeatUntil = '2023-12-31';
 		eventsList.forEach(event => {
-			let dayTimeStart = (event['DATE_TIME_FROM']).split('+');
-			let dayTimeEnd = (event['DATE_TIME_TO']).split('+');
-			calendar.createEvents([
-				{
-					id: event['ID'],
-					calendarId: 'ream',
-					title: event['TITLE'],
-					start: dayTimeStart[0],
-					end: dayTimeEnd[0],
-					category: 'time',
-				}
-			]);
+			let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+			let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+			let dayStep = Number(event['DAY_STEP']);
+			while (moment(dayTimeStart).isBefore(repeatUntil))
+			{
+				calendar.createEvents([
+					{
+						id: event['ID'],
+						calendarId: 'team',
+						title: event['TITLE'],
+						start: dayTimeStart,
+						end: dayTimeEnd,
+						category: 'time',
+					}
+				]);
+				dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+				dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+			}
 		});
-		console.log(eventsList);
 	}
 }
