@@ -19,7 +19,7 @@ export class Schedule
 		this.loadEventsList(this.idTeam)
 			.then(eventsList => {
 				this.singleEventsList = eventsList['singleEvents'];
-				this.regularEventsList = eventsList['regularEvents']
+				this.regularEventsList = eventsList['regularEvents'];
 				this.addEvents();
 				this.addRegularEvents();
 			});
@@ -109,8 +109,8 @@ export class Schedule
 				narrowWeekend: false,
 				taskView: false,
 				eventView: ['time'],
-				// hourStart: 6,
-				// hourEnd: 22,
+				hourStart: 6,
+				hourEnd: 23,
 			},
 			month: {
 				dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
@@ -118,13 +118,7 @@ export class Schedule
 				narrowWeekend: false
 			},
 			// list of Calendars that can be used to add new schedule
-			calendars: [
-				{
-					id: 'team',
-					name: 'Personal',
-					// backgroundColor:  'red',
-				}
-			],
+			calendars: this.getIdCalendars()
 		});
 	}
 
@@ -138,7 +132,7 @@ export class Schedule
 			calendar.createEvents([
 				{
 					id: event['ID'],
-					calendarId: 'team',
+					calendarId: event['ID_TEAM'],
 					title: event['TITLE'],
 					start: dayTimeStart[0],
 					end: dayTimeEnd[0],
@@ -174,5 +168,15 @@ export class Schedule
 				dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
 			}
 		});
+	}
+
+	getIdCalendars()
+	{
+		let idTeams = this.idTeam;
+		let calendarId = [];
+		idTeams.forEach(idTeam => {
+			calendarId.push({id: idTeam});
+		});
+		return calendarId;
 	}
 }

@@ -22,6 +22,7 @@ this.BX.Up = this.BX.Up || {};
 	      this.loadEventsList(this.idTeam).then(function (eventsList) {
 	        _this.singleEventsList = eventsList['singleEvents'];
 	        _this.regularEventsList = eventsList['regularEvents'];
+	        _this.getIdCalendars(eventsList);
 	        _this.addEvents();
 	        _this.addRegularEvents();
 	      });
@@ -100,22 +101,17 @@ this.BX.Up = this.BX.Up || {};
 	          startDayOfWeek: 1,
 	          narrowWeekend: false,
 	          taskView: false,
-	          eventView: ['time']
-	          // hourStart: 6,
-	          // hourEnd: 22,
+	          eventView: ['time'],
+	          hourStart: 6,
+	          hourEnd: 23
 	        },
-
 	        month: {
 	          dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 	          startDayOfWeek: 1,
 	          narrowWeekend: false
 	        },
 	        // list of Calendars that can be used to add new schedule
-	        calendars: [{
-	          id: 'team',
-	          name: 'Personal'
-	          // backgroundColor:  'red',
-	        }]
+	        calendars: this.getIdCalendars()
 	      });
 	    }
 	  }, {
@@ -128,7 +124,7 @@ this.BX.Up = this.BX.Up || {};
 	        var dayTimeEnd = event['DATE_TIME_TO'].split('+');
 	        calendar.createEvents([{
 	          id: event['ID'],
-	          calendarId: 'team',
+	          calendarId: event['ID_TEAM'],
 	          title: event['TITLE'],
 	          start: dayTimeStart[0],
 	          end: dayTimeEnd[0],
@@ -160,6 +156,18 @@ this.BX.Up = this.BX.Up || {};
 	          dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
 	        }
 	      });
+	    }
+	  }, {
+	    key: "getIdCalendars",
+	    value: function getIdCalendars(eventList) {
+	      var idTeams = this.idTeam;
+	      var calendarId = [];
+	      idTeams.forEach(function (idTeam) {
+	        calendarId.push({
+	          id: idTeam
+	        });
+	      });
+	      return calendarId;
 	    }
 	  }]);
 	  return Schedule;
