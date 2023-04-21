@@ -144,24 +144,24 @@ export class Schedule
 		console.log(eventsList);
 	}
 
-	// addRegularEvents()
-	// {
-	// 	let eventsList = this.regularEventsList;
-	// 	let calendar = this.calendar;
-	// 	eventsList.forEach(event => {
-	// 		let dayTimeStart = (event['DATE_TIME_FROM']).split('+');
-	// 		let dayTimeEnd = (event['DATE_TIME_TO']).split('+');
-	// 		calendar.createEvents([
-	// 			{
-	// 				id: event['ID'],
-	// 				calendarId: 'ream',
-	// 				title: event['TITLE'],
-	// 				start: dayTimeStart[0],
-	// 				end: dayTimeEnd[0],
-	// 				category: 'time',
-	// 			}
-	// 		]);
-	// 	});
-	// 	console.log(eventsList);
-	// }
+	addRegularEvents()
+	{
+		let eventsList = this.regularEventsList;
+		let calendar = this.calendar;
+		eventsList.forEach(event => {
+			let dayTimeStart = (event['DATE_TIME_FROM']).split('+');
+			let dayTimeEnd = (event['DATE_TIME_TO']).split('+');
+			calendar.createEvents([
+				{
+					id: event['ID'],
+					calendarId: 'ream',
+					title: event['TITLE'],
+					start: dayTimeStart[0],
+					end: dayTimeEnd[0],
+					category: 'time',
+				}
+			]);
+		});
+		console.log(eventsList);
+	}
 }

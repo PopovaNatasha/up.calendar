@@ -81,9 +81,9 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
 <div class="tabs is-right">
 	<ul>
-		<li class="tab" id="day" onclick="changeView(event, 'day')"><a>День</a></li>
-		<li class="tab" id="week" onclick="changeView(event, 'week')"><a>Неделя</a></li>
-		<li class="tab is-active" id="month" onclick="changeView(event, 'month')"><a>Месяц</a></li>
+		<li class="tab" onclick="changeView(event, 'day')"><a>День</a></li>
+		<li class="tab" onclick="changeView(event, 'week')"><a>Неделя</a></li>
+		<li class="tab is-active" onclick="changeView(event, 'month')"><a>Месяц</a></li>
 	</ul>
 </div>
 
@@ -96,14 +96,13 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 		startDate: new Date(),
 		displayMode: 'dialog',
 		showHeader: false,
-		// headerPosition: 'top',
-		showFooter: true,
-		showButtons: true,
-		showTodayButton: true,
-		showClearButton: true,
-		validateLabel: 'Input',
+		validateLabel: 'Ввод',
+		cancelLabel: 'Выход',
+		clearLabel: 'Очистить',
+		todayLabel: 'Сегодня',
 		isRange: true,
-		// allowSameDayRange: true,
+		dateFormat: 'DD.MM.YYYY',
+		weekStart: 1,
 	});
 
 	// Loop on each calendar initialized
