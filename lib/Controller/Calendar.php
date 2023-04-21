@@ -10,9 +10,4 @@ class Calendar extends Controller
 	{
 		return \Up\Calendar\Calendar::getEventsList($idTeam);
 	}
-
-	public function getRegularEventsListAction($idTeam): ?array
-	{
-		return \Up\Calendar\Calendar::getRegularEventsList($idTeam);
-	}
 }

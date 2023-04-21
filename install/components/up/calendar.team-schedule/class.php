@@ -29,8 +29,8 @@ class CalendarScheduleComponent extends CBitrixComponent
 		var_dump($arguments);
 		$arguments['team_id'] = $teamId;
 		$eventDate = explode(' - ', $arguments['date']);
-		$arguments['date_from'] = new \Bitrix\Main\Type\DateTime($eventDate[0],"m/d/Y H:i");
-		$arguments['date_to'] = new \Bitrix\Main\Type\DateTime($eventDate[1],"m/d/Y H:i");
+		$arguments['date_from'] = new \Bitrix\Main\Type\DateTime($eventDate[0],"d.m.Y H:i");
+		$arguments['date_to'] = new \Bitrix\Main\Type\DateTime($eventDate[1],"d.m.Y H:i");
 		unset($arguments['date']);
 
 		switch ($arguments['rule_repeat'])
