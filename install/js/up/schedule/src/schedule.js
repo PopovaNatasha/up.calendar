@@ -107,7 +107,7 @@ export class Schedule
 				dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 				startDayOfWeek: 1,
 				narrowWeekend: false,
-				// taskView: false,
+				taskView: false,
 				eventView: ['time'],
 				// hourStart: 6,
 				// hourEnd: 22,
