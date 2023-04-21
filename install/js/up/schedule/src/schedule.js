@@ -98,14 +98,19 @@ export class Schedule
 				},
 				time: function(schedule) {
 					return '<strong>' + moment(schedule.start.getTime()).format('HH:mm') + '</strong> ' + schedule.title;
-				}
+				},
+				timegridDisplayPrimaryTime: function(time) {
+					return time.time.d.getHours() + ':00';
+				},
 			},
 			week: {
 				dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 				startDayOfWeek: 1,
 				narrowWeekend: false,
 				// taskView: false,
-				eventView: ['time']
+				eventView: ['time'],
+				// hourStart: 6,
+				// hourEnd: 22,
 			},
 			month: {
 				dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],

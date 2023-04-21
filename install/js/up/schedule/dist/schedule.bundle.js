@@ -21,8 +21,9 @@ this.BX.Up = this.BX.Up || {};
 	      var _this = this;
 	      this.loadEventsList(this.idTeam).then(function (eventsList) {
 	        _this.singleEventsList = eventsList['singleEvents'];
-	        console.log(_this.singleEventsList);
+	        _this.regularEventsList = eventsList['regularEvents'];
 	        _this.addEvents();
+	        _this.addRegularEvents();
 	      });
 	    }
 	  }, {
@@ -89,15 +90,27 @@ this.BX.Up = this.BX.Up || {};
 	          },
 	          time: function time(schedule) {
 	            return '<strong>' + moment(schedule.start.getTime()).format('HH:mm') + '</strong> ' + schedule.title;
+	          },
+	          timegridDisplayPrimaryTime: function timegridDisplayPrimaryTime(time) {
+	            console.log(time);
+	            console.log(time.time.d.getHours());
+	            return time.time.d.getHours() + ':00';
 	          }
+	          // timegridDisplayTime: function(time) {
+	          // 	return time.hour + ':' + time.minutes;
+	          // },
 	        },
+
 	        week: {
 	          dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 	          startDayOfWeek: 1,
 	          narrowWeekend: false,
 	          // taskView: false,
 	          eventView: ['time']
+	          // hourStart: 6,
+	          // hourEnd: 22,
 	        },
+
 	        month: {
 	          dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 	          startDayOfWeek: 1,
@@ -115,6 +128,25 @@ this.BX.Up = this.BX.Up || {};
 	    key: "addEvents",
 	    value: function addEvents() {
 	      var eventsList = this.singleEventsList;
+	      var calendar = this.calendar;
+	      eventsList.forEach(function (event) {
+	        var dayTimeStart = event['DATE_TIME_FROM'].split('+');
+	        var dayTimeEnd = event['DATE_TIME_TO'].split('+');
+	        calendar.createEvents([{
+	          id: event['ID'],
+	          calendarId: 'ream',
+	          title: event['TITLE'],
+	          start: dayTimeStart[0],
+	          end: dayTimeEnd[0],
+	          category: 'time'
+	        }]);
+	      });
+	      console.log(eventsList);
+	    }
+	  }, {
+	    key: "addRegularEvents",
+	    value: function addRegularEvents() {
+	      var eventsList = this.regularEventsList;
 	      var calendar = this.calendar;
 	      eventsList.forEach(function (event) {
 	        var dayTimeStart = event['DATE_TIME_FROM'].split('+');
