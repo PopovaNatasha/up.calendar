@@ -22,7 +22,6 @@ this.BX.Up = this.BX.Up || {};
 	      this.loadEventsList(this.idTeam).then(function (eventsList) {
 	        _this.singleEventsList = eventsList['singleEvents'];
 	        _this.regularEventsList = eventsList['regularEvents'];
-	        _this.getIdCalendars(eventsList);
 	        _this.addEvents();
 	        _this.addRegularEvents();
 	      });
@@ -64,6 +63,9 @@ this.BX.Up = this.BX.Up || {};
 	    key: "createCalendar",
 	    value: function createCalendar() {
 	      return new tui.Calendar("#".concat(this.rootNodeId), {
+	        // isReadOnly: false,
+	        showSlidebar: true,
+	        showMenu: true,
 	        useFormPopup: false,
 	        useDetailPopup: false,
 	        useCreationPopup: false,
@@ -159,7 +161,7 @@ this.BX.Up = this.BX.Up || {};
 	    }
 	  }, {
 	    key: "getIdCalendars",
-	    value: function getIdCalendars(eventList) {
+	    value: function getIdCalendars() {
 	      var idTeams = this.idTeam;
 	      var calendarId = [];
 	      idTeams.forEach(function (idTeam) {

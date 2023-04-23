@@ -71,6 +71,9 @@ export class Schedule
 	createCalendar()
 	{
 		return new tui.Calendar(`#${this.rootNodeId}`, {
+			// isReadOnly: false,
+			// showSlidebar: true,
+			// showMenu: true,
 			useFormPopup: false,
 			useDetailPopup: false,
 			useCreationPopup: false,

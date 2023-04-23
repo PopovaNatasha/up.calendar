@@ -10,3 +10,15 @@ function changeView(evt, tabName)
 	CalendarEventsList.calendar.changeView(tabName);
 	evt.currentTarget.className += " is-active";
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+	const prevBtn = document.getElementById("prevBtn");
+	const nextBtn = document.getElementById("nextBtn");
+	prevBtn.addEventListener("click", e => {
+		CalendarEventsList.calendar.prev();
+	});
+
+	nextBtn.addEventListener("click", e => {
+		CalendarEventsList.calendar.next();
+	});
+});

@@ -11,6 +11,16 @@ function changeView(evt, tabName)
 	evt.currentTarget.className += " is-active";
 }
 
+// const prevBtn = document.getElementById("prevBtn");
+// const nextBtn = document.getElementById("nextBtn");
+// prevBtn.addEventListener("click", e => {
+// 	CalendarEventsList.calendar.prev();
+// });
+//
+// nextBtn.addEventListener("click", e => {
+// 	CalendarEventsList.calendar.next();
+// });
+
 function display_usgs_change() {
 	if(event.target.value === 'daily') {
 		document.getElementById('every').style.display = "block";
@@ -77,6 +87,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		{ // Escape key
 			closeAllModals();
 		}
+	});
+
+	const prevBtn = document.getElementById("prevBtn");
+	const nextBtn = document.getElementById("nextBtn");
+	prevBtn.addEventListener("click", e => {
+		CalendarEventsList.calendar.prev();
+	});
+
+	nextBtn.addEventListener("click", e => {
+		CalendarEventsList.calendar.next();
 	});
 
 });

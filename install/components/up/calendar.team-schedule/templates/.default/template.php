@@ -79,15 +79,18 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 	</div>
 </form>
 
-<div class="tabs is-right">
-	<ul>
-		<li class="tab" onclick="changeView(event, 'day')"><a>День</a></li>
-		<li class="tab" onclick="changeView(event, 'week')"><a>Неделя</a></li>
-		<li class="tab is-active" onclick="changeView(event, 'month')"><a>Месяц</a></li>
-	</ul>
-</div>
-
-<div id="calendar" style="height: 800px">
+<div class="box">
+	<div class="tabs is-right">
+		<button class="button" id="prevBtn">Назад</button>
+		<button class="button" id="nextBtn">Вперед</button>
+		<ul>
+			<li class="tab" onclick="changeView(event, 'day')"><a>День</a></li>
+			<li class="tab" onclick="changeView(event, 'week')"><a>Неделя</a></li>
+			<li class="tab is-active" onclick="changeView(event, 'month')"><a>Месяц</a></li>
+		</ul>
+	</div>
+	<div id="calendar" style="height: 800px">
+	</div>
 </div>
 
 <script>
