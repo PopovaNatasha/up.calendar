@@ -13,6 +13,7 @@ this.BX.Up = this.BX.Up || {};
 	    this.isUser = options.isUser;
 	    this.singleEventsList = [];
 	    this.regularEventsList = [];
+	    this.userStoryEvents = [];
 	    this.calendar = this.createCalendar();
 	    this.reload();
 	  }
@@ -23,8 +24,10 @@ this.BX.Up = this.BX.Up || {};
 	      this.loadEventsList(this.idTeam).then(function (eventsList) {
 	        _this.singleEventsList = eventsList['singleEvents'];
 	        _this.regularEventsList = eventsList['regularEvents'];
+	        _this.userStoryEvents = eventsList['userStoryEvents'];
 	        if (_this.isUser) {
-	          _this.addEventForUser();
+	          _this.addEventsForUser();
+	          _this.addRegularEventsForUser();
 	        } else {
 	          _this.addEvents();
 	          _this.addRegularEvents();
@@ -42,22 +45,6 @@ this.BX.Up = this.BX.Up || {};
 	        }).then(function (response) {
 	          var eventsList = response.data.events;
 	          console.log(eventsList);
-	          resolve(eventsList);
-	        })["catch"](function (error) {
-	          reject(error);
-	        });
-	      });
-	    }
-	  }, {
-	    key: "loadRegularEventsList",
-	    value: function loadRegularEventsList(idTeam) {
-	      return new Promise(function (resolve, reject) {
-	        BX.ajax.runAction('up:calendar.calendar.getRegularEventsList', {
-	          data: {
-	            idTeam: idTeam
-	          }
-	        }).then(function (response) {
-	          var eventsList = response.data.events;
 	          resolve(eventsList);
 	        })["catch"](function (error) {
 	          reject(error);
@@ -153,16 +140,16 @@ this.BX.Up = this.BX.Up || {};
 	      });
 	    }
 	  }, {
-	    key: "addEventForUser",
-	    value: function addEventForUser() {
+	    key: "addEventsForUser",
+	    value: function addEventsForUser() {
 	      var eventsList = this.singleEventsList;
+	      var storyEventList = this.userStoryEvents;
 	      var calendar = this.calendar;
 	      eventsList.forEach(function (event) {
 	        var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
 	        var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
 	        var nowDay = moment().format('YYYY-MM-DD');
 	        var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-	        console.log(nowDay, dayStart, moment(nowDay).isBefore(dayStart));
 	        if (moment(nowDay).isBefore(dayStart)) {
 	          calendar.createEvents([{
 	            id: event['ID'],
@@ -172,6 +159,69 @@ this.BX.Up = this.BX.Up || {};
 	            end: dayTimeEnd,
 	            category: 'time'
 	          }]);
+	        }
+	      });
+	      storyEventList.forEach(function (event) {
+	        var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+	        var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+	        if (!event['DAY_STEP']) {
+	          calendar.createEvents([{
+	            id: event['ID'],
+	            calendarId: 'story',
+	            title: event['TITLE_EVENT'],
+	            start: dayTimeStart,
+	            end: dayTimeEnd,
+	            category: 'time'
+	          }]);
+	        }
+	      });
+	    }
+	  }, {
+	    key: "addRegularEventsForUser",
+	    value: function addRegularEventsForUser() {
+	      var eventsList = this.regularEventsList;
+	      var storyEventList = this.userStoryEvents;
+	      var calendar = this.calendar;
+	      var repeatUntil = '2023-12-31';
+	      eventsList.forEach(function (event) {
+	        var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+	        var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+	        var dayStep = Number(event['DAY_STEP']);
+	        while (moment(dayTimeStart).isBefore(repeatUntil)) {
+	          var nowDay = moment().format('YYYY-MM-DD');
+	          var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
+	          if (moment(nowDay).isBefore(dayStart)) {
+	            calendar.createEvents([{
+	              id: event['ID'],
+	              calendarId: 'team',
+	              title: event['TITLE'],
+	              start: dayTimeStart,
+	              end: dayTimeEnd,
+	              category: 'time'
+	            }]);
+	          }
+	          dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+	          dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+	        }
+	      });
+	      storyEventList.forEach(function (event) {
+	        if (event['DAY_STEP']) {
+	          var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+	          var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+	          var dayStep = Number(event['DAY_STEP']);
+	          var nowDay = moment().format('YYYY-MM-DD');
+	          while (moment(dayTimeStart).isBefore(nowDay)) {
+	            calendar.createEvents([{
+	              id: event['ID'],
+	              calendarId: 'team',
+	              title: event['TITLE_EVENT'],
+	              start: dayTimeStart,
+	              end: dayTimeEnd,
+	              category: 'time'
+	            }]);
+	            dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+	            dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+	          }
 	        }
 	      });
 	    }

@@ -11,6 +11,7 @@ export class Schedule
 
 		this.singleEventsList = [];
 		this.regularEventsList = [];
+		this.userStoryEvents = [];
 		this.calendar = this.createCalendar();
 		this.reload();
 	}
@@ -21,9 +22,12 @@ export class Schedule
 			.then(eventsList => {
 				this.singleEventsList = eventsList['singleEvents'];
 				this.regularEventsList = eventsList['regularEvents'];
+				this.userStoryEvents = eventsList['userStoryEvents'];
+
 				if (this.isUser)
 				{
-					this.addEventForUser();
+					this.addEventsForUser();
+					this.addRegularEventsForUser();
 				}
 				else
 				{
@@ -54,27 +58,6 @@ export class Schedule
 			;
 		});
 	}
-
-	// loadRegularEventsList(idTeam)
-	// {
-	// 	return new Promise((resolve, reject) => {
-	// 		BX.ajax.runAction(
-	// 				'up:calendar.calendar.getRegularEventsList',
-	// 				{data: {
-	// 						idTeam: idTeam,
-	// 					},
-	// 				})
-	// 			.then((response) => {
-	// 				const eventsList = response.data.events;
-	//
-	// 				resolve(eventsList);
-	// 			})
-	// 			.catch((error) => {
-	// 				reject(error);
-	// 			})
-	// 		;
-	// 	});
-	// }
 
 	createCalendar()
 	{
@@ -169,9 +152,10 @@ export class Schedule
 		});
 	}
 
-	addEventForUser()
+	addEventsForUser()
 	{
 		let eventsList = this.singleEventsList;
+		let storyEventList = this.userStoryEvents;
 		let calendar = this.calendar;
 		eventsList.forEach(event => {
 			let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
@@ -192,7 +176,81 @@ export class Schedule
 				]);
 			}
 		});
+		storyEventList.forEach(event => {
+			let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+			let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+			if (!event['DAY_STEP'])
+			{
+				calendar.createEvents([
+					{
+						id: event['ID'],
+						calendarId: 'story',
+						title: event['TITLE_EVENT'],
+						start: dayTimeStart,
+						end: dayTimeEnd,
+						category: 'time',
+					}
+				]);
+			}
+		})
+	}
 
+	addRegularEventsForUser()
+	{
+		let eventsList = this.regularEventsList;
+		let storyEventList = this.userStoryEvents;
+		let calendar = this.calendar;
+		let repeatUntil = '2023-12-31';
+		eventsList.forEach(event => {
+			let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+			let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+			let dayStep = Number(event['DAY_STEP']);
+			while (moment(dayTimeStart).isBefore(repeatUntil))
+			{
+				let nowDay = moment().format('YYYY-MM-DD');
+				let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
+				if (moment(nowDay).isBefore(dayStart))
+				{
+					calendar.createEvents([
+						{
+							id: event['ID'],
+							calendarId: 'team',
+							title: event['TITLE'],
+							start: dayTimeStart,
+							end: dayTimeEnd,
+							category: 'time',
+						}
+					]);
+				}
+				dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+				dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+			}
+		});
+		storyEventList.forEach(event => {
+			if (event['DAY_STEP'])
+			{
+				let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+				let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+				let dayStep = Number(event['DAY_STEP']);
+
+				let nowDay = moment().format('YYYY-MM-DD');
+				while (moment(dayTimeStart).isBefore(nowDay))
+				{
+					calendar.createEvents([
+						{
+							id: event['ID'],
+							calendarId: 'team',
+							title: event['TITLE_EVENT'],
+							start: dayTimeStart,
+							end: dayTimeEnd,
+							category: 'time',
+						}
+					]);
+					dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+					dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+				}
+			}
+		});
 	}
 
 	getIdCalendars()

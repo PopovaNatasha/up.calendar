@@ -26,7 +26,7 @@ function __projectorMigrate(int $nextVersion, callable $callback)
 	}
 }
 
-__projectorMigrate(4, function($updater, $DB)
+__projectorMigrate(2, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_team'))
 	{
@@ -34,7 +34,7 @@ __projectorMigrate(4, function($updater, $DB)
 	}
 });
 
-__projectorMigrate(5, function($updater, $DB)
+__projectorMigrate(3, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_event'))
 	{
@@ -43,7 +43,7 @@ __projectorMigrate(5, function($updater, $DB)
 	}
 });
 
-__projectorMigrate(6, function($updater, $DB)
+__projectorMigrate(4, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_regular_event'))
 	{
@@ -52,7 +52,7 @@ __projectorMigrate(6, function($updater, $DB)
 	}
 });
 
-__projectorMigrate(7, function($updater, $DB)
+__projectorMigrate(5, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_changed_event'))
 	{
@@ -61,7 +61,7 @@ __projectorMigrate(7, function($updater, $DB)
 	}
 });
 
-__projectorMigrate(8, function($updater, $DB)
+__projectorMigrate(6, function($updater, $DB)
 {
     if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_user_story'))
     {
