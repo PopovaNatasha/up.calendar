@@ -1,6 +1,6 @@
 <?php
 
-namespace UP\Calendar\Agents;
+namespace Up\Calendar\Agents;
 
 use Up\Calendar\Model\UserTable;
 
