@@ -64,8 +64,8 @@ this.BX.Up = this.BX.Up || {};
 	    value: function createCalendar() {
 	      return new tui.Calendar("#".concat(this.rootNodeId), {
 	        // isReadOnly: false,
-	        showSlidebar: true,
-	        showMenu: true,
+	        // showSlidebar: true,
+	        // showMenu: true,
 	        useFormPopup: false,
 	        useDetailPopup: false,
 	        useCreationPopup: false,
@@ -73,23 +73,11 @@ this.BX.Up = this.BX.Up || {};
 	        taskView: true,
 	        scheduleView: false,
 	        template: {
-	          milestone: function milestone(schedule) {
-	            return '<span style="color:red;"><i class="fa fa-flag"></i> ' + schedule.title + '</span>';
-	          },
-	          milestoneTitle: function milestoneTitle() {
-	            return 'Milestone';
-	          },
 	          task: function task(schedule) {
 	            return '&nbsp;&nbsp;#' + schedule.title;
 	          },
 	          taskTitle: function taskTitle() {
 	            return '<label><input type="checkbox" />Task</label>';
-	          },
-	          allday: function allday(schedule) {
-	            return schedule.title + ' <i class="fa fa-refresh"></i>';
-	          },
-	          alldayTitle: function alldayTitle() {
-	            return 'All Day';
 	          },
 	          time: function time(schedule) {
 	            return '<strong>' + moment(schedule.start.getTime()).format('HH:mm') + '</strong> ' + schedule.title;

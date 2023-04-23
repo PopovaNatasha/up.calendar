@@ -7,9 +7,12 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
 
 <div class="box">
-	<div class="tabs is-right">
-		<button class="button" id="prevBtn">Назад</button>
-		<button class="button" id="nextBtn">Вперед</button>
+	<div class="tabs is-right" style="align-items: flex-end">
+		<div>
+			<button class="button " id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+			<button class="button " id="today">Сегодня</i></button>
+			<button class="button " id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
+		</div>
 		<ul>
 			<li class="tab" onclick="changeView(event, 'day')"><a>День</a></li>
 			<li class="tab" onclick="changeView(event, 'week')"><a>Неделя</a></li>

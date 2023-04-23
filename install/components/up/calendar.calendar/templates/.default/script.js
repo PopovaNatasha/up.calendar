@@ -14,11 +14,17 @@ function changeView(evt, tabName)
 document.addEventListener('DOMContentLoaded', () => {
 	const prevBtn = document.getElementById("prevBtn");
 	const nextBtn = document.getElementById("nextBtn");
+	const todayBtn = document.getElementById("todayBtn");
+
 	prevBtn.addEventListener("click", e => {
 		CalendarEventsList.calendar.prev();
 	});
 
 	nextBtn.addEventListener("click", e => {
 		CalendarEventsList.calendar.next();
+	});
+
+	todayBtn.addEventListener("click", e => {
+		CalendarEventsList.calendar.today();
 	});
 });
