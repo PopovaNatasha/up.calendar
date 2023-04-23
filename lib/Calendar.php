@@ -254,21 +254,31 @@ class Calendar
             ],
         ])->fetchAll();
 
+		global $USER;
+		$id = $USER->getID();
+		$userStoryEvents = UserStoryTable::getList([
+			'select' => ['*'],
+			'filter' => [
+				'ID_USER' => $id
+			]
+		])->fetchAll();
+
         return ['events' => [
             'singleEvents' => $singleEvents,
-            'regularEvents' => $regularEvents
+            'regularEvents' => $regularEvents,
+			'userStoryEvents' => $userStoryEvents,
         ]];
     }
-    public static function getStoryUser()
-    {
-        global $USER;
-        $id = $USER->getID();
-        return UserStoryTable::getList([
-            'select' => ['*'],
-            'filter' => [
-                'ID_USER' => "$id"
-            ]
-        ])->fetchAll();
-    }
+    // public static function getStoryUser()
+    // {
+    //     global $USER;
+    //     $id = $USER->getID();
+    //     return UserStoryTable::getList([
+    //         'select' => ['*'],
+    //         'filter' => [
+    //             'ID_USER' => "$id"
+    //         ]
+    //     ])->fetchAll();
+    // }
 
 }

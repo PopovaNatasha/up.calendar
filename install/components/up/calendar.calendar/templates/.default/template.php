@@ -10,7 +10,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 	<div class="tabs is-right" style="align-items: flex-end">
 		<div>
 			<button class="button " id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
-			<button class="button " id="today">Сегодня</i></button>
+			<button class="button " id="todayBtn">Сегодня</i></button>
 			<button class="button " id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
 		</div>
 		<ul>
@@ -28,7 +28,8 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 		window.CalendarEventsList = new BX.Up.Calendar.Schedule({
 			idTeam: <?= json_encode($arResult, JSON_THROW_ON_ERROR) ?>,
 			rootNodeId: 'calendar',
-			idCalendar: 'user'
+			isUser: true,
+
 		});
 	});
 </script>

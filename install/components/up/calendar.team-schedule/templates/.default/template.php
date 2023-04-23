@@ -135,6 +135,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 		window.CalendarEventsList = new BX.Up.Calendar.Schedule({
 			idTeam: <?= json_encode($arResult, JSON_THROW_ON_ERROR) ?>,
 			rootNodeId: 'calendar',
+			isUser: false,
 		});
 	});
 </script>

@@ -7,6 +7,7 @@ export class Schedule
 		this.idTeam = options.idTeam;
 		this.rootNodeId = options.rootNodeId;
 		this.rootNode = document.getElementById(this.rootNodeId);
+		this.isUser = options.isUser;
 
 		this.singleEventsList = [];
 		this.regularEventsList = [];
@@ -20,8 +21,15 @@ export class Schedule
 			.then(eventsList => {
 				this.singleEventsList = eventsList['singleEvents'];
 				this.regularEventsList = eventsList['regularEvents'];
-				this.addEvents();
-				this.addRegularEvents();
+				if (this.isUser)
+				{
+					this.addEventForUser();
+				}
+				else
+				{
+					this.addEvents();
+					this.addRegularEvents();
+				}
 			});
 	}
 
@@ -47,26 +55,26 @@ export class Schedule
 		});
 	}
 
-	loadRegularEventsList(idTeam)
-	{
-		return new Promise((resolve, reject) => {
-			BX.ajax.runAction(
-					'up:calendar.calendar.getRegularEventsList',
-					{data: {
-							idTeam: idTeam,
-						},
-					})
-				.then((response) => {
-					const eventsList = response.data.events;
-
-					resolve(eventsList);
-				})
-				.catch((error) => {
-					reject(error);
-				})
-			;
-		});
-	}
+	// loadRegularEventsList(idTeam)
+	// {
+	// 	return new Promise((resolve, reject) => {
+	// 		BX.ajax.runAction(
+	// 				'up:calendar.calendar.getRegularEventsList',
+	// 				{data: {
+	// 						idTeam: idTeam,
+	// 					},
+	// 				})
+	// 			.then((response) => {
+	// 				const eventsList = response.data.events;
+	//
+	// 				resolve(eventsList);
+	// 			})
+	// 			.catch((error) => {
+	// 				reject(error);
+	// 			})
+	// 		;
+	// 	});
+	// }
 
 	createCalendar()
 	{
@@ -118,15 +126,15 @@ export class Schedule
 		let eventsList = this.singleEventsList;
 		let calendar = this.calendar;
 		eventsList.forEach(event => {
-			let dayTimeStart = (event['DATE_TIME_FROM']).split('+');
-			let dayTimeEnd = (event['DATE_TIME_TO']).split('+');
+			let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+			let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
 			calendar.createEvents([
 				{
 					id: event['ID'],
 					calendarId: event['ID_TEAM'],
 					title: event['TITLE'],
-					start: dayTimeStart[0],
-					end: dayTimeEnd[0],
+					start: dayTimeStart,
+					end: dayTimeEnd,
 					category: 'time',
 				}
 			]);
@@ -159,6 +167,32 @@ export class Schedule
 				dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
 			}
 		});
+	}
+
+	addEventForUser()
+	{
+		let eventsList = this.singleEventsList;
+		let calendar = this.calendar;
+		eventsList.forEach(event => {
+			let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+			let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+			let nowDay = moment().format('YYYY-MM-DD');
+			let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
+			if (moment(nowDay).isBefore(dayStart))
+			{
+				calendar.createEvents([
+					{
+						id: event['ID'],
+						calendarId: event['ID_TEAM'],
+						title: event['TITLE'],
+						start: dayTimeStart,
+						end: dayTimeEnd,
+						category: 'time',
+					}
+				]);
+			}
+		});
+
 	}
 
 	getIdCalendars()
