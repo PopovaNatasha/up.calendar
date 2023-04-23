@@ -75,6 +75,20 @@ class up_calendar extends CModule
         );
     }
 
+    public function createAgent(): void
+    {
+        $nowDate = date('d.m.Y 23:30:00');
+        CAgent::AddAgent(
+            'UP\Calendar\Agents\AgentStory::userHistory();',
+            'up.calendar',
+            'N',
+            '86400',
+            "$nowDate",
+            'Y',
+            "$nowDate",
+        );
+    }
+
     public function uninstallFiles(): void
     {
     }
@@ -98,6 +112,7 @@ class up_calendar extends CModule
         $this->installDB();
         $this->installFiles();
         $this->installEvents();
+        $this->createAgent();
 
         $APPLICATION->IncludeAdminFile(
             Loc::getMessage('UP_CALENDAR_INSTALL_TITLE'),

@@ -34,7 +34,7 @@ __projectorMigrate(4, function($updater, $DB)
 	}
 });
 
-__projectorMigrate(7, function($updater, $DB)
+__projectorMigrate(5, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_event'))
 	{
@@ -43,7 +43,7 @@ __projectorMigrate(7, function($updater, $DB)
 	}
 });
 
-__projectorMigrate(8, function($updater, $DB)
+__projectorMigrate(6, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_regular_event'))
 	{
@@ -52,7 +52,7 @@ __projectorMigrate(8, function($updater, $DB)
 	}
 });
 
-__projectorMigrate(9, function($updater, $DB)
+__projectorMigrate(7, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_changed_event'))
 	{
@@ -60,4 +60,15 @@ __projectorMigrate(9, function($updater, $DB)
 		$DB->query("ALTER TABLE up_calendar_changed_event ADD DATE_TIME_TO DATETIME");
 	}
 });
+
+__projectorMigrate(8, function($updater, $DB)
+{
+    if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_user_story'))
+    {
+        $DB->query("ALTER TABLE up_calendar_user_story CHANGE COLUMN DATE_TIME DATE_TIME_FROM DATETIME");
+        $DB->query("ALTER TABLE up_calendar_user_story ADD DATE_TIME_TO DATETIME");
+        $DB->query("ALTER TABLE up_calendar_user_story ADD DAY_STEP int");
+    }
+});
+
 
