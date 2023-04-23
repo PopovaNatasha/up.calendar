@@ -7,6 +7,7 @@ use Bitrix\Main\UI\PageNavigation,
     Up\Calendar\Model\UserTeamTable,
     Up\Calendar\Model\EventTable,
     Up\Calendar\Model\RegularEventTable;
+use Up\Calendar\Model\UserStoryTable;
 
 class Calendar
 {
@@ -257,6 +258,17 @@ class Calendar
             'singleEvents' => $singleEvents,
             'regularEvents' => $regularEvents
         ]];
+    }
+    public static function getStoryUser()
+    {
+        global $USER;
+        $id = $USER->getID();
+        return UserStoryTable::getList([
+            'select' => ['*'],
+            'filter' => [
+                'ID_USER' => "$id"
+            ]
+        ])->fetchAll();
     }
 
 }
