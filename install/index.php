@@ -79,7 +79,7 @@ class up_calendar extends CModule
     {
         $nowDate = date('d.m.Y 23:30:00');
         CAgent::AddAgent(
-            'UP\Calendar\Agents\AgentStory::userHistory();',
+            'Up\Calendar\Agents\AgentStory::userHistory();',
             'up.calendar',
             'N',
             '86400',
@@ -87,6 +87,11 @@ class up_calendar extends CModule
             'Y',
             "$nowDate",
         );
+    }
+
+    public function deleteAgent()
+    {
+        CAgent::RemoveModuleAgents('up.calendar');
     }
 
     public function uninstallFiles(): void
@@ -122,6 +127,7 @@ class up_calendar extends CModule
 
     public function doUninstall(): void
     {
+        $this->deleteAgent();
         global $USER, $APPLICATION, $step;
 
         if (!$USER->isAdmin()) {
