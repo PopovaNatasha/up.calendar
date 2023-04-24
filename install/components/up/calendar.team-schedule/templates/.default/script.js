@@ -9,17 +9,29 @@ function changeView(evt, tabName)
 	}
 	CalendarEventsList.calendar.changeView(tabName);
 	evt.currentTarget.className += " is-active";
+	setRenderRangeText();
 }
 
-// const prevBtn = document.getElementById("prevBtn");
-// const nextBtn = document.getElementById("nextBtn");
-// prevBtn.addEventListener("click", e => {
-// 	CalendarEventsList.calendar.prev();
-// });
-//
-// nextBtn.addEventListener("click", e => {
-// 	CalendarEventsList.calendar.next();
-// });
+function setRenderRangeText() {
+	var renderRange = document.getElementById('renderRange');
+	let calendar = CalendarEventsList.calendar;
+	moment.locale('ru');
+	console.log(renderRange);
+	var options = calendar.getOptions();
+	var viewName = calendar.getViewName();
+	var html = [];
+	if (viewName === 'day') {
+		html.push(moment(calendar.getDate().getTime()).format('DD MMMM YYYY'));
+	} else if (viewName === 'month' &&
+		(!options.month.visibleWeeksCount || options.month.visibleWeeksCount > 4)) {
+		html.push(moment(calendar.getDate().getTime()).format('MMMM YYYY'));
+	} else {
+		html.push(moment(calendar.getDateRangeStart().getTime()).format('DD MMM YYYY'));
+		html.push(' - ');
+		html.push(moment(calendar.getDateRangeEnd().getTime()).format('DD MMM YYYY'));
+	}
+	renderRange.innerHTML = html.join('');
+}
 
 function display_usgs_change() {
 	if(event.target.value === 'daily') {
@@ -39,14 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	function openModal($el)
 	{
 		$el.classList.add('is-active');
-		// let select = document.getElementById('select-repeat');
-		//
-		// select.addEventListener('change', function() {
-		// 	switch (select.value) {
-		// 		case 'daily':
-		//
-		// 	}
-		// })
 	}
 	function closeModal($el)
 	{
@@ -89,19 +93,23 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
+	setRenderRangeText();
 	const prevBtn = document.getElementById("prevBtn");
 	const nextBtn = document.getElementById("nextBtn");
 	const todayBtn = document.getElementById("todayBtn");
 
 	prevBtn.addEventListener("click", e => {
 		CalendarEventsList.calendar.prev();
+		setRenderRangeText();
 	});
 
 	nextBtn.addEventListener("click", e => {
 		CalendarEventsList.calendar.next();
+		setRenderRangeText();
 	});
 
 	todayBtn.addEventListener("click", e => {
 		CalendarEventsList.calendar.today();
+		setRenderRangeText();
 	});
 });

@@ -88,6 +88,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 			<button class="button " id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
 		</div>
 		<ul>
+			<span id="renderRange" style="margin-right: auto"></span>
 			<li class="tab" onclick="changeView(event, 'day')"><a>День</a></li>
 			<li class="tab" onclick="changeView(event, 'week')"><a>Неделя</a></li>
 			<li class="tab is-active" onclick="changeView(event, 'month')"><a>Месяц</a></li>

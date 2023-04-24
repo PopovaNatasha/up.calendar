@@ -19,7 +19,8 @@
 	<link href="https://unpkg.com/bulma-calendar@6.0.7/dist/css/bulma-calendar.min.css" rel="stylesheet">
 	<script src="https://unpkg.com/bulma-calendar@6.0.7/dist/js/bulma-calendar.min.js"></script>
 	<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-	<script type = "text/JavaScript" src = " https://MomentJS.com/downloads/moment.js"></script>
+<!--	<script type = "text/JavaScript" src = " https://MomentJS.com/downloads/moment.js"></script>-->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment-with-locales.min.js"></script>
 
 	<script src="https://kit.fontawesome.com/7f025501b5.js" crossorigin="anonymous"></script>
 </head>

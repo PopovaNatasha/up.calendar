@@ -100,7 +100,7 @@ export class Schedule
 				narrowWeekend: false
 			},
 			// list of Calendars that can be used to add new schedule
-			calendars: this.getIdCalendars()
+			calendars: this.getCalendarList()
 		});
 	}
 
@@ -139,7 +139,7 @@ export class Schedule
 				calendar.createEvents([
 					{
 						id: event['ID'],
-						calendarId: 'team',
+						calendarId: event['ID_TEAM'],
 						title: event['TITLE'],
 						start: dayTimeStart,
 						end: dayTimeEnd,
@@ -214,7 +214,7 @@ export class Schedule
 					calendar.createEvents([
 						{
 							id: event['ID'],
-							calendarId: 'team',
+							calendarId: event['ID_TEAM'],
 							title: event['TITLE'],
 							start: dayTimeStart,
 							end: dayTimeEnd,
@@ -239,7 +239,7 @@ export class Schedule
 					calendar.createEvents([
 						{
 							id: event['ID'],
-							calendarId: 'team',
+							calendarId: 'story',
 							title: event['TITLE_EVENT'],
 							start: dayTimeStart,
 							end: dayTimeEnd,
@@ -253,13 +253,14 @@ export class Schedule
 		});
 	}
 
-	getIdCalendars()
+	getCalendarList()
 	{
 		let idTeams = this.idTeam;
 		let calendarId = [];
 		idTeams.forEach(idTeam => {
 			calendarId.push({id: idTeam});
 		});
+		calendar
 		return calendarId;
 	}
 }
