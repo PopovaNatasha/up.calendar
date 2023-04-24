@@ -19,13 +19,13 @@ ShowMessage($arResult['ERROR_MESSAGE']);
 			<div class="column is-8 is-offset-2 register">
 				<div class="columns">
 					<div class="column left">
-						<h1 class="title is-1">Best Calendar</h1>
+						<h1 class="title is-1">Хобби Календарь</h1>
 						<h2 class="subtitle colored is-4">Ведение расписаний в одном месте</h2>
 						<p>Следите за расписанием любых занятий и встреч. Всегда актуальная информация и новости от организаторов</p>
 					</div>
 					<div class="column right has-text-centered">
-						<h1 class="title is-4">Sign up today</h1>
-						<p class="description">Зарегистрируйтесь для начала работы с календарем</p>
+						<h1 class="title is-4">Присоединяйтесь к нам!</h1>
+						<p class="description">Авторизуйтесь для начала работы с календарем</p>
 
 	<form name="form_auth" method="post" target="_top" action="/auth">
 
@@ -85,7 +85,7 @@ ShowMessage($arResult['ERROR_MESSAGE']);
 <?if($arParams["NOT_SHOW_LINKS"] != "Y" && $arResult["NEW_USER_REGISTRATION"] == "Y" && $arParams["AUTHORIZE_REGISTRATION"] != "Y"):?>
 		<noindex>
 			<br />
-			<small><em>Уже есть аккаунт? </em><a href="<?=$arResult["AUTH_REGISTER_URL"]?>" rel="nofollow"><?=GetMessage("AUTH_REGISTER")?></a></small>
+			<small><em>Еще нет аккаунта? </em><a href="<?=$arResult["AUTH_REGISTER_URL"]?>" rel="nofollow"><?=GetMessage("AUTH_REGISTER")?></a></small>
 <!--			<p>-->
 <!--				<a href="--><?//=$arResult["AUTH_REGISTER_URL"]?><!--" rel="nofollow">--><?//=GetMessage("AUTH_REGISTER")?><!--</a><br />-->
 				<?//=GetMessage("AUTH_FIRST_ONE")?>
