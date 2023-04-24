@@ -32,6 +32,7 @@ this.BX.Up = this.BX.Up || {};
 	          _this.addEvents();
 	          _this.addRegularEvents();
 	        }
+	        _this.setCalendarColor();
 	      });
 	    }
 	  }, {
@@ -93,7 +94,14 @@ this.BX.Up = this.BX.Up || {};
 	          narrowWeekend: false
 	        },
 	        // list of Calendars that can be used to add new schedule
-	        calendars: this.getIdCalendars()
+	        calendars: [{
+	          id: 'story',
+	          name: 'Прошедшие события',
+	          color: '#e8e8e8',
+	          backgroundColor: '#585858',
+	          borderColor: '#a1b56c',
+	          dragBackgroundColor: '#585858'
+	        }]
 	      });
 	    }
 	  }, {
@@ -128,7 +136,7 @@ this.BX.Up = this.BX.Up || {};
 	        while (moment(dayTimeStart).isBefore(repeatUntil)) {
 	          calendar.createEvents([{
 	            id: event['ID'],
-	            calendarId: 'team',
+	            calendarId: event['ID_TEAM'],
 	            title: event['TITLE'],
 	            start: dayTimeStart,
 	            end: dayTimeEnd,
@@ -193,7 +201,7 @@ this.BX.Up = this.BX.Up || {};
 	          if (moment(nowDay).isBefore(dayStart)) {
 	            calendar.createEvents([{
 	              id: event['ID'],
-	              calendarId: 'team',
+	              calendarId: event['ID_TEAM'],
 	              title: event['TITLE'],
 	              start: dayTimeStart,
 	              end: dayTimeEnd,
@@ -213,7 +221,7 @@ this.BX.Up = this.BX.Up || {};
 	          while (moment(dayTimeStart).isBefore(nowDay)) {
 	            calendar.createEvents([{
 	              id: event['ID'],
-	              calendarId: 'team',
+	              calendarId: 'story',
 	              title: event['TITLE_EVENT'],
 	              start: dayTimeStart,
 	              end: dayTimeEnd,
@@ -226,16 +234,26 @@ this.BX.Up = this.BX.Up || {};
 	      });
 	    }
 	  }, {
-	    key: "getIdCalendars",
-	    value: function getIdCalendars() {
+	    key: "setCalendarColor",
+	    value: function setCalendarColor() {
+	      var _this2 = this;
 	      var idTeams = this.idTeam;
-	      var calendarId = [];
+	      var calendar = this.calendar;
 	      idTeams.forEach(function (idTeam) {
-	        calendarId.push({
-	          id: idTeam
+	        var color = _this2.generateColor();
+	        calendar.setCalendarColor(idTeam, {
+	          color: '#e8e8e8',
+	          backgroundColor: color,
+	          borderColor: color,
+	          dragBackgroundColor: color
 	        });
 	      });
-	      return calendarId;
+	      console.log(Number('24').toString(16));
+	    }
+	  }, {
+	    key: "generateColor",
+	    value: function generateColor() {
+	      return '#' + Math.floor(Math.random() * 16777215).toString(16);
 	    }
 	  }]);
 	  return Schedule;

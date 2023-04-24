@@ -34,6 +34,7 @@ export class Schedule
 					this.addEvents();
 					this.addRegularEvents();
 				}
+				this.setCalendarColor()
 			});
 	}
 
@@ -100,7 +101,16 @@ export class Schedule
 				narrowWeekend: false
 			},
 			// list of Calendars that can be used to add new schedule
-			calendars: this.getCalendarList()
+			calendars: [
+				{
+					id: 'story',
+					name: 'Прошедшие события',
+					color: '#e8e8e8',
+					backgroundColor: '#585858',
+					borderColor: '#a1b56c',
+					dragBackgroundColor: '#585858',
+				}
+			]
 		});
 	}
 
@@ -253,14 +263,24 @@ export class Schedule
 		});
 	}
 
-	getCalendarList()
+	setCalendarColor()
 	{
 		let idTeams = this.idTeam;
-		let calendarId = [];
+		let calendar = this.calendar;
 		idTeams.forEach(idTeam => {
-			calendarId.push({id: idTeam});
+			let color = this.generateColor();
+			calendar.setCalendarColor(idTeam, {
+				color: '#e8e8e8',
+				backgroundColor: color,
+				borderColor: color,
+				dragBackgroundColor: color,
+			});
 		});
-		calendar
-		return calendarId;
+		console.log((Number('24')).toString(16))
+	}
+
+	generateColor()
+	{
+		return '#' + Math.floor(Math.random()*16777215).toString(16)
 	}
 }
