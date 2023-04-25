@@ -64,38 +64,40 @@
 
 			<div class="box">
 
-				<div class="container">
-					<p>
-						<input type="date" class="input" id="date" name="date" value="2019-10-22">
-					</p>
+<!--				<div class="container">-->
+<!--					<p>-->
+<!--						<input type="date" class="input" id="date" name="date" value="2019-10-22">-->
+<!--					</p>-->
+<!--				</div>-->
+<!---->
+<!--				<input type="text" class='date-input'>-->
+<!--				<div class="wrapper">-->
+<!--					<div class="level header is-marginless">-->
+<!--						<span class="left-arrow"><</span>-->
+<!--						<span class="year-month"></span>-->
+<!--						<span class="right-arrow">></span>-->
+<!--					</div>-->
+<!---->
+<!--					<div class="date-wrapper">-->
+<!--						<div class="level-left day-nums">-->
+<!--							<span class='date-item'>Sun</span>-->
+<!--							<span class='date-item'>Mon</span>-->
+<!--							<span class='date-item'>Tue</span>-->
+<!--							<span class='date-item'>Wen</span>-->
+<!--							<span class='date-item'>Thu</span>-->
+<!--							<span class='date-item'>Fri</span>-->
+<!--							<span class='date-item'>Sat</span>-->
+<!--						</div>-->
+<!--						<div class="dates">-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+
+				<div class="buttons" style="display: flex">
+					<a style="flex: 1" class="button is-primary" href="/group/<?= $arResult['ID'] ?>/schedule/">Расписание</a>
 				</div>
 
-				<input type="text" class='date-input'>
-				<div class="wrapper">
-					<div class="level header is-marginless">
-						<span class="left-arrow"><</span>
-						<span class="year-month"></span>
-						<span class="right-arrow">></span>
-					</div>
 
-					<div class="date-wrapper">
-						<div class="level-left day-nums">
-							<span class='date-item'>Sun</span>
-							<span class='date-item'>Mon</span>
-							<span class='date-item'>Tue</span>
-							<span class='date-item'>Wen</span>
-							<span class='date-item'>Thu</span>
-							<span class='date-item'>Fri</span>
-							<span class='date-item'>Sat</span>
-						</div>
-						<div class="dates">
-						</div>
-					</div>
-				</div>
-
-				<div class="buttons">
-					<a class="button is-primary" href="/group/<?= $arResult['ID'] ?>/schedule/">Расписание</a>
-				</div>
 
 			</div>
 
@@ -121,7 +123,7 @@
 								<div class="control">
 									<input name="title" class="input is-primary mb-4 is-large" type="text" readonly value="<?= $_SERVER['HTTP_HOST']?>/invite/<?=$arResult['INVITE_LINK']?>/">
 								</div>
-								<button class="button is-primary">Создать новую ссылку</button>
+								<button class="button is-primary" onclick="generateLink('<?= $_SERVER['HTTP_HOST']?>/invite/',<?= $arResult['ID'] ?>)">Создать новую ссылку</button>
 							</div>
 
 						</section>
@@ -180,15 +182,14 @@
 				<div class="modal" id="modal-js-leave-team">
 					<div class="modal-background"></div>
 					<div class="modal-card">
-						<header class="modal-card-head">
+						<header class="modal-card-head" style="border: none">
 							<p class="modal-card-title">Подтверждение</p>
 							<button class="delete" type="reset" aria-label="close"></button>
 						</header>
-
-						<section class="modal-card-body">
+						<section class="modal-card-body" style="background-color: #f5f5f5; ">
 							<p>Вы уверены, что хотите покинуть группу?</p>
 						</section>
-						<footer class="modal-card-foot">
+						<footer class="modal-card-foot" style="border: none">
 							<button class="button is-danger" type="submit">Покинуть</button>
 							<button class="button" type="reset" >Отмена</button>
 						</footer>

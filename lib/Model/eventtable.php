@@ -46,36 +46,41 @@ class EventTable extends DataManager
     public static function getMap()
     {
         return [
-            new IntegerField(
-                'ID',
-                [
-                    'primary' => true,
-                    'autocomplete' => true,
-                    'title' => Loc::getMessage('EVENT_ENTITY_ID_FIELD')
-                ]
-            ),
-            new IntegerField(
-                'ID_TEAM',
-                [
-                    'required' => true,
-                    'title' => Loc::getMessage('EVENT_ENTITY_ID_TEAM_FIELD')
-                ]
-            ),
-            new StringField(
-                'TITLE',
-                [
-                    'required' => true,
-                    'validation' => [__CLASS__, 'validateTitle'],
-                    'title' => Loc::getMessage('EVENT_ENTITY_TITLE_FIELD')
-                ]
-            ),
-            new DatetimeField(
-                'DATE_TIME',
-                [
-                    'required' => true,
-                    'title' => Loc::getMessage('EVENT_ENTITY_DATE_TIME_FIELD')
-                ]
-            ),
+			new IntegerField(
+				'ID',
+				[
+					'primary' => true,
+					'autocomplete' => true,
+					'title' => Loc::getMessage('EVENT_ENTITY_ID_FIELD')
+				]
+			),
+			new IntegerField(
+				'ID_TEAM',
+				[
+					'required' => true,
+					'title' => Loc::getMessage('EVENT_ENTITY_ID_TEAM_FIELD')
+				]
+			),
+			new StringField(
+				'TITLE',
+				[
+					'required' => true,
+					'validation' => [__CLASS__, 'validateTitle'],
+					'title' => Loc::getMessage('EVENT_ENTITY_TITLE_FIELD')
+				]
+			),
+			new DatetimeField(
+				'DATE_TIME_FROM',
+				[
+					'title' => Loc::getMessage('EVENT_ENTITY_DATE_TIME_FROM_FIELD')
+				]
+			),
+			new DatetimeField(
+				'DATE_TIME_TO',
+				[
+					'title' => Loc::getMessage('EVENT_ENTITY_DATE_TIME_TO_FIELD')
+				]
+			),
             new Reference(
                 'TEAM',
                 TeamTable::class,

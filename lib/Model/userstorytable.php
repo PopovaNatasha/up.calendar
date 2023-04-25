@@ -64,10 +64,9 @@ class UserStoryTable extends DataManager
                 ]
             ),
             new DatetimeField(
-                'DATE_TIME',
+                'DATE_TIME_FROM',
                 [
-                    'required' => true,
-                    'title' => Loc::getMessage('USER_STORY_ENTITY_DATE_TIME_FIELD')
+                    'title' => Loc::getMessage('USER_STORY_ENTITY_DATE_TIME_FROM_FIELD')
                 ]
             ),
             new IntegerField(
@@ -93,10 +92,17 @@ class UserStoryTable extends DataManager
                     'title' => Loc::getMessage('USER_STORY_ENTITY_TITLE_EVENT_FIELD')
                 ]
             ),
-            new Reference(
-                'TEAM',
-                TeamTable::class,
-                Join::on('this.ID_TEAM', 'ref.ID')
+            new DatetimeField(
+                'DATE_TIME_TO',
+                [
+                    'title' => Loc::getMessage('USER_STORY_ENTITY_DATE_TIME_TO_FIELD')
+                ]
+            ),
+            new IntegerField(
+                'DAY_STEP',
+                [
+                    'title' => Loc::getMessage('USER_STORY_ENTITY_DAY_STEP_FIELD')
+                ]
             ),
         ];
     }

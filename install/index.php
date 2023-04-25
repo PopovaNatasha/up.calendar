@@ -67,6 +67,31 @@ class up_calendar extends CModule
             true,
             true
         );
+        CopyDirFiles(
+            $_SERVER['DOCUMENT_ROOT'] . '/local/modules/up.calendar/install/js',
+            $_SERVER['DOCUMENT_ROOT'] . '/local/routes/',
+            true,
+            true
+        );
+    }
+
+    public function createAgent(): void
+    {
+        $nowDate = date('d.m.Y 23:30:00');
+        CAgent::AddAgent(
+            'Up\Calendar\Agents\AgentStory::userHistory();',
+            'up.calendar',
+            'N',
+            '86400',
+            "$nowDate",
+            'Y',
+            "$nowDate",
+        );
+    }
+
+    public function deleteAgent()
+    {
+        CAgent::RemoveModuleAgents('up.calendar');
     }
 
     public function uninstallFiles(): void
@@ -92,6 +117,7 @@ class up_calendar extends CModule
         $this->installDB();
         $this->installFiles();
         $this->installEvents();
+        $this->createAgent();
 
         $APPLICATION->IncludeAdminFile(
             Loc::getMessage('UP_CALENDAR_INSTALL_TITLE'),
@@ -101,6 +127,7 @@ class up_calendar extends CModule
 
     public function doUninstall(): void
     {
+        $this->deleteAgent();
         global $USER, $APPLICATION, $step;
 
         if (!$USER->isAdmin()) {

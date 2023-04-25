@@ -26,12 +26,49 @@ function __projectorMigrate(int $nextVersion, callable $callback)
 	}
 }
 
-
-
-__projectorMigrate(4, function($updater, $DB)
+__projectorMigrate(2, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_team'))
 	{
 		$DB->query("ALTER TABLE up_calendar_team ADD INVITE_LINK varchar(255)");
 	}
 });
+
+__projectorMigrate(3, function($updater, $DB)
+{
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_event'))
+	{
+		$DB->query("ALTER TABLE up_calendar_event CHANGE COLUMN DATE_TIME DATE_TIME_FROM DATETIME");
+		$DB->query("ALTER TABLE up_calendar_event ADD DATE_TIME_TO DATETIME");
+	}
+});
+
+__projectorMigrate(4, function($updater, $DB)
+{
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_regular_event'))
+	{
+		$DB->query("ALTER TABLE up_calendar_regular_event CHANGE COLUMN DATE_TIME DATE_TIME_FROM DATETIME");
+		$DB->query("ALTER TABLE up_calendar_regular_event ADD DATE_TIME_TO DATETIME");
+	}
+});
+
+__projectorMigrate(5, function($updater, $DB)
+{
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_changed_event'))
+	{
+		$DB->query("ALTER TABLE up_calendar_changed_event CHANGE COLUMN DATE_TIME DATE_TIME_FROM DATETIME");
+		$DB->query("ALTER TABLE up_calendar_changed_event ADD DATE_TIME_TO DATETIME");
+	}
+});
+
+__projectorMigrate(6, function($updater, $DB)
+{
+    if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_user_story'))
+    {
+        $DB->query("ALTER TABLE up_calendar_user_story CHANGE COLUMN DATE_TIME DATE_TIME_FROM DATETIME");
+        $DB->query("ALTER TABLE up_calendar_user_story ADD DATE_TIME_TO DATETIME");
+        $DB->query("ALTER TABLE up_calendar_user_story ADD DAY_STEP int");
+    }
+});
+
+
