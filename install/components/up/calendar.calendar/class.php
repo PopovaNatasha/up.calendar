@@ -14,13 +14,21 @@ class CalendarCalendarComponent extends CBitrixComponent
     protected function fetchTeams()
     {
 		global $USER;
-		$result = Calendar::getUserTeams($USER->getID());
+		$result = Calendar::getTeams($USER->getID());
 
+		$teams = [];
 		$idTeams = [];
-		foreach ($result as $team)
+		foreach ($result['teams'] as $team)
 		{
-			$idTeams[] = $team['ID_TEAM'];
+			$idTeams[] = $team['ID'];
+			$teams[] = [
+				'id' => $team['ID'],
+				'title' => $team['TITLE'],
+				'idAdmin' => $team['ID_ADMIN'],
+			];
 		}
-		$this->arResult = $idTeams;
+		$this->arResult['idTeams'] = $idTeams;
+		$this->arResult['teams'] = $teams;
+
     }
 }

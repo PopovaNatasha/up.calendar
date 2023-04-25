@@ -1,6 +1,6 @@
 <?php
 /**
- * @var $arResult
+ * @var array $arResult
  */
 use Bitrix\Main\UI\Extension;
 
@@ -17,14 +17,14 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 				<span style="padding: 0.5em 1em;">Группы</span>
 			</ul>
 		</div>
-		<?php foreach ($arResult as $idTeam): ?>
-		<div class="calendars-team">
-			<label>
-				<input type="checkbox" class="tui-full-calendar-checkbox-round" value="<?= $idTeam ?>" checked>
-				<span style="border-color: rgb(0, 169, 255); background-color: rgb(0, 169, 255);"></span>
-				<span>Team Title</span>
-			</label>
-		</div>
+		<?php foreach ($arResult['teams'] as $team):?>
+			<div class="calendars-team">
+				<label>
+					<input type="checkbox" class="tui-full-calendar-checkbox-round" value="<?= $team['id'] ?>" checked>
+					<span style="border-color: rgb(0, 169, 255); background-color: rgb(0, 169, 255);"></span>
+					<span><?= $team['title'] ?></span>
+				</label>
+			</div>
 		<?php endforeach; ?>
 	</div>
 
@@ -50,7 +50,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 <script>
 	BX.ready(function() {
 		window.CalendarEventsList = new BX.Up.Calendar.Schedule({
-			idTeam: <?= json_encode($arResult, JSON_THROW_ON_ERROR) ?>,
+			idTeam: <?= json_encode($arResult['idTeams'], JSON_THROW_ON_ERROR) ?>,
 			rootNodeId: 'calendar',
 			isUser: true,
 		});
