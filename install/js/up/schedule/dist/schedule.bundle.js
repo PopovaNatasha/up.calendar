@@ -26,13 +26,14 @@ this.BX.Up = this.BX.Up || {};
 	        _this.regularEventsList = eventsList['regularEvents'];
 	        _this.userStoryEvents = eventsList['userStoryEvents'];
 	        if (_this.isUser) {
+	          _this.filter();
 	          _this.addEventsForUser();
 	          _this.addRegularEventsForUser();
 	        } else {
 	          _this.addEvents();
 	          _this.addRegularEvents();
 	        }
-	        _this.setCalendarColor();
+	        // this.setCalendarColor()
 	      });
 	    }
 	  }, {
@@ -234,27 +235,58 @@ this.BX.Up = this.BX.Up || {};
 	      });
 	    }
 	  }, {
-	    key: "setCalendarColor",
-	    value: function setCalendarColor() {
-	      var _this2 = this;
-	      var idTeams = this.idTeam;
+	    key: "filter",
+	    value: function filter() {
+	      var idCalendars = this.idTeam;
+	      var sidebar = document.querySelector('.sidebar');
+	      console.log(sidebar);
 	      var calendar = this.calendar;
-	      idTeams.forEach(function (idTeam) {
-	        var color = _this2.generateColor();
-	        calendar.setCalendarColor(idTeam, {
-	          color: '#e8e8e8',
-	          backgroundColor: color,
-	          borderColor: color,
-	          dragBackgroundColor: color
-	        });
+	      sidebar.addEventListener('click', function (e) {
+	        if ('value' in e.target) {
+	          // if (e.target.value === 'all') {
+	          // 	if (appState.activeCalendarIds.length > 0) {
+	          // 		cal.setCalendarVisibility(appState.activeCalendarIds, false);
+	          // 		appState.activeCalendarIds = [];
+	          // 		setAllCheckboxes(false);
+	          // 	} else {
+	          // 		appState.activeCalendarIds = MOCK_CALENDARS.map(function (calendar) {
+	          // 			return calendar.id;
+	          // 		});
+	          // 		cal.setCalendarVisibility(appState.activeCalendarIds, true);
+	          // 		setAllCheckboxes(true);
+	          // 	}
+	          // } else
+	          if (idCalendars.indexOf(e.target.value) > -1) {
+	            idCalendars.splice(idCalendars.indexOf(e.target.value), 1);
+	            calendar.setCalendarVisibility(e.target.value, false);
+	            // setCheckboxBackgroundColor(e.target);
+	          } else {
+	            idCalendars.push(e.target.value);
+	            calendar.setCalendarVisibility(e.target.value, true);
+	            // setCheckboxBackgroundColor(e.target);
+	          }
+	        }
 	      });
-	      console.log(Number('24').toString(16));
-	    }
-	  }, {
-	    key: "generateColor",
-	    value: function generateColor() {
-	      return '#' + Math.floor(Math.random() * 16777215).toString(16);
-	    }
+	    } // setCalendarColor()
+	    // {
+	    // 	let idTeams = this.idTeam;
+	    // 	let calendar = this.calendar;
+	    // 	idTeams.forEach(idTeam => {
+	    // 		let color = this.generateColor();
+	    // 		calendar.setCalendarColor(idTeam, {
+	    // 			color: '#e8e8e8',
+	    // 			backgroundColor: color,
+	    // 			borderColor: color,
+	    // 			dragBackgroundColor: color,
+	    // 		});
+	    // 	});
+	    // 	console.log((Number('24')).toString(16))
+	    // }
+	    //
+	    // generateColor()
+	    // {
+	    // 	return '#' + Math.floor(Math.random()*16777215).toString(16)
+	    // }
 	  }]);
 	  return Schedule;
 	}();

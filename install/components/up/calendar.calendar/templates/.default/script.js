@@ -13,13 +13,13 @@ function changeView(evt, tabName)
 }
 
 function setRenderRangeText() {
-	var renderRange = document.getElementById('renderRange');
+	let renderRange = document.getElementById('renderRange');
 	let calendar = CalendarEventsList.calendar;
 	moment.locale('ru');
 	console.log(renderRange);
-	var options = calendar.getOptions();
-	var viewName = calendar.getViewName();
-	var html = [];
+	let options = calendar.getOptions();
+	let viewName = calendar.getViewName();
+	let html = [];
 	if (viewName === 'day') {
 		html.push(moment(calendar.getDate().getTime()).format('DD MMMM YYYY'));
 	} else if (viewName === 'month' &&
@@ -33,11 +33,84 @@ function setRenderRangeText() {
 	renderRange.innerHTML = html.join('');
 }
 
+function filterCalendar(id)
+{
+	let calendar = CalendarEventsList.calendar;
+	let chbox = document.getElementById(id);
+	if (chbox.checked)
+	{
+		calendar.setCalendarVisibility(id, true);
+		calendar.reload();
+	}
+	else
+	{
+		calendar.setCalendarVisibility(id, false);
+		calendar.reload();
+	}
+	// let checkboxes = document.querySelectorAll('.checkbox-round');
+	// let calendar = CalendarEventsList.calendar;
+	// let checkedCalendars = [];
+	// checkboxes.forEach(chbox => {
+	// 	if (chbox.checked)
+	// 	{
+	// 		checkedCalendars.push(chbox.id);
+	// 	}
+	// });
+	// calendar.setCalendarVisibility(checkedCalendars, true);
+	// 	console.log(checkedCalendars);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+	// Functions to open and close a modal
+	function openModal($el)
+	{
+		$el.classList.add('is-active');
+	}
+	function closeModal($el)
+	{
+		$el.classList.remove('is-active');
+	}
+
+	function closeAllModals()
+	{
+		(document.querySelectorAll('.modal') || []).forEach(($modal) => {
+			closeModal($modal);
+		});
+	}
+
+	// Add a click event on buttons to open a specific modal
+	(document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+		const modal = $trigger.dataset.target;
+		const $target = document.getElementById(modal);
+
+		$trigger.addEventListener('click', () => {
+			openModal($target);
+		});
+	});
+
+	// Add a click event on various child elements to close the parent modal
+	(document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+		const $target = $close.closest('.modal');
+
+		$close.addEventListener('click', () => {
+			closeModal($target);
+		});
+	});
+
+	// Add a keyboard event to close all modals
+	document.addEventListener('keydown', (event) => {
+		const e = event || window.event;
+
+		if (e.keyCode === 27)
+		{ // Escape key
+			closeAllModals();
+		}
+	});
+
+	setRenderRangeText();
 	const prevBtn = document.getElementById("prevBtn");
 	const nextBtn = document.getElementById("nextBtn");
 	const todayBtn = document.getElementById("todayBtn");
-	setRenderRangeText();
 
 	prevBtn.addEventListener("click", e => {
 		CalendarEventsList.calendar.prev();

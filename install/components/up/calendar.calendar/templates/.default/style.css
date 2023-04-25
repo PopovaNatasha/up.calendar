@@ -1,1 +1,33 @@
+.checkbox-round {
+	width: 1.2em;
+	height: 1.2em;
+	background-color: white;
+	border-radius: 50%;
+	vertical-align: middle;
+	border: 2px solid #a1b56c;
+	appearance: none;
+	-webkit-appearance: none;
+	outline: none;
+	cursor: pointer;
+}
 
+.checkbox-round:checked {
+	background-color: #a1b56c;
+}
+
+.calendars-team {
+	display: flex;
+	align-items: center;
+}
+
+.team-title {
+	padding-left: 1em;
+}
+
+.control.team {
+	display: flex;
+}
+
+input.input.is-primary.mb-4.team-color {
+	width: revert;
+}

@@ -17,15 +17,21 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 				<span style="padding: 0.5em 1em;">Группы</span>
 			</ul>
 		</div>
-		<?php foreach ($arResult['teams'] as $team):?>
-			<div class="calendars-team">
-				<label>
-					<input type="checkbox" class="tui-full-calendar-checkbox-round" value="<?= $team['id'] ?>" checked>
-					<span style="border-color: rgb(0, 169, 255); background-color: rgb(0, 169, 255);"></span>
-					<span><?= $team['title'] ?></span>
-				</label>
-			</div>
-		<?php endforeach; ?>
+
+		<div class="sidebar">
+			<?php foreach ($arResult['teams'] as $team):?>
+				<div class="field">
+					<label class="calendars-team">
+						<input type="checkbox" class="checkbox-round" id="<?= $team['id'] ?>" value="<?= $team['id'] ?>" checked>
+						<!--					<span style="border-color: rgb(0, 169, 255); background-color: rgb(0, 169, 255);"></span>-->
+						<span class="team-title"><?= $team['title'] ?></span>
+					</label>
+				</div>
+			<?php endforeach; ?>
+
+			<button class="button js-modal-trigger" data-target="modal-js-teamColor">Редактировать</i></button>
+		</div>
+
 	</div>
 
 	<div class="column">
@@ -46,6 +52,33 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 		</div>
 	</div>
 </div>
+
+<form name="change-team-color" method="post">
+	<div class="modal" id="modal-js-teamColor" >
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Выбор цвета</p>
+				<button class="delete" type="reset" aria-label="close"></button>
+			</header>
+
+			<section class="modal-card-body">
+				<?php foreach ($arResult['teams'] as $team): ?>
+					<div class="control team">
+						<input hidden name="id-team" value="" >
+						<input type="text"name="title" class="input is-primary mb-4" value="<?= $team['title'] ?>" readonly required>
+						<input type="color" name="color" class="input is-primary mb-4 team-color" value="#ff0000">
+					</div>
+				<?php endforeach; ?>
+			</section>
+
+			<footer class="modal-card-foot">
+				<button class="button is-success" type="submit">Сохранить</button>
+				<button class="button" type="reset" >Отмена</button>
+			</footer>
+		</div>
+	</div>
+</form>
 
 <script>
 	BX.ready(function() {
