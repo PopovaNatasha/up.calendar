@@ -119,7 +119,7 @@
 							<div class="field">
 								<label class="label">Ссылка</label>
 								<div class="control">
-									<input name="title" class="input is-primary mb-4 is-large" type="text" readonly value="<?= $_SERVER['HTTP_HOST']?>/invite/<?=$arResult['link']?>/">
+									<input name="title" class="input is-primary mb-4 is-large" type="text" readonly value="<?= $_SERVER['HTTP_HOST']?>/invite/<?=$arResult['INVITE_LINK']?>/">
 								</div>
 								<button class="button is-primary">Создать новую ссылку</button>
 							</div>
