@@ -17,6 +17,7 @@ class CalendarCalendarComponent extends CBitrixComponent
 		{
 			$post = $request->getPostList()->toArray();
 			$this->changeColor($post);
+			header("Refresh: 0");
 		}
     }
 
@@ -32,7 +33,6 @@ class CalendarCalendarComponent extends CBitrixComponent
 
 	protected function changeColor(array $colorTeams): void
 	{
-		var_dump($colorTeams); die();
-		// Calendar::setUserTeamColor($colorTeams);
+		Calendar::setUserTeamColor($colorTeams);
 	}
 }

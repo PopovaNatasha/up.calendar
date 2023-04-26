@@ -51,14 +51,15 @@ button.button.is-small.change-color {
 .form-popup {
 	position: fixed;
 	display: none;
-	width: 100px;
-	height: 100px;
-	background-color: gray;
-	z-index: 999;
 }
 
-.form-container {
-	max-width: 300px;
-	padding: 10px;
-	background-color: gray;
+.input-team-color {
+	display: flex;
+	align-items: center;
+	margin-bottom: 1.25em;
+}
+
+input.input.is-small.team-color {
+	width: revert;
+	margin-left: 1em;
 }

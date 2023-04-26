@@ -31,82 +31,52 @@ function setRenderRangeText() {
 	renderRange.innerHTML = html.join('');
 }
 
-function displayColorTeam(team) {
-	console.log(team);
-	// let blocks = document.querySelectorAll('.control.team');
-	// blocks.forEach(block => {
-	// 	let inputs = block.querySelectorAll('input');
-	// 	console.log(inputs);
-	// 	if (event.target.value === block.id)
-	// 	{
-	// 		block.style.display = "flex";
-	// 		for (let i = 0; i < inputs.length; i++) {
-	// 			inputs[i].disabled = false;
-	// 		}
-	// 	}
-	// 	else block.style.display = "none";
-	// 	for (let i = 0; i < inputs.length; i++) {
-	// 		inputs[i].disabled = true;
+document.addEventListener('DOMContentLoaded', () => {
+	// // Functions to open and close a modal
+	// function openModal($el)
+	// {
+	// 	$el.classList.add('is-active');
+	// }
+	// function closeModal($el)
+	// {
+	// 	$el.classList.remove('is-active');
+	// }
+	//
+	// function closeAllModals()
+	// {
+	// 	(document.querySelectorAll('.modal') || []).forEach(($modal) => {
+	// 		closeModal($modal);
+	// 	});
+	// }
+	//
+	// // Add a click event on buttons to open a specific modal
+	// (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+	// 	const modal = $trigger.dataset.target;
+	// 	const $target = document.getElementById(modal);
+	//
+	// 	$trigger.addEventListener('click', () => {
+	// 		openModal($target);
+	// 	});
+	// });
+	//
+	// // Add a click event on various child elements to close the parent modal
+	// (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+	// 	const $target = $close.closest('.modal');
+	//
+	// 	$close.addEventListener('click', () => {
+	// 		closeModal($target);
+	// 	});
+	// });
+	//
+	// // Add a keyboard event to close all modals
+	// document.addEventListener('keydown', (event) => {
+	// 	const e = event || window.event;
+	//
+	// 	if (e.keyCode === 27)
+	// 	{ // Escape key
+	// 		closeAllModals();
 	// 	}
 	// });
-}
-
-// var popup = $('.form-popup');
-//
-// $('.button-color').click(function(e) {
-// 	var coordinates = $(this).offset(); //Получаем координаты кликнутой кнопки
-// 	coordinates.top += $(this).height() / 2; // На высоте середины кнопки
-// 	coordinates.left += $(this).width() + 15; //Отодвигаем от кнопки на 15 пикселей
-// 	popup.offset(coordinates); //Устанавливаем координаты попапу
-// 	popup.fadeIn(800);
-// });
-
-document.addEventListener('DOMContentLoaded', () => {
-	// Functions to open and close a modal
-	function openModal($el)
-	{
-		$el.classList.add('is-active');
-	}
-	function closeModal($el)
-	{
-		$el.classList.remove('is-active');
-	}
-
-	function closeAllModals()
-	{
-		(document.querySelectorAll('.modal') || []).forEach(($modal) => {
-			closeModal($modal);
-		});
-	}
-
-	// Add a click event on buttons to open a specific modal
-	(document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
-		const modal = $trigger.dataset.target;
-		const $target = document.getElementById(modal);
-
-		$trigger.addEventListener('click', () => {
-			openModal($target);
-		});
-	});
-
-	// Add a click event on various child elements to close the parent modal
-	(document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
-		const $target = $close.closest('.modal');
-
-		$close.addEventListener('click', () => {
-			closeModal($target);
-		});
-	});
-
-	// Add a keyboard event to close all modals
-	document.addEventListener('keydown', (event) => {
-		const e = event || window.event;
-
-		if (e.keyCode === 27)
-		{ // Escape key
-			closeAllModals();
-		}
-	});
 
 	setRenderRangeText();
 	const prevBtn = document.getElementById("prevBtn");
@@ -129,14 +99,24 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 
 	const chButtons = document.getElementsByClassName('change-color');
-	let popupForm = document.getElementById('myForm');
+	let popupForm = document.getElementById('change-color-form');
 	for (let i = 0; i < chButtons.length; ++i) {
 		chButtons[i].addEventListener("click", e => {
+			let teamColor = chButtons[i].dataset.color;
+			let teamTitle = chButtons[i].dataset.title;
+			document.getElementById('input-color').value = teamColor;
+			document.getElementById('input-title').value = teamTitle;
+			document.getElementById('input-id').value = chButtons[i].id;
 			let coordinates = chButtons[i].getBoundingClientRect();
-			console.log(coordinates);
 			popupForm.style.left = coordinates.left + 'px';
 			popupForm.style.top = coordinates.bottom + "px";
 			popupForm.style.display = 'block';
 		});
 	}
+
+	let closeBtn = document.getElementById("close-button");
+	closeBtn.addEventListener('click', e => {
+		let form = document.getElementById("change-color-form");
+		form.style.display = 'none';
+	})
 });

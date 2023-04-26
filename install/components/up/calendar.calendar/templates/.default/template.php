@@ -5,7 +5,7 @@
 use Bitrix\Main\UI\Extension;
 
 Extension::load('up.schedule');
-var_dump($arResult['teams']);
+
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
 
@@ -26,7 +26,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 							   onfocus="this.blur()"
 							   style="border:<?= $team['COLOR'] ? '2px solid ' . $team['COLOR'] : '2px solid #a1b56c'?>;">
 						<span class="team-title"><?= $team['TITLE'] ?></span>
-						<button class="button is-small change-color" id="<?= $team['ID_TEAM']?>" >
+						<button class="button is-small change-color" id="<?= $team['ID_TEAM']?>" data-title="<?= $team['TITLE'] ?>" data-color="<?= $team['COLOR'] ?>">
 							<span class="icon is-small">
 								<i class="fa-solid fa-pen"></i>
 							</span>
@@ -34,7 +34,6 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 					</label>
 				</div>
 			<?php endforeach; ?>
-			<button class="button js-modal-trigger" data-target="modal-js-teamColor">Редактировать</i></button>
 		</div>
 
 	</div>
@@ -58,53 +57,21 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 	</div>
 </div>
 
-<div class="form-popup" id="myForm">
-	<form class="form-container" name="change-team-color" method="post">
-		<p>Изменить цвет</p>
-		<input type="text" name="title" readonly value="">
-		<input type="color" name="color" value="">
-
-		<button class="button is-success is-small" type="submit">Сохранить</button>
-		<button class="button is-small" type="reset" onclick="closeForm()">Отмена</button>
-	</form>
+<div class="form-popup" id="change-color-form">
+	<article class="message">
+		<form class="message-body" name="change-team-color" method="post">
+			<label class="input-team-color">
+				<input id="input-id" name="id" hidden>
+				<input id="input-title" class="input is-small" type="text" name="title" readonly>
+				<input id="input-color" class="input is-small team-color" type="color" name="color">
+			</label>
+			<div class="buttons">
+				<button class="button is-primary is-small" type="submit">Сохранить</button>
+				<button class="button is-small" type="reset" id="close-button">Отмена</button>
+			</div>
+		</form>
+	</article>
 </div>
-
-
-<form name="change-team-color" method="post">
-	<div class="modal" id="modal-js-teamColor" >
-		<div class="modal-background"></div>
-		<div class="modal-card">
-			<header class="modal-card-head">
-				<p class="modal-card-title">Выбор цвета</p>
-				<button class="delete" type="reset" aria-label="close"></button>
-			</header>
-
-			<section class="modal-card-body">
-				<div class="control team">
-					<div class="select is-primary">
-						<select id="selectTeam" name="id-team" onchange="displayColorTeam()">
-							<?php foreach ($arResult['teams'] as $team): ?>
-								<option value="<?= $team['ID_TEAM'] ?>"><?= $team['TITLE'] ?></option>
-							<?php endforeach; ?>
-						</select>
-					</div>
-					<input type="color" name="color" class="input is-primary mb-4 team-color">
-				</div>
-				<?php //foreach ($arResult['teams'] as $key => $team): ?>
-<!--					<div class="control team" >-->
-<!--						<input type="text"name="title" class="input is-primary mb-4" readonly required value="--><?//= $arResult['team'][0]['TITLE'] ?><!--">-->
-<!--						<input type="color" name="color" class="input is-primary mb-4 team-color">-->
-<!--					</div>-->
-				<?php //endforeach; ?>
-			</section>
-
-			<footer class="modal-card-foot">
-				<button class="button is-success" type="submit">Сохранить</button>
-				<button class="button" type="reset" >Отмена</button>
-			</footer>
-		</div>
-	</div>
-</form>
 
 <script>
 	BX.ready(function() {
