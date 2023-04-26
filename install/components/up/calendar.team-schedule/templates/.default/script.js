@@ -33,7 +33,7 @@ function setRenderRangeText() {
 	renderRange.innerHTML = html.join('');
 }
 
-function display_usgs_change() {
+function displayUsgsChange() {
 	if(event.target.value === 'daily') {
 		document.getElementById('every').style.display = "block";
 		document.getElementById('day_count').style.display = "block";

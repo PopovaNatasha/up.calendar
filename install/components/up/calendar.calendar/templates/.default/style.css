@@ -1,19 +1,18 @@
 .checkbox-round {
 	width: 1.2em;
 	height: 1.2em;
-	background-color: white;
+	/*background-color: white;*/
 	border-radius: 50%;
 	vertical-align: middle;
-	border: 2px solid #a1b56c;
+	/*border: 2px solid #a1b56c;*/
 	appearance: none;
 	-webkit-appearance: none;
-	outline: none;
 	cursor: pointer;
 }
 
-.checkbox-round:checked {
-	background-color: #a1b56c;
-}
+/*.checkbox-round:checked {*/
+/*	background-color: #a1b56c;*/
+/*}*/
 
 .calendars-team {
 	display: flex;
@@ -30,4 +29,14 @@
 
 input.input.is-primary.mb-4.team-color {
 	width: revert;
+}
+
+.column.is-2.calendar {
+	border-right: #dbdbdb solid 1px
+}
+
+button.button.is-small.change-color {
+	margin-left: auto;
+	border-radius: 5px;
+	font-size: 0.6em;
 }

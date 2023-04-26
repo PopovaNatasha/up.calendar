@@ -1,34 +1,37 @@
 <?php
 
-use Up\Calendar\Calendar;
+use Bitrix\Main\Context,
+	Up\Calendar\Calendar,
+	Bitrix\Main\Loader;
 
 class CalendarCalendarComponent extends CBitrixComponent
 {
     public function executeComponent()
     {
-        \Bitrix\Main\Loader::includeModule('up.calendar');
+        Loader::includeModule('up.calendar');
         $this->fetchTeams();
         $this->includeComponentTemplate();
-    }
 
-    protected function fetchTeams()
-    {
-		global $USER;
-		$result = Calendar::getTeams($USER->getID());
-
-		$teams = [];
-		$idTeams = [];
-		foreach ($result['teams'] as $team)
+		$request = Context::getCurrent()->getRequest();
+		if ($request->isPost())
 		{
-			$idTeams[] = $team['ID'];
-			$teams[] = [
-				'id' => $team['ID'],
-				'title' => $team['TITLE'],
-				'idAdmin' => $team['ID_ADMIN'],
-			];
+			$post = $request->getPostList()->toArray();
+			$this->changeColor($post);
 		}
-		$this->arResult['idTeams'] = $idTeams;
-		$this->arResult['teams'] = $teams;
-
     }
+
+    protected function fetchTeams(): void
+	{
+		global $USER;
+		$teams = Calendar::getUserTeams($USER->getID());
+		$idTeams = array_column($teams, 'ID_TEAM');
+
+		$this->arResult['teams'] = $teams;
+		$this->arResult['idTeams'] = $idTeams;
+    }
+
+	protected function changeColor(array $colorTeams)
+	{
+
+	}
 }

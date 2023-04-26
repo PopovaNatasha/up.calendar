@@ -7,6 +7,7 @@ use Bitrix\Main\UI\PageNavigation,
     Up\Calendar\Model\UserTeamTable,
     Up\Calendar\Model\EventTable,
     Up\Calendar\Model\RegularEventTable;
+use Bitrix\Translate\Controller\Index\CollectLangPath;
 use Up\Calendar\Model\UserStoryTable;
 
 class Calendar
@@ -131,7 +132,7 @@ class Calendar
     public static function getUserTeams($idUser)
     {
         return UserTeamTable::getList([
-            'select' => ['ID_TEAM'],
+            'select' => ['ID_TEAM', 'COLOR', 'TITLE' => 'TEAM.TITLE'],
             'filter' => [
                 'ID_USER' => $idUser
             ],
@@ -269,16 +270,9 @@ class Calendar
 			'userStoryEvents' => $userStoryEvents,
         ]];
     }
-    // public static function getStoryUser()
-    // {
-    //     global $USER;
-    //     $id = $USER->getID();
-    //     return UserStoryTable::getList([
-    //         'select' => ['*'],
-    //         'filter' => [
-    //             'ID_USER' => "$id"
-    //         ]
-    //     ])->fetchAll();
-    // }
 
+	public static function setUserTeamColor(array $colorTeams)
+	{
+
+	}
 }

@@ -5,7 +5,8 @@ use Bitrix\Main\Localization\Loc,
     Bitrix\Main\ORM\Data\DataManager,
     Bitrix\Main\ORM\Fields\Relations\Reference,
     Bitrix\Main\ORM\Query\Join,
-    Bitrix\Main\ORM\Fields\IntegerField;
+    Bitrix\Main\ORM\Fields\IntegerField,
+	Bitrix\Main\ORM\Fields\StringField;
 
 Loc::loadMessages(__FILE__);
 
@@ -55,6 +56,13 @@ class UserTeamTable extends DataManager
                     'title' => Loc::getMessage('USER_TEAM_ENTITY_ID_TEAM_FIELD')
                 ]
             ),
+			new StringField(
+				'COLOR',
+				[
+					'validation' => [__CLASS__, 'validateColor'],
+					'title' => Loc::getMessage('USER_TEAM_ENTITY_COLOR_FIELD')
+				]
+			),
             new Reference(
                 'TEAM',
                 TeamTable::class,

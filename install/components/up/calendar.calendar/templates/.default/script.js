@@ -33,31 +33,15 @@ function setRenderRangeText() {
 	renderRange.innerHTML = html.join('');
 }
 
-function filterCalendar(id)
-{
-	let calendar = CalendarEventsList.calendar;
-	let chbox = document.getElementById(id);
-	if (chbox.checked)
-	{
-		calendar.setCalendarVisibility(id, true);
-		calendar.reload();
-	}
-	else
-	{
-		calendar.setCalendarVisibility(id, false);
-		calendar.reload();
-	}
-	// let checkboxes = document.querySelectorAll('.checkbox-round');
-	// let calendar = CalendarEventsList.calendar;
-	// let checkedCalendars = [];
-	// checkboxes.forEach(chbox => {
-	// 	if (chbox.checked)
-	// 	{
-	// 		checkedCalendars.push(chbox.id);
-	// 	}
-	// });
-	// calendar.setCalendarVisibility(checkedCalendars, true);
-	// 	console.log(checkedCalendars);
+function displayColorTeam() {
+	let blocks = document.querySelectorAll('.control.team');
+	blocks.forEach(block => {
+		if (event.target.value === block.id)
+		{
+			block.style.display = "flex";
+		}
+		else block.style.display = "none";
+	});
 }
 
 document.addEventListener('DOMContentLoaded', () => {

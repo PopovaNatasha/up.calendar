@@ -41,7 +41,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 
 						<div class="column control">
 							<div class="select is-primary">
-								<select id="selectRepeat" name="rule_repeat" onchange="display_usgs_change()">
+								<select id="selectRepeat" name="rule_repeat" onchange="displayUsgsChange()">
 									<option value="non">Не повторяется</option>
 									<option value="daily">Каждый день</option>
 									<option value="weekly">Каждую неделю</option>

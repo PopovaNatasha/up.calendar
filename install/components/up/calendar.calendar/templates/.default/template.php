@@ -5,13 +5,13 @@
 use Bitrix\Main\UI\Extension;
 
 Extension::load('up.schedule');
-
+var_dump($arResult);
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
 
 <div class="box columns">
 
-	<div class="column is-2" style="border-right: #dbdbdb solid 1px">
+	<div class="column is-2 calendar">
 		<div class="tabs is-left">
 			<ul style="margin-left: 0">
 				<span style="padding: 0.5em 1em;">Группы</span>
@@ -22,13 +22,16 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 			<?php foreach ($arResult['teams'] as $team):?>
 				<div class="field">
 					<label class="calendars-team">
-						<input type="checkbox" class="checkbox-round" id="<?= $team['id'] ?>" value="<?= $team['id'] ?>" checked>
-						<!--					<span style="border-color: rgb(0, 169, 255); background-color: rgb(0, 169, 255);"></span>-->
-						<span class="team-title"><?= $team['title'] ?></span>
+						<input type="checkbox" class="checkbox-round" value="<?= $team['ID_TEAM'] ?>" id="chbox-<?= $team['ID_TEAM'] ?>" checked
+							   onfocus="this.blur()"
+							   style="
+								   border:<?= $team['COLOR'] ? '2px solid #' . $team['COLOR'] : '2px solid #a1b56c'?>;
+
+								   ">
+						<span class="team-title"><?= $team['TITLE'] ?></span>
 					</label>
 				</div>
 			<?php endforeach; ?>
-
 			<button class="button js-modal-trigger" data-target="modal-js-teamColor">Редактировать</i></button>
 		</div>
 
@@ -63,11 +66,20 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 			</header>
 
 			<section class="modal-card-body">
-				<?php foreach ($arResult['teams'] as $team): ?>
-					<div class="control team">
-						<input hidden name="id-team" value="" >
-						<input type="text"name="title" class="input is-primary mb-4" value="<?= $team['title'] ?>" readonly required>
-						<input type="color" name="color" class="input is-primary mb-4 team-color" value="#ff0000">
+				<div class="control">
+					<div class="select is-primary">
+						<select id="selectTeam" name="idTeam" onchange="displayColorTeam()">
+							<?php foreach ($arResult['teams'] as $team): ?>
+								<option value="<?= $team['ID_TEAM'] ?>"><?= $team['TITLE'] ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
+				<?php foreach ($arResult['teams'] as $key => $team): ?>
+					<div class="control team" id="<?= $team['ID_TEAM'] ?>" style="display:<?= ($key === 0) ? 'flex' : 'none'?>">
+						<input hidden name="id-team" value="<?= $team['ID_TEAM'] ?>" >
+						<input type="text"name="title" class="input is-primary mb-4" value="<?= $team['TITLE'] ?>" readonly required>
+						<input type="color" name="color" class="input is-primary mb-4 team-color" value="#a1b56c">
 					</div>
 				<?php endforeach; ?>
 			</section>
@@ -85,6 +97,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 		window.CalendarEventsList = new BX.Up.Calendar.Schedule({
 			idTeam: <?= json_encode($arResult['idTeams'], JSON_THROW_ON_ERROR) ?>,
 			rootNodeId: 'calendar',
+			teams: <?= json_encode($arResult['teams'], JSON_THROW_ON_ERROR) ?>,
 			isUser: true,
 		});
 	});
