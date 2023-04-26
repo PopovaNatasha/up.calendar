@@ -30,8 +30,9 @@ class CalendarCalendarComponent extends CBitrixComponent
 		$this->arResult['idTeams'] = $idTeams;
     }
 
-	protected function changeColor(array $colorTeams)
+	protected function changeColor(array $colorTeams): void
 	{
-
+		var_dump($colorTeams); die();
+		// Calendar::setUserTeamColor($colorTeams);
 	}
 }

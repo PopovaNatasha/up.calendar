@@ -6,7 +6,8 @@ use Bitrix\Main\Localization\Loc,
     Bitrix\Main\ORM\Fields\Relations\Reference,
     Bitrix\Main\ORM\Query\Join,
     Bitrix\Main\ORM\Fields\IntegerField,
-	Bitrix\Main\ORM\Fields\StringField;
+	Bitrix\Main\ORM\Fields\StringField,
+	Bitrix\Main\ORM\Fields\Validators\LengthValidator;
 
 Loc::loadMessages(__FILE__);
 
@@ -42,20 +43,20 @@ class UserTeamTable extends DataManager
     public static function getMap()
     {
         return [
-            new IntegerField(
-                'ID_USER',
-                [
-                    'primary' => true,
-                    'title' => Loc::getMessage('USER_TEAM_ENTITY_ID_USER_FIELD')
-                ]
-            ),
-            new IntegerField(
-                'ID_TEAM',
-                [
-                    'primary' => true,
-                    'title' => Loc::getMessage('USER_TEAM_ENTITY_ID_TEAM_FIELD')
-                ]
-            ),
+			new IntegerField(
+				'ID_USER',
+				[
+					'primary' => true,
+					'title' => Loc::getMessage('USER_TEAM_ENTITY_ID_USER_FIELD')
+				]
+			),
+			new IntegerField(
+				'ID_TEAM',
+				[
+					'primary' => true,
+					'title' => Loc::getMessage('USER_TEAM_ENTITY_ID_TEAM_FIELD')
+				]
+			),
 			new StringField(
 				'COLOR',
 				[
@@ -75,4 +76,15 @@ class UserTeamTable extends DataManager
             ),
         ];
     }
+	/**
+	 * Returns validators for COLOR field.
+	 *
+	 * @return array
+	 */
+	public static function validateColor()
+	{
+		return [
+			new LengthValidator(null, 7),
+		];
+	}
 }

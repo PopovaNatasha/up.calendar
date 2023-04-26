@@ -265,12 +265,12 @@ this.BX.Up = this.BX.Up || {};
 	    value: function setCheckboxBackgroundColor() {
 	      var teams = this.teams;
 	      teams.forEach(function (team) {
-	        var color = team['COLOR'] ? team['COLOR'] : 'a1b56c';
+	        var color = team['COLOR'] ? team['COLOR'] : '#a1b56c';
 	        var id = team['ID_TEAM'];
 	        var checkbox = document.getElementById('chbox-' + id);
-	        checkbox.style.setProperty('background-color', checkbox.checked ? '#' + color : '#fff');
+	        checkbox.style.setProperty('background-color', checkbox.checked ? color : '#fff');
 	        checkbox.addEventListener('click', function () {
-	          checkbox.style.setProperty('background-color', checkbox.checked ? '#' + color : '#fff');
+	          checkbox.style.setProperty('background-color', checkbox.checked ? color : '#fff');
 	        });
 	      });
 	    } // setCalendarColor()
@@ -293,17 +293,20 @@ this.BX.Up = this.BX.Up || {};
 	    value: function getCalendarsList() {
 	      var teams = this.teams;
 	      var calendars = [];
-	      teams.forEach(function (team) {
-	        var color = team['COLOR'];
-	        calendars.push({
-	          id: team['ID_TEAM'],
-	          name: team['TITLE'],
-	          color: color ? '#' + color : '#a1b56c',
-	          backgroundColor: color ? '#' + color : '#a1b56c',
-	          borderColor: color ? '#' + color : '#a1b56c',
-	          dragBackgroundColor: color ? '#' + color : '#a1b56c'
+	      if (this.isUser) {
+	        teams.forEach(function (team) {
+	          console.log(team['COLOR']);
+	          var color = team['COLOR'];
+	          calendars.push({
+	            id: team['ID_TEAM'],
+	            name: team['TITLE'],
+	            color: color ? color : '#a1b56c',
+	            backgroundColor: color ? color : '#a1b56c',
+	            borderColor: color ? color : '#a1b56c',
+	            dragBackgroundColor: color ? color : '#a1b56c'
+	          });
 	        });
-	      });
+	      }
 	      calendars.push({
 	        id: 'story',
 	        name: 'Прошедшие события',

@@ -271,8 +271,16 @@ class Calendar
         ]];
     }
 
-	public static function setUserTeamColor(array $colorTeams)
+	public static function setUserTeamColor(array $colorTeams): void
 	{
+		global $USER;
+		$idUser = $USER->getId();
+		$idTeam = $colorTeams['id-team'];
+		$result = UserTeamTable::update(['ID_USER' => $idUser, 'ID_TEAM' => $idTeam], ['COLOR' => $colorTeams['color']]);
 
+		if (!$result->isSuccess())
+		{
+			$errors = $result->getErrorMessages();
+		}
 	}
 }

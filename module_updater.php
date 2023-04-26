@@ -75,7 +75,7 @@ __projectorMigrate(7, function($updater, $DB)
 {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_user_team'))
 	{
-		$DB->query("ALTER TABLE up_calendar_user_team ADD COLOR VARCHAR(6)");
+		$DB->query("ALTER TABLE up_calendar_user_team ADD COLOR VARCHAR(7)");
 	}
 });
 

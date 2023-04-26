@@ -29,6 +29,7 @@
 
 input.input.is-primary.mb-4.team-color {
 	width: revert;
+	margin-left: 0.5em;
 }
 
 .column.is-2.calendar {
@@ -39,4 +40,25 @@ button.button.is-small.change-color {
 	margin-left: auto;
 	border-radius: 5px;
 	font-size: 0.6em;
+}
+
+.select.is-primary {
+	margin-bottom: 1em;
+}
+
+/*form*/
+
+.form-popup {
+	position: fixed;
+	display: none;
+	width: 100px;
+	height: 100px;
+	background-color: gray;
+	z-index: 999;
+}
+
+.form-container {
+	max-width: 300px;
+	padding: 10px;
+	background-color: gray;
 }

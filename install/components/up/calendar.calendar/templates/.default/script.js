@@ -1,6 +1,5 @@
 function changeView(evt, tabName)
 {
-	console.log(tabName);
 	var i, tablinks;
 
 	tablinks = document.getElementsByClassName("tab");
@@ -16,7 +15,6 @@ function setRenderRangeText() {
 	let renderRange = document.getElementById('renderRange');
 	let calendar = CalendarEventsList.calendar;
 	moment.locale('ru');
-	console.log(renderRange);
 	let options = calendar.getOptions();
 	let viewName = calendar.getViewName();
 	let html = [];
@@ -33,16 +31,35 @@ function setRenderRangeText() {
 	renderRange.innerHTML = html.join('');
 }
 
-function displayColorTeam() {
-	let blocks = document.querySelectorAll('.control.team');
-	blocks.forEach(block => {
-		if (event.target.value === block.id)
-		{
-			block.style.display = "flex";
-		}
-		else block.style.display = "none";
-	});
+function displayColorTeam(team) {
+	console.log(team);
+	// let blocks = document.querySelectorAll('.control.team');
+	// blocks.forEach(block => {
+	// 	let inputs = block.querySelectorAll('input');
+	// 	console.log(inputs);
+	// 	if (event.target.value === block.id)
+	// 	{
+	// 		block.style.display = "flex";
+	// 		for (let i = 0; i < inputs.length; i++) {
+	// 			inputs[i].disabled = false;
+	// 		}
+	// 	}
+	// 	else block.style.display = "none";
+	// 	for (let i = 0; i < inputs.length; i++) {
+	// 		inputs[i].disabled = true;
+	// 	}
+	// });
 }
+
+// var popup = $('.form-popup');
+//
+// $('.button-color').click(function(e) {
+// 	var coordinates = $(this).offset(); //Получаем координаты кликнутой кнопки
+// 	coordinates.top += $(this).height() / 2; // На высоте середины кнопки
+// 	coordinates.left += $(this).width() + 15; //Отодвигаем от кнопки на 15 пикселей
+// 	popup.offset(coordinates); //Устанавливаем координаты попапу
+// 	popup.fadeIn(800);
+// });
 
 document.addEventListener('DOMContentLoaded', () => {
 	// Functions to open and close a modal
@@ -110,4 +127,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		CalendarEventsList.calendar.today();
 		setRenderRangeText();
 	});
+
+	const chButtons = document.getElementsByClassName('change-color');
+	let popupForm = document.getElementById('myForm');
+	for (let i = 0; i < chButtons.length; ++i) {
+		chButtons[i].addEventListener("click", e => {
+			let coordinates = chButtons[i].getBoundingClientRect();
+			console.log(coordinates);
+			popupForm.style.left = coordinates.left + 'px';
+			popupForm.style.top = coordinates.bottom + "px";
+			popupForm.style.display = 'block';
+		});
+	}
 });

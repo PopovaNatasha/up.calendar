@@ -296,12 +296,12 @@ export class Schedule
 	{
 		let teams = this.teams;
 		teams.forEach(team => {
-			let color = team['COLOR'] ? team['COLOR'] : 'a1b56c';
+			let color = team['COLOR'] ? team['COLOR'] : '#a1b56c';
 			let id = team['ID_TEAM'];
 			let checkbox = document.getElementById('chbox-' + id);
-			checkbox.style.setProperty('background-color', checkbox.checked ? '#' + color : '#fff');
+			checkbox.style.setProperty('background-color', checkbox.checked ? color : '#fff');
 			checkbox.addEventListener('click', () => {
-				checkbox.style.setProperty('background-color', checkbox.checked ? '#' + color : '#fff');
+				checkbox.style.setProperty('background-color', checkbox.checked ? color : '#fff');
 			})
 		});
 	}
@@ -326,17 +326,21 @@ export class Schedule
 	{
 		let teams = this.teams;
 		let calendars = [];
-		teams.forEach(team => {
-			let color = team['COLOR'];
-			calendars.push({
-				id: team['ID_TEAM'],
-				name: team['TITLE'],
-				color: color ? '#' + color : '#a1b56c',
-				backgroundColor: color ? '#' + color : '#a1b56c',
-				borderColor: color ? '#' + color : '#a1b56c',
-				dragBackgroundColor: color ? '#' + color : '#a1b56c',
+		if (this.isUser)
+		{
+			teams.forEach(team => {
+				console.log(team['COLOR']);
+				let color = team['COLOR'];
+				calendars.push({
+					id: team['ID_TEAM'],
+					name: team['TITLE'],
+					color: color ? color : '#a1b56c',
+					backgroundColor: color ? color : '#a1b56c',
+					borderColor: color ? color : '#a1b56c',
+					dragBackgroundColor: color ? color : '#a1b56c',
+				});
 			});
-		});
+		}
 		calendars.push({
 			id: 'story',
 			name: 'Прошедшие события',

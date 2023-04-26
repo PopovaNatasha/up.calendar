@@ -5,7 +5,7 @@
 use Bitrix\Main\UI\Extension;
 
 Extension::load('up.schedule');
-var_dump($arResult);
+var_dump($arResult['teams']);
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 ?>
 
@@ -24,11 +24,13 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 					<label class="calendars-team">
 						<input type="checkbox" class="checkbox-round" value="<?= $team['ID_TEAM'] ?>" id="chbox-<?= $team['ID_TEAM'] ?>" checked
 							   onfocus="this.blur()"
-							   style="
-								   border:<?= $team['COLOR'] ? '2px solid #' . $team['COLOR'] : '2px solid #a1b56c'?>;
-
-								   ">
+							   style="border:<?= $team['COLOR'] ? '2px solid ' . $team['COLOR'] : '2px solid #a1b56c'?>;">
 						<span class="team-title"><?= $team['TITLE'] ?></span>
+						<button class="button is-small change-color" id="<?= $team['ID_TEAM']?>" >
+							<span class="icon is-small">
+								<i class="fa-solid fa-pen"></i>
+							</span>
+						</button>
 					</label>
 				</div>
 			<?php endforeach; ?>
@@ -56,6 +58,18 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 	</div>
 </div>
 
+<div class="form-popup" id="myForm">
+	<form class="form-container" name="change-team-color" method="post">
+		<p>Изменить цвет</p>
+		<input type="text" name="title" readonly value="">
+		<input type="color" name="color" value="">
+
+		<button class="button is-success is-small" type="submit">Сохранить</button>
+		<button class="button is-small" type="reset" onclick="closeForm()">Отмена</button>
+	</form>
+</div>
+
+
 <form name="change-team-color" method="post">
 	<div class="modal" id="modal-js-teamColor" >
 		<div class="modal-background"></div>
@@ -66,22 +80,22 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 			</header>
 
 			<section class="modal-card-body">
-				<div class="control">
+				<div class="control team">
 					<div class="select is-primary">
-						<select id="selectTeam" name="idTeam" onchange="displayColorTeam()">
+						<select id="selectTeam" name="id-team" onchange="displayColorTeam()">
 							<?php foreach ($arResult['teams'] as $team): ?>
 								<option value="<?= $team['ID_TEAM'] ?>"><?= $team['TITLE'] ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>
+					<input type="color" name="color" class="input is-primary mb-4 team-color">
 				</div>
-				<?php foreach ($arResult['teams'] as $key => $team): ?>
-					<div class="control team" id="<?= $team['ID_TEAM'] ?>" style="display:<?= ($key === 0) ? 'flex' : 'none'?>">
-						<input hidden name="id-team" value="<?= $team['ID_TEAM'] ?>" >
-						<input type="text"name="title" class="input is-primary mb-4" value="<?= $team['TITLE'] ?>" readonly required>
-						<input type="color" name="color" class="input is-primary mb-4 team-color" value="#a1b56c">
-					</div>
-				<?php endforeach; ?>
+				<?php //foreach ($arResult['teams'] as $key => $team): ?>
+<!--					<div class="control team" >-->
+<!--						<input type="text"name="title" class="input is-primary mb-4" readonly required value="--><?//= $arResult['team'][0]['TITLE'] ?><!--">-->
+<!--						<input type="color" name="color" class="input is-primary mb-4 team-color">-->
+<!--					</div>-->
+				<?php //endforeach; ?>
 			</section>
 
 			<footer class="modal-card-foot">
