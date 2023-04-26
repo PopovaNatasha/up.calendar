@@ -47,10 +47,26 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 });
 
-function generateLink(link,idTeam)
+function generateLink(link, idTeam)
 {
-	// var newLink;
-	// newLink = Calendar::createInviteLink(idTeam);
-	//
-	// link.value.replace("dev.bx/invite/newLink/");
+	const input = document.getElementById('InviteLink');
+	return new Promise((resolve, reject) => {
+		BX.ajax.runAction(
+			'up:calendar.InviteLink.createInviteLink',
+			{data: {
+					idTeam: idTeam,
+				},
+			})
+			.then((response) => {
+				const NewLink = response.data;
+				input.value = link + NewLink + '/';
+
+				resolve(NewLink);
+			})
+			.catch((error) => {
+				reject(error);
+			})
+		;
+	});
+
 }
