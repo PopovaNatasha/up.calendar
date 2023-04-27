@@ -150,7 +150,7 @@ this.BX.Up = this.BX.Up || {};
 	        var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
 	        var nowDay = moment().format('YYYY-MM-DD');
 	        var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-	        if (moment(nowDay).isBefore(dayStart)) {
+	        if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart)) {
 	          calendar.createEvents([{
 	            id: event['ID'],
 	            calendarId: event['ID_TEAM'],
@@ -190,7 +190,7 @@ this.BX.Up = this.BX.Up || {};
 	        while (moment(dayTimeStart).isBefore(repeatUntil)) {
 	          var nowDay = moment().format('YYYY-MM-DD');
 	          var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-	          if (moment(nowDay).isBefore(dayStart)) {
+	          if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart)) {
 	            calendar.createEvents([{
 	              id: event['ID'],
 	              calendarId: event['ID_TEAM'],
