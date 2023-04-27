@@ -10,6 +10,12 @@
     font-size: 36px;
 }
 
+.user-info {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+}
 .navbar.has-shadow {
 	display: flex;
 	justify-content: space-between;

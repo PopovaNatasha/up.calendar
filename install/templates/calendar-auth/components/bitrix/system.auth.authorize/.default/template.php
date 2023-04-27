@@ -12,7 +12,6 @@ ShowMessage($arResult['ERROR_MESSAGE']);
 	<div class="bx-auth-title"><?echo GetMessage("AUTH_TITLE")?></div>
 <?endif?>
 <!--	<div class="bx-auth-note">--><?//=GetMessage("AUTH_PLEASE_AUTH"); ?><!--</div>-->
-<!--	--><?php //var_dump('suka') ?>
 
 <!--	<section class="container">-->
 		<div class="columns is-multiline">

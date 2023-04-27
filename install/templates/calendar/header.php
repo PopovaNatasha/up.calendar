@@ -37,8 +37,6 @@
                 </a>
 
                 <div class="user-info">
-
-
                     <div class="FirstName"><?= htmlspecialchars($USER->GetFullName()) ?></div>
                     <a class="button is-danger" href="/?logout=yes&<?=bitrix_sessid_get()?>">Выйти</a>
                 </div>
