@@ -49,7 +49,6 @@ this.BX.Up = this.BX.Up || {};
 	          }
 	        }).then(function (response) {
 	          var eventsList = response.data.events;
-	          console.log(eventsList);
 	          resolve(eventsList);
 	        })["catch"](function (error) {
 	          reject(error);
@@ -88,9 +87,7 @@ this.BX.Up = this.BX.Up || {};
 	          startDayOfWeek: 1,
 	          narrowWeekend: false,
 	          taskView: false,
-	          eventView: ['time'],
-	          hourStart: 6,
-	          hourEnd: 23
+	          eventView: ['time']
 	        },
 	        month: {
 	          dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
@@ -98,17 +95,6 @@ this.BX.Up = this.BX.Up || {};
 	          narrowWeekend: false
 	        },
 	        calendars: this.getCalendarsList()
-	        // list of Calendars that can be used to add new schedule
-	        // calendars: [
-	        // 	{
-	        // 		id: 'story',
-	        // 		name: 'Прошедшие события',
-	        // 		color: '#bbbbbb',
-	        // 		backgroundColor: '#bbbbbb',
-	        // 		borderColor: '#a1b56c',
-	        // 		dragBackgroundColor: '#bbbbbb',
-	        // 	}
-	        // ]
 	      });
 	    }
 	  }, {
@@ -128,7 +114,6 @@ this.BX.Up = this.BX.Up || {};
 	          category: 'time'
 	        }]);
 	      });
-	      console.log(eventsList);
 	    }
 	  }, {
 	    key: "addRegularEvents",
@@ -245,7 +230,6 @@ this.BX.Up = this.BX.Up || {};
 	    value: function setVisibleCalendar() {
 	      var idCalendars = this.idTeam;
 	      var sidebar = document.querySelector('.sidebar');
-	      console.log(sidebar);
 	      var calendar = this.calendar;
 	      sidebar.addEventListener('click', function (e) {
 	        if ('value' in e.target) {
@@ -258,7 +242,6 @@ this.BX.Up = this.BX.Up || {};
 	          }
 	        }
 	      });
-	      // this.setCheckboxBackgroundColor();
 	    }
 	  }, {
 	    key: "setCheckboxBackgroundColor",
@@ -273,21 +256,7 @@ this.BX.Up = this.BX.Up || {};
 	          checkbox.style.setProperty('background-color', checkbox.checked ? color : '#fff');
 	        });
 	      });
-	    } // setCalendarColor()
-	    // {
-	    // 	let teams = this.teams;
-	    // 	let calendar = this.calendar;
-	    // 	teams.forEach(team => {
-	    // 		let color = team['COLOR'];
-	    // 		console.log('#' + color);
-	    // 		calendar.setCalendarColor(team['ID_TEAM'], {
-	    // 			color: color ? '#' + color : '#a1b56c',
-	    // 			backgroundColor: color ? '#' + color : '#a1b56c',
-	    // 			borderColor: color ? '#' + color : '#a1b56c',
-	    // 			dragBackgroundColor: color ? '#' + color : '#a1b56c',
-	    // 		});
-	    // 	});
-	    // }
+	    }
 	  }, {
 	    key: "getCalendarsList",
 	    value: function getCalendarsList() {
@@ -295,7 +264,6 @@ this.BX.Up = this.BX.Up || {};
 	      var calendars = [];
 	      if (this.isUser) {
 	        teams.forEach(function (team) {
-	          console.log(team['COLOR']);
 	          var color = team['COLOR'];
 	          calendars.push({
 	            id: team['ID_TEAM'],
@@ -310,10 +278,10 @@ this.BX.Up = this.BX.Up || {};
 	      calendars.push({
 	        id: 'story',
 	        name: 'Прошедшие события',
-	        color: '#bbbbbb',
-	        backgroundColor: '#bbbbbb',
+	        color: '#bbb',
+	        backgroundColor: '#bbb',
 	        borderColor: '#a1b56c',
-	        dragBackgroundColor: '#bbbbbb'
+	        dragBackgroundColor: '#bbb'
 	      });
 	      return calendars;
 	    }

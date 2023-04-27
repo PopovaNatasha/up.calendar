@@ -96,8 +96,6 @@ export class Schedule
 				narrowWeekend: false,
 				taskView: false,
 				eventView: ['time'],
-				hourStart: 6,
-				hourEnd: 23,
 			},
 			month: {
 				dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
