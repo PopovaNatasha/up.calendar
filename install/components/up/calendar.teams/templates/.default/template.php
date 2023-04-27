@@ -21,7 +21,7 @@
 					<img class="is-rounded" src="https://bulma.io/images/placeholders/64x64.png">
 				</figure>
 			</div>
-			<p style="margin-left: 15px; font-size: large"><?= $team['TITLE'] ?></p>
+			<p style="margin-left: 15px; font-size: large"><?= htmlspecialchars($team['TITLE']) ?></p>
 		</div>
 	</a>
 	<?php endforeach; ?>

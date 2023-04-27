@@ -29,8 +29,8 @@
 
 		<div class="column is-half">
 			<div class="box">
-				<h1 class="title is-4"><?= $arResult['TITLE'] ?></h1>
-				<p><?= $arResult['DESCRIPTION'] ?></p>
+				<h1 class="title is-4"><?= htmlspecialchars($arResult['TITLE']) ?></h1>
+				<p><?= htmlspecialchars($arResult['DESCRIPTION']) ?></p>
 
 				<?php if ($USER->getID() !== $arResult['ID_ADMIN']): ?>
 					<?php foreach ($arResult['PARTICIPANTS'] as $participant): ?>
@@ -121,7 +121,7 @@
 							<div class="field">
 								<label class="label">Ссылка</label>
 								<div class="control">
-									<input name="title" class="input is-primary mb-4 is-large" type="text" readonly value="<?= $_SERVER['HTTP_HOST']?>/invite/<?=$arResult['link']?>/">
+									<input id="InviteLink" name="title" class="input is-primary mb-4 is-large" type="text" readonly value="<?= $_SERVER['HTTP_HOST']?>/invite/<?=$arResult['INVITE_LINK']?>/">
 								</div>
 								<button class="button is-primary" onclick="generateLink('<?= $_SERVER['HTTP_HOST']?>/invite/',<?= $arResult['ID'] ?>)">Создать новую ссылку</button>
 							</div>
@@ -148,13 +148,13 @@
 							<div class="field">
 								<label class="label">Название</label>
 								<div class="control">
-									<input name="title" class="input is-primary mb-4 is-large" type="text" value="<?= $arResult['TITLE'] ?>" required>
+									<input name="title" class="input is-primary mb-4 is-large" type="text" value="<?= htmlspecialchars($arResult['TITLE']) ?>" required>
 								</div>
 							</div>
 							<div class="field">
 								<label class="label">Описание</label>
 								<div class="control">
-									<input name="description" class="input is-primary mb-4 " type="text" value="<?= $arResult['DESCRIPTION'] ?>">
+									<input name="description" class="input is-primary mb-4 " type="text" value="<?= htmlspecialchars($arResult['DESCRIPTION']) ?>">
 								</div>
 							</div>
 							<div class="field">

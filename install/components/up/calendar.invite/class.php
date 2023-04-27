@@ -20,16 +20,32 @@ class CalendarInviteComponent extends CBitrixComponent
 
     protected function actionGet()
     {
+        global $USER;
         $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
         $team = Calendar::getTeamByLink($request->get('link'));
         $team['link'] = $request->get('link');
+        $participants = Calendar::getParticipantsTeam($team['ID']);
+
+        $check = 0;
+        foreach ($participants as $participant)
+        {
+            if ($participant['ID_USER'] === $USER->getID())
+            {
+                $check = 1;
+            }
+        }
+        if ($check === 1)
+        {
+            LocalRedirect('/group/' . $team['ID']. '/');
+        }
+
         $this->arResult = $team;
     }
 
     protected function actionPost($post)
     {
+
         $team = Calendar::getTeamByLink($post['link']);
-        // @Togo проверка юзер уже в группе или нет
         Calendar::joinTheTeam($team['ID']);
         LocalRedirect("/group/{$team['ID']}/");
     }

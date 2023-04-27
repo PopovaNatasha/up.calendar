@@ -1,6 +1,7 @@
 <?php
 /**
  * @var CMain $APPLICATION
+ * @var $USER
  */
 ?><!doctype html>
 <html lang="<?= LANGUAGE_ID; ?>">
@@ -38,7 +39,7 @@
                 <div class="user-info">
 
 
-                    <div class="FirstName"><?= $USER->GetFullName() ?></div>
+                    <div class="FirstName"><?= htmlspecialchars($USER->GetFullName()) ?></div>
                     <a class="button is-danger" href="/?logout=yes&<?=bitrix_sessid_get()?>">Выйти</a>
                 </div>
         </nav>
