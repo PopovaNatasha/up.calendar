@@ -1,4 +1,4 @@
-import {Type} from 'main.core';
+import { Type } from 'main.core';
 
 export class Schedule
 {
@@ -7,11 +7,16 @@ export class Schedule
 		this.idTeam = options.idTeam;
 		this.rootNodeId = options.rootNodeId;
 		this.rootNode = document.getElementById(this.rootNodeId);
+		this.teams = options.teams;
 		this.isUser = options.isUser;
 
 		this.singleEventsList = [];
 		this.regularEventsList = [];
 		this.userStoryEvents = [];
+		if (this.isUser)
+		{
+			this.setCheckboxBackgroundColor();
+		}
 		this.calendar = this.createCalendar();
 		this.reload();
 	}
@@ -26,6 +31,7 @@ export class Schedule
 
 				if (this.isUser)
 				{
+					this.setVisibleCalendar();
 					this.addEventsForUser();
 					this.addRegularEventsForUser();
 				}
@@ -42,14 +48,13 @@ export class Schedule
 		return new Promise((resolve, reject) => {
 			BX.ajax.runAction(
 					'up:calendar.calendar.getEventsList',
-					{data: {
+					{
+						data: {
 							idTeam: idTeam,
 						},
 					})
 				.then((response) => {
 					const eventsList = response.data.events;
-					console.log(eventsList);
-
 					resolve(eventsList);
 				})
 				.catch((error) => {
@@ -91,16 +96,13 @@ export class Schedule
 				narrowWeekend: false,
 				taskView: false,
 				eventView: ['time'],
-				hourStart: 6,
-				hourEnd: 23,
 			},
 			month: {
 				dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 				startDayOfWeek: 1,
-				narrowWeekend: false
+				narrowWeekend: false,
 			},
-			// list of Calendars that can be used to add new schedule
-			calendars: this.getCalendarList()
+			calendars: this.getCalendarsList(),
 		});
 	}
 
@@ -119,10 +121,9 @@ export class Schedule
 					start: dayTimeStart,
 					end: dayTimeEnd,
 					category: 'time',
-				}
+				},
 			]);
 		});
-		console.log(eventsList);
 	}
 
 	addRegularEvents()
@@ -144,7 +145,7 @@ export class Schedule
 						start: dayTimeStart,
 						end: dayTimeEnd,
 						category: 'time',
-					}
+					},
 				]);
 				dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
 				dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -172,7 +173,7 @@ export class Schedule
 						start: dayTimeStart,
 						end: dayTimeEnd,
 						category: 'time',
-					}
+					},
 				]);
 			}
 		});
@@ -189,10 +190,10 @@ export class Schedule
 						start: dayTimeStart,
 						end: dayTimeEnd,
 						category: 'time',
-					}
+					},
 				]);
 			}
-		})
+		});
 	}
 
 	addRegularEventsForUser()
@@ -219,7 +220,7 @@ export class Schedule
 							start: dayTimeStart,
 							end: dayTimeEnd,
 							category: 'time',
-						}
+						},
 					]);
 				}
 				dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -244,7 +245,7 @@ export class Schedule
 							start: dayTimeStart,
 							end: dayTimeEnd,
 							category: 'time',
-						}
+						},
 					]);
 					dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
 					dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -253,14 +254,68 @@ export class Schedule
 		});
 	}
 
-	getCalendarList()
+	setVisibleCalendar()
 	{
-		let idTeams = this.idTeam;
-		let calendarId = [];
-		idTeams.forEach(idTeam => {
-			calendarId.push({id: idTeam});
+		let idCalendars = this.idTeam;
+		let sidebar = document.querySelector('.sidebar');
+		let calendar = this.calendar;
+		sidebar.addEventListener('click', function(e) {
+			if ('value' in e.target)
+			{
+				if (idCalendars.indexOf(e.target.value) > -1)
+				{
+					idCalendars.splice(idCalendars.indexOf(e.target.value), 1);
+					calendar.setCalendarVisibility(e.target.value, false);
+				}
+				else
+				{
+					idCalendars.push(e.target.value);
+					calendar.setCalendarVisibility(e.target.value, true);
+				}
+			}
 		});
-		calendar
-		return calendarId;
+	}
+
+	setCheckboxBackgroundColor()
+	{
+		let teams = this.teams;
+		teams.forEach(team => {
+			let color = team['COLOR'] ? team['COLOR'] : '#a1b56c';
+			let id = team['ID_TEAM'];
+			let checkbox = document.getElementById('chbox-' + id);
+			checkbox.style.setProperty('background-color', checkbox.checked ? color : '#fff');
+			checkbox.addEventListener('click', () => {
+				checkbox.style.setProperty('background-color', checkbox.checked ? color : '#fff');
+			});
+		});
+	}
+
+	getCalendarsList()
+	{
+		let teams = this.teams;
+		let calendars = [];
+		if (this.isUser)
+		{
+			teams.forEach(team => {
+				let color = team['COLOR'];
+				calendars.push({
+					id: team['ID_TEAM'],
+					name: team['TITLE'],
+					color: color ? color : '#a1b56c',
+					backgroundColor: color ? color : '#a1b56c',
+					borderColor: color ? color : '#a1b56c',
+					dragBackgroundColor: color ? color : '#a1b56c',
+				});
+			});
+		}
+		calendars.push({
+			id: 'story',
+			name: 'Прошедшие события',
+			color: '#bbb',
+			backgroundColor: '#bbb',
+			borderColor: '#a1b56c',
+			dragBackgroundColor: '#bbb',
+		});
+		return calendars;
 	}
 }

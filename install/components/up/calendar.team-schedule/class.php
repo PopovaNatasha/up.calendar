@@ -8,8 +8,8 @@ class CalendarScheduleComponent extends CBitrixComponent
 {
 	public function executeComponent()
 	{
-		\Bitrix\Main\Loader::includeModule('up.calendar');
-		$request = \Bitrix\Main\Context::getCurrent()->getRequest();
+		Loader::includeModule('up.calendar');
+		$request = Context::getCurrent()->getRequest();
 		if ($request->isPost())
 		{
 			$post = $request->getPostList()->toArray();
@@ -26,11 +26,10 @@ class CalendarScheduleComponent extends CBitrixComponent
 			throw new Exception('Not all required fields are filled');
 		}
 
-		var_dump($arguments);
 		$arguments['team_id'] = $teamId;
 		$eventDate = explode(' - ', $arguments['date']);
-		$arguments['date_from'] = new \Bitrix\Main\Type\DateTime($eventDate[0],"d.m.Y H:i");
-		$arguments['date_to'] = new \Bitrix\Main\Type\DateTime($eventDate[1],"d.m.Y H:i");
+		$arguments['date_from'] = new \Bitrix\Main\Type\DateTime($eventDate[0], "d.m.Y H:i");
+		$arguments['date_to'] = new \Bitrix\Main\Type\DateTime($eventDate[1], "d.m.Y H:i");
 		unset($arguments['date']);
 
 		switch ($arguments['rule_repeat'])

@@ -36,7 +36,7 @@
     flex-grow: 0;
 }
 
-/* Кастомизация */
+/* Кастомизация шаблонов регистрации и авторизации */
 
 :root {
 	--brandColor: hsl(166, 67%, 51%);
@@ -121,10 +121,16 @@ textarea:focus {
 	max-width: fit-content;
 }
 
-
 .block.group{
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: flex-start;
+}
+
+/* Календарь */
+
+.toastui-calendar-panel.toastui-calendar-day-view-day-names,
+.toastui-calendar-panel.toastui-calendar-week-view-day-names {
+	overflow-y: visible !important;
 }

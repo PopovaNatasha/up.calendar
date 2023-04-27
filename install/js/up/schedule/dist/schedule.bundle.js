@@ -10,10 +10,14 @@ this.BX.Up = this.BX.Up || {};
 	    this.idTeam = options.idTeam;
 	    this.rootNodeId = options.rootNodeId;
 	    this.rootNode = document.getElementById(this.rootNodeId);
+	    this.teams = options.teams;
 	    this.isUser = options.isUser;
 	    this.singleEventsList = [];
 	    this.regularEventsList = [];
 	    this.userStoryEvents = [];
+	    if (this.isUser) {
+	      this.setCheckboxBackgroundColor();
+	    }
 	    this.calendar = this.createCalendar();
 	    this.reload();
 	  }
@@ -26,6 +30,7 @@ this.BX.Up = this.BX.Up || {};
 	        _this.regularEventsList = eventsList['regularEvents'];
 	        _this.userStoryEvents = eventsList['userStoryEvents'];
 	        if (_this.isUser) {
+	          _this.setVisibleCalendar();
 	          _this.addEventsForUser();
 	          _this.addRegularEventsForUser();
 	        } else {
@@ -44,7 +49,6 @@ this.BX.Up = this.BX.Up || {};
 	          }
 	        }).then(function (response) {
 	          var eventsList = response.data.events;
-	          console.log(eventsList);
 	          resolve(eventsList);
 	        })["catch"](function (error) {
 	          reject(error);
@@ -83,17 +87,14 @@ this.BX.Up = this.BX.Up || {};
 	          startDayOfWeek: 1,
 	          narrowWeekend: false,
 	          taskView: false,
-	          eventView: ['time'],
-	          hourStart: 6,
-	          hourEnd: 23
+	          eventView: ['time']
 	        },
 	        month: {
 	          dayNames: ['Вск', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
 	          startDayOfWeek: 1,
 	          narrowWeekend: false
 	        },
-	        // list of Calendars that can be used to add new schedule
-	        calendars: this.getIdCalendars()
+	        calendars: this.getCalendarsList()
 	      });
 	    }
 	  }, {
@@ -113,7 +114,6 @@ this.BX.Up = this.BX.Up || {};
 	          category: 'time'
 	        }]);
 	      });
-	      console.log(eventsList);
 	    }
 	  }, {
 	    key: "addRegularEvents",
@@ -128,7 +128,7 @@ this.BX.Up = this.BX.Up || {};
 	        while (moment(dayTimeStart).isBefore(repeatUntil)) {
 	          calendar.createEvents([{
 	            id: event['ID'],
-	            calendarId: 'team',
+	            calendarId: event['ID_TEAM'],
 	            title: event['TITLE'],
 	            start: dayTimeStart,
 	            end: dayTimeEnd,
@@ -193,7 +193,7 @@ this.BX.Up = this.BX.Up || {};
 	          if (moment(nowDay).isBefore(dayStart)) {
 	            calendar.createEvents([{
 	              id: event['ID'],
-	              calendarId: 'team',
+	              calendarId: event['ID_TEAM'],
 	              title: event['TITLE'],
 	              start: dayTimeStart,
 	              end: dayTimeEnd,
@@ -213,7 +213,7 @@ this.BX.Up = this.BX.Up || {};
 	          while (moment(dayTimeStart).isBefore(nowDay)) {
 	            calendar.createEvents([{
 	              id: event['ID'],
-	              calendarId: 'team',
+	              calendarId: 'story',
 	              title: event['TITLE_EVENT'],
 	              start: dayTimeStart,
 	              end: dayTimeEnd,
@@ -226,16 +226,64 @@ this.BX.Up = this.BX.Up || {};
 	      });
 	    }
 	  }, {
-	    key: "getIdCalendars",
-	    value: function getIdCalendars() {
-	      var idTeams = this.idTeam;
-	      var calendarId = [];
-	      idTeams.forEach(function (idTeam) {
-	        calendarId.push({
-	          id: idTeam
+	    key: "setVisibleCalendar",
+	    value: function setVisibleCalendar() {
+	      var idCalendars = this.idTeam;
+	      var sidebar = document.querySelector('.sidebar');
+	      var calendar = this.calendar;
+	      sidebar.addEventListener('click', function (e) {
+	        if ('value' in e.target) {
+	          if (idCalendars.indexOf(e.target.value) > -1) {
+	            idCalendars.splice(idCalendars.indexOf(e.target.value), 1);
+	            calendar.setCalendarVisibility(e.target.value, false);
+	          } else {
+	            idCalendars.push(e.target.value);
+	            calendar.setCalendarVisibility(e.target.value, true);
+	          }
+	        }
+	      });
+	    }
+	  }, {
+	    key: "setCheckboxBackgroundColor",
+	    value: function setCheckboxBackgroundColor() {
+	      var teams = this.teams;
+	      teams.forEach(function (team) {
+	        var color = team['COLOR'] ? team['COLOR'] : '#a1b56c';
+	        var id = team['ID_TEAM'];
+	        var checkbox = document.getElementById('chbox-' + id);
+	        checkbox.style.setProperty('background-color', checkbox.checked ? color : '#fff');
+	        checkbox.addEventListener('click', function () {
+	          checkbox.style.setProperty('background-color', checkbox.checked ? color : '#fff');
 	        });
 	      });
-	      return calendarId;
+	    }
+	  }, {
+	    key: "getCalendarsList",
+	    value: function getCalendarsList() {
+	      var teams = this.teams;
+	      var calendars = [];
+	      if (this.isUser) {
+	        teams.forEach(function (team) {
+	          var color = team['COLOR'];
+	          calendars.push({
+	            id: team['ID_TEAM'],
+	            name: team['TITLE'],
+	            color: color ? color : '#a1b56c',
+	            backgroundColor: color ? color : '#a1b56c',
+	            borderColor: color ? color : '#a1b56c',
+	            dragBackgroundColor: color ? color : '#a1b56c'
+	          });
+	        });
+	      }
+	      calendars.push({
+	        id: 'story',
+	        name: 'Прошедшие события',
+	        color: '#bbb',
+	        backgroundColor: '#bbb',
+	        borderColor: '#a1b56c',
+	        dragBackgroundColor: '#bbb'
+	      });
+	      return calendars;
 	    }
 	  }]);
 	  return Schedule;
