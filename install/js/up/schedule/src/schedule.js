@@ -168,7 +168,7 @@ export class Schedule
 			let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
 			let nowDay = moment().format('YYYY-MM-DD');
 			let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-			if (moment(nowDay).isBefore(dayStart))
+			if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart))
 			{
 				calendar.createEvents([
 					{
@@ -215,7 +215,7 @@ export class Schedule
 			{
 				let nowDay = moment().format('YYYY-MM-DD');
 				let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-				if (moment(nowDay).isBefore(dayStart))
+				if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart))
 				{
 					calendar.createEvents([
 						{
