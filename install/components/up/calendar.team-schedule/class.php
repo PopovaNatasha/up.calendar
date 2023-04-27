@@ -15,11 +15,19 @@ class CalendarScheduleComponent extends CBitrixComponent
 			$post = $request->getPostList()->toArray();
 			$this->createEvent($post, $request->get('id'));
 		}
-		$this->arResult[] = $request->get('id');
+		$this->getTeam($request->get('id'));
 		$this->includeComponentTemplate();
 	}
 
-	protected function createEvent($arguments, $teamId)
+	protected function getTeam($teamId): void
+	{
+		$teamId = (int)$teamId;
+		$team = Calendar::getTeamById($teamId);
+		$this->arResult['teamId'] = [$teamId];
+		$this->arResult['team'] = $team;
+	}
+
+	protected function createEvent($arguments, $teamId): void
 	{
 		if ($arguments['title'] === '' || $arguments['date'] === '')
 		{

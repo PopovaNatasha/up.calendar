@@ -1,18 +1,11 @@
 <?php
 /**
- * @var $arResult
+ * @var array $arResult
+ * @var $USER
  */
 \Bitrix\Main\UI\Extension::load('up.schedule');
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 ?>
-
-<?php
-//if ($USER->getID() === $arResult['ID_ADMIN']): ?>
-<div class="buttons admin">
-	<button class="button is-primary js-modal-trigger" data-target="modal-js-crateEvent">Создать событие</button>
-</div>
-<?php
-//endif ?>
 
 <form name="create-event" method="post">
 	<div class="modal" id="modal-js-crateEvent">
@@ -74,6 +67,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 </form>
 
 <div class="box">
+	<?php if ($USER->getID() === $arResult['team']['ID_ADMIN']): ?>
+		<div class="buttons admin">
+			<button class="button is-primary js-modal-trigger" data-target="modal-js-crateEvent">Создать событие</button>
+		</div>
+	<?php endif; ?>
 	<div class="tabs is-right" style="align-items: flex-end">
 		<div>
 			<button class="button " id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -129,7 +127,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 <script>
 	BX.ready(function() {
 		window.CalendarEventsList = new BX.Up.Calendar.Schedule({
-			idTeam: <?= json_encode($arResult, JSON_THROW_ON_ERROR) ?>,
+			idTeam: <?= json_encode($arResult['teamId'], JSON_THROW_ON_ERROR) ?>,
 			rootNodeId: 'calendar',
 			isUser: false,
 		});
