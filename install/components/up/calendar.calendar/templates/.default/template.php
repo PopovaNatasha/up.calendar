@@ -24,7 +24,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 							   style="border:<?= $team['COLOR'] ? '2px solid ' . $team['COLOR']
 								   : '2px solid #a1b56c' ?>;">
 						<span class="team-title"><?= $team['TITLE'] ?></span>
-						<button class="button is-small change-color" id="<?= $team['ID_TEAM'] ?>" data-title="<?= $team['TITLE'] ?>" data-color="<?= $team['COLOR'] ?>">
+						<button class="button is-small change-color" id="<?= $team['ID_TEAM'] ?>" data-title="<?= $team['TITLE'] ?>" data-color="<?= $team['COLOR'] ? : '#a1b56c' ?>">
 							<span class="icon is-small">
 								<i class="fa-solid fa-pen"></i>
 							</span>
