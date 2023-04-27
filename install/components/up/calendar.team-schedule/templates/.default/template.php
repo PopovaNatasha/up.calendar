@@ -102,6 +102,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 		isRange: true,
 		dateFormat: 'DD.MM.YYYY',
 		weekStart: 1,
+		minuteSteps: 1,
 	});
 
 	// // Loop on each calendar initialized
