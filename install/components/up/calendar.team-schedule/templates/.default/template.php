@@ -1,28 +1,27 @@
 <?php
-
 /**
  * @var $arResult
  */
 \Bitrix\Main\UI\Extension::load('up.schedule');
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 ?>
 
-
-<?php //if ($USER->getID() === $arResult['ID_ADMIN']): ?>
-	<div class="buttons admin">
-		<button class="button is-primary js-modal-trigger" data-target="modal-js-crateEvent">Создать событие</button>
-	</div>
-<?php //endif ?>
+<?php
+//if ($USER->getID() === $arResult['ID_ADMIN']): ?>
+<div class="buttons admin">
+	<button class="button is-primary js-modal-trigger" data-target="modal-js-crateEvent">Создать событие</button>
+</div>
+<?php
+//endif ?>
 
 <form name="create-event" method="post">
-	<div class="modal" id="modal-js-crateEvent" >
+	<div class="modal" id="modal-js-crateEvent">
 		<div class="modal-background"></div>
 		<div class="modal-card">
 			<header class="modal-card-head">
 				<p class="modal-card-title">Новое событие</p>
 				<button class="delete" type="reset" aria-label="close"></button>
 			</header>
-
 			<section class="modal-card-body">
 				<label>Название cобытия</label>
 				<div class="control">
@@ -34,11 +33,9 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 						<input name="date" type="date" class="input is-primary mb-4" id="date">
 					</div>
 				</div>
-
 				<div class="field">
 					<label>Повторяемость</label>
 					<div class="columns">
-
 						<div class="column control">
 							<div class="select is-primary">
 								<select id="selectRepeat" name="rule_repeat" onchange="displayUsgsChange()">
@@ -51,7 +48,6 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 						<div class="column" id="every">
 							<span class="rule-daily">каждый</span>
 						</div>
-
 						<div class="column control" id="day_count">
 							<div class="select is-primary">
 								<select name="rule_repeat_count">
@@ -64,23 +60,20 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 								</select>
 							</div>
 						</div>
-
 						<div class="column" id="day">
 							<span class="rule-daily">день</span>
 						</div>
 					</div>
-
 			</section>
 			<footer class="modal-card-foot">
 				<button class="button is-success" type="submit">Сохранить</button>
-				<button class="button" type="reset" >Отмена</button>
+				<button class="button" type="reset">Отмена</button>
 			</footer>
 		</div>
 	</div>
 </form>
 
 <div class="box">
-
 	<div class="tabs is-right" style="align-items: flex-end">
 		<div>
 			<button class="button " id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
@@ -113,22 +106,24 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 		weekStart: 1,
 	});
 
-	// Loop on each calendar initialized
-	for(var i = 0; i < calendars.length; i++) {
-		// Add listener to date:selected event
-		calendars[i].on('select', date => {
-			console.log(date);
-		});
-	}
-
-	// To access to bulmaCalendar instance of an element
-	var element = document.querySelector('#my-element');
-	if (element) {
-		// bulmaCalendar instance is available as element.bulmaCalendar
-		element.bulmaCalendar.on('select', function(datepicker) {
-			console.log(datepicker.data.value());
-		});
-	}
+	// // Loop on each calendar initialized
+	// for (var i = 0; i < calendars.length; i++)
+	// {
+	// 	// Add listener to date:selected event
+	// 	calendars[i].on('select', date => {
+	// 		console.log(date);
+	// 	});
+	// }
+	//
+	// // To access to bulmaCalendar instance of an element
+	// var element = document.querySelector('#my-element');
+	// if (element)
+	// {
+	// 	// bulmaCalendar instance is available as element.bulmaCalendar
+	// 	element.bulmaCalendar.on('select', function(datepicker) {
+	// 		console.log(datepicker.data.value());
+	// 	});
+	// }
 </script>
 
 <script>
