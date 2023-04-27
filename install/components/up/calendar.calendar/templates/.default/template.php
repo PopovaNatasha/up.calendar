@@ -2,13 +2,14 @@
 /**
  * @var array $arResult
  */
+
 use Bitrix\Main\UI\Extension;
+
 Extension::load('up.schedule');
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 ?>
 
 <div class="box columns">
-
 	<div class="column is-2 calendar">
 		<div class="tabs is-left">
 			<ul style="margin-left: 0">
@@ -68,6 +69,51 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 			</div>
 		</form>
 	</article>
+</div>
+
+<div role="dialog" class="toastui-calendar-popup-container" id="event-detail-popup">
+	<div class="toastui-calendar-detail-container">
+		<div class="toastui-calendar-popup-section toastui-calendar-section-header">
+			<div class="toastui-calendar-event-title">
+				<span class="toastui-calendar-template-popupDetailTitle">Пленэр в Ботаническом саду</span>
+			</div>
+			<div class="toastui-calendar-content">
+				<span class="toastui-calendar-template-popupDetailDate">2023.04.27 10:00 am - 11:59 am</span>
+			</div>
+		</div>
+		<div class="toastui-calendar-popup-section toastui-calendar-section-detail">
+			<div class="toastui-calendar-detail-item">
+				<span class="toastui-calendar-icon toastui-calendar-ic-repeat-b"></span>
+				<span class="toastui-calendar-content">
+					<span class="toastui-calendar-template-popupDetailRecurrenceRule">каждые 7 дней</span>
+				</span>
+			</div>
+			<div class="toastui-calendar-detail-item">
+				<span class="toastui-calendar-icon toastui-calendar-calendar-dot" style="background-color: rgb(131, 109, 182);"></span>
+				<span class="toastui-calendar-content">Художественная школа "Вдохновение"</span>
+			</div>
+		</div>
+		<div class="toastui-calendar-popup-section toastui-calendar-section-button">
+			<button type="button" class="toastui-calendar-edit-button">
+				<span class="toastui-calendar-icon toastui-calendar-ic-edit"></span>
+				<span class="toastui-calendar-content">
+					<span class="toastui-calendar-template-popupEdit">Изменить</span>
+				</span>
+			</button>
+			<div class="toastui-calendar-vertical-line"></div>
+			<button type="button" class="toastui-calendar-delete-button">
+				<span class="toastui-calendar-icon toastui-calendar-ic-delete"></span>
+				<span class="toastui-calendar-content">Удалить</span>
+				</span>
+			</button>
+		</div>
+	</div>
+	<div class="toastui-calendar-popup-top-line" style="background-color: rgb(131, 109, 182);"></div>
+	<div class="toastui-calendar-popup-arrow toastui-calendar-left">
+		<div class="toastui-calendar-popup-arrow-border" style="top: 94px;">
+			<div class="toastui-calendar-popup-arrow-fill"></div>
+		</div>
+	</div>
 </div>
 
 <script>

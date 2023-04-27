@@ -21,6 +21,12 @@ export class Schedule
 
 		this.calendar.on('clickEvent', ({ event }) => {
 			console.log(event); // EventObject
+			let popupForm = document.getElementById('event-detail-popup');
+			// let coordinates = event.getBoundingClientRect();
+			// popupForm.style.left = coordinates.left + 'px';
+			// popupForm.style.top = coordinates.bottom + 'px';
+			let eventId, eventTitle, start, end, recurrenceRule, calendarId, calendarTitle;
+			popupForm.style.display = 'block';
 		});
 
 		this.reload();
@@ -150,6 +156,7 @@ export class Schedule
 						start: dayTimeStart,
 						end: dayTimeEnd,
 						category: 'time',
+						recurrenceRule: 'каждые' + event['DAY_STEP'] + 'дней',
 					},
 				]);
 				dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -225,6 +232,7 @@ export class Schedule
 							start: dayTimeStart,
 							end: dayTimeEnd,
 							category: 'time',
+							recurrenceRule: 'каждые ' + event['DAY_STEP'] + ' дней',
 						},
 					]);
 				}

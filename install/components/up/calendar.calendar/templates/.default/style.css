@@ -40,7 +40,7 @@ button.button.is-small.change-color {
 	margin-bottom: 1em;
 }
 
-/*form*/
+/*form color*/
 
 .form-popup {
 	border: 1px solid #d5d5d5;
@@ -63,4 +63,10 @@ article.message {
 input.input.is-small.team-color {
 	width: revert;
 	margin-left: 1em;
+}
+
+/* form detail event*/
+
+.toastui-calendar-popup-container {
+	display: none;
 }

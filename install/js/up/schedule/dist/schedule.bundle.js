@@ -22,8 +22,9 @@ this.BX.Up = this.BX.Up || {};
 	    this.calendar.on('clickEvent', function (_ref) {
 	      var event = _ref.event;
 	      console.log(event); // EventObject
+	      var popupForm = document.getElementById('event-detail-popup');
+	      popupForm.style.display = 'block';
 	    });
-
 	    this.reload();
 	  }
 	  babelHelpers.createClass(Schedule, [{
@@ -137,7 +138,8 @@ this.BX.Up = this.BX.Up || {};
 	            title: event['TITLE'],
 	            start: dayTimeStart,
 	            end: dayTimeEnd,
-	            category: 'time'
+	            category: 'time',
+	            recurrenceRule: 'каждые' + event['DAY_STEP'] + 'дней'
 	          }]);
 	          dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
 	          dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -202,7 +204,8 @@ this.BX.Up = this.BX.Up || {};
 	              title: event['TITLE'],
 	              start: dayTimeStart,
 	              end: dayTimeEnd,
-	              category: 'time'
+	              category: 'time',
+	              recurrenceRule: 'каждые ' + event['DAY_STEP'] + ' дней'
 	            }]);
 	          }
 	          dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
