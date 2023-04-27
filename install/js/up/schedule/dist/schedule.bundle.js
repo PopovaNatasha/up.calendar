@@ -19,6 +19,11 @@ this.BX.Up = this.BX.Up || {};
 	      this.setCheckboxBackgroundColor();
 	    }
 	    this.calendar = this.createCalendar();
+	    this.calendar.on('clickEvent', function (_ref) {
+	      var event = _ref.event;
+	      console.log(event); // EventObject
+	    });
+
 	    this.reload();
 	  }
 	  babelHelpers.createClass(Schedule, [{
@@ -59,11 +64,11 @@ this.BX.Up = this.BX.Up || {};
 	    key: "createCalendar",
 	    value: function createCalendar() {
 	      return new tui.Calendar("#".concat(this.rootNodeId), {
-	        // isReadOnly: false,
+	        isReadOnly: true,
 	        // showSlidebar: true,
 	        // showMenu: true,
 	        useFormPopup: false,
-	        useDetailPopup: false,
+	        useDetailPopup: true,
 	        useCreationPopup: false,
 	        defaultView: 'month',
 	        taskView: true,

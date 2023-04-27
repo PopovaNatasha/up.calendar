@@ -18,6 +18,11 @@ export class Schedule
 			this.setCheckboxBackgroundColor();
 		}
 		this.calendar = this.createCalendar();
+
+		this.calendar.on('clickEvent', ({ event }) => {
+			console.log(event); // EventObject
+		});
+
 		this.reload();
 	}
 
@@ -67,11 +72,11 @@ export class Schedule
 	createCalendar()
 	{
 		return new tui.Calendar(`#${this.rootNodeId}`, {
-			// isReadOnly: false,
+			isReadOnly: true,
 			// showSlidebar: true,
 			// showMenu: true,
 			useFormPopup: false,
-			useDetailPopup: false,
+			useDetailPopup: true,
 			useCreationPopup: false,
 			defaultView: 'month',
 			taskView: true,
