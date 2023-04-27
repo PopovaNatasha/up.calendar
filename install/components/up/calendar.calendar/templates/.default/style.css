@@ -40,6 +40,11 @@ button.button.is-small.change-color {
 	margin-bottom: 1em;
 }
 
+.toastui-calendar-panel.toastui-calendar-day-view-day-names,
+.toastui-calendar-panel.toastui-calendar-week-view-day-names {
+	overflow-y: visible !important;
+}
+
 /*form*/
 
 .form-popup {
