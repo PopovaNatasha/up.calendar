@@ -22,7 +22,7 @@ class Calendar
                     ->initFromUri();
 
                 $result = TeamTable::getList([    // // Тут Каталог групп с тегом паблик
-                    'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+                    'select' => ['TITLE', 'ID_ADMIN', 'ID','PERSONAL_PHOTO'],
                     'filter' => ['IS_PRIVATE' => false],
                     'count_total' => true,
                     'offset' => $nav->getOffset(),
@@ -37,7 +37,7 @@ class Calendar
                     ->initFromUri();
 
                 $result = TeamTable::getList([    // Тут Каталог групп с тегом паблик и поиском
-                    'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+                    'select' => ['TITLE', 'ID_ADMIN', 'ID','PERSONAL_PHOTO'],
                     'filter' => [
                         'LOGIC' => 'AND',
                         '=%TITLE' => "%$query%",
@@ -58,7 +58,7 @@ class Calendar
                     ->initFromUri();
 
                 $result = TeamTable::getList([    // Тут выводятся группы пользователя
-                    'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+                    'select' => ['TITLE', 'ID_ADMIN', 'ID','PERSONAL_PHOTO'],
                     'filter' => ['USER.ID_USER' => $id],
                     'count_total' => true,
                     'offset' => $nav->getOffset(),
@@ -75,7 +75,7 @@ class Calendar
                     ->initFromUri();
 
                 $result = TeamTable::getList([    // Тут выводятся группы пользователя с поиском
-                    'select' => ['TITLE', 'ID_ADMIN', 'ID'],
+                    'select' => ['TITLE', 'ID_ADMIN', 'ID','PERSONAL_PHOTO'],
                     'filter' => [
                         'LOGIC' => 'AND',
                         '=%TITLE' => "%$query%",
@@ -89,7 +89,8 @@ class Calendar
                 $nav->setRecordCount($result->getCount());
             }
         }
-        return ['teams' => $result, 'nav' => $nav];
+
+        return ['teams' => $result->fetchAll(), 'nav' => $nav];
     }
 
     public static function createTeam($arguments): void
@@ -116,7 +117,12 @@ class Calendar
 
     public static function getTeamById($id)
     {
-        return TeamTable::getRowById($id);
+        $result = TeamTable::getRowById($id);
+        if (!$result)
+        {
+            $result = null;
+        }
+        return $result;
     }
 
     public static function getParticipantsTeam($idTeam)

@@ -38,6 +38,10 @@ class CalendarCalendarComponent extends CBitrixComponent
 		{
 			$idTeam = (int)$request->get('id');
 			$team = Calendar::getTeamById($idTeam);
+            if (!$team)
+            {
+                LocalRedirect('/404');
+            }
             $participants = Calendar::getParticipantsTeam($idTeam);
 
             if ($team['IS_PRIVATE'] === '1')
