@@ -1,18 +1,12 @@
 .checkbox-round {
 	width: 1.2em;
 	height: 1.2em;
-	/*background-color: white;*/
 	border-radius: 50%;
 	vertical-align: middle;
-	/*border: 2px solid #a1b56c;*/
 	appearance: none;
 	-webkit-appearance: none;
 	cursor: pointer;
 }
-
-/*.checkbox-round:checked {*/
-/*	background-color: #a1b56c;*/
-/*}*/
 
 .calendars-team {
 	display: flex;

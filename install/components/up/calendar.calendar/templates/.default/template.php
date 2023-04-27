@@ -2,11 +2,15 @@
 /**
  * @var array $arResult
  */
+
 use Bitrix\Main\UI\Extension;
 
 Extension::load('up.schedule');
 
-if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
+{
+	die();
+}
 ?>
 
 <div class="box columns">
@@ -17,16 +21,16 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 				<span style="padding: 0.5em 1em;">Группы</span>
 			</ul>
 		</div>
-
 		<div class="sidebar">
-			<?php foreach ($arResult['teams'] as $team):?>
+			<?php foreach ($arResult['teams'] as $team): ?>
 				<div class="field">
 					<label class="calendars-team">
 						<input type="checkbox" class="checkbox-round" value="<?= $team['ID_TEAM'] ?>" id="chbox-<?= $team['ID_TEAM'] ?>" checked
 							   onfocus="this.blur()"
-							   style="border:<?= $team['COLOR'] ? '2px solid ' . $team['COLOR'] : '2px solid #a1b56c'?>;">
+							   style="border:<?= $team['COLOR'] ? '2px solid ' . $team['COLOR']
+								   : '2px solid #a1b56c' ?>;">
 						<span class="team-title"><?= $team['TITLE'] ?></span>
-						<button class="button is-small change-color" id="<?= $team['ID_TEAM']?>" data-title="<?= $team['TITLE'] ?>" data-color="<?= $team['COLOR'] ?>">
+						<button class="button is-small change-color" id="<?= $team['ID_TEAM'] ?>" data-title="<?= $team['TITLE'] ?>" data-color="<?= $team['COLOR'] ?>">
 							<span class="icon is-small">
 								<i class="fa-solid fa-pen"></i>
 							</span>
@@ -35,7 +39,6 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die();
 				</div>
 			<?php endforeach; ?>
 		</div>
-
 	</div>
 
 	<div class="column">
