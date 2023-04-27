@@ -20,12 +20,24 @@ export class Schedule
 		this.calendar = this.createCalendar();
 
 		this.calendar.on('clickEvent', ({ event }) => {
-			console.log(event); // EventObject
-			let popupForm = document.getElementById('event-detail-popup');
-			// let coordinates = event.getBoundingClientRect();
-			// popupForm.style.left = coordinates.left + 'px';
-			// popupForm.style.top = coordinates.bottom + 'px';
-			let eventId, eventTitle, start, end, recurrenceRule, calendarId, calendarTitle;
+			let popupForm, eventElem, coordinates;
+			popupForm = document.getElementById('event-detail-popup');
+			eventElem = window.event.srcElement;
+			coordinates = eventElem.getBoundingClientRect();
+			popupForm.style.left = coordinates.right + 'px';
+			popupForm.style.top = (coordinates.top - 85) + 'px';
+
+			let start, end, calendarTeam;
+			document.getElementById('popupDetailTitle').innerHTML = event.title;
+			document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? event.recurrenceRule : 'не повторяется';
+			calendarTeam = this.geCalendarById(event.calendarId);
+			document.getElementById('popupDetailTeam').innerHTML = calendarTeam.name;
+			document.getElementById('popupDetailDot').style.backgroundColor = calendarTeam.color;
+			document.getElementById('popupTopLine').style.backgroundColor = calendarTeam.color;
+			start = moment(event.start.toDate()).format('DD.MM.YY HH:mm');
+			end = moment(event.end.toDate()).format('HH:mm')
+			document.getElementById('popupDetailDate').innerHTML = start + ' - ' + end;
+
 			popupForm.style.display = 'block';
 		});
 
@@ -330,5 +342,18 @@ export class Schedule
 			dragBackgroundColor: '#bbb',
 		});
 		return calendars;
+	}
+
+	geCalendarById(calendarId)
+	{
+		let teamCalendar;
+		let calendars = this.getCalendarsList();
+		calendars.forEach(calendar => {
+			if (calendar['id'] === calendarId)
+			{
+				teamCalendar = calendar;
+			}
+		});
+		return teamCalendar;
 	}
 }

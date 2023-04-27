@@ -5,6 +5,7 @@ this.BX.Up = this.BX.Up || {};
 
 	var Schedule = /*#__PURE__*/function () {
 	  function Schedule() {
+	    var _this = this;
 	    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    babelHelpers.classCallCheck(this, Schedule);
 	    this.idTeam = options.idTeam;
@@ -21,8 +22,24 @@ this.BX.Up = this.BX.Up || {};
 	    this.calendar = this.createCalendar();
 	    this.calendar.on('clickEvent', function (_ref) {
 	      var event = _ref.event;
+	      var popupForm, eventElem, coordinates;
 	      console.log(event); // EventObject
-	      var popupForm = document.getElementById('event-detail-popup');
+	      popupForm = document.getElementById('event-detail-popup');
+	      eventElem = window.event.srcElement;
+	      coordinates = eventElem.getBoundingClientRect();
+	      popupForm.style.left = coordinates.right + 'px';
+	      popupForm.style.top = coordinates.top - 85 + 'px';
+	      var start, end, calendarTeam;
+	      document.getElementById('popupDetailTitle').innerHTML = event.title;
+	      document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? event.recurrenceRule : 'не повторяется';
+	      calendarTeam = _this.geCalendarById(event.calendarId);
+	      document.getElementById('popupDetailTeam').innerHTML = calendarTeam.name;
+	      document.getElementById('popupDetailDot').style.backgroundColor = calendarTeam.color;
+	      document.getElementById('popupTopLine').style.backgroundColor = calendarTeam.color;
+	      start = moment(event.start.toDate()).format('DD.MM.YY HH:mm');
+	      end = moment(event.end.toDate()).format('HH:mm');
+	      document.getElementById('popupDetailDate').innerHTML = start + ' - ' + end;
+	      console.log();
 	      popupForm.style.display = 'block';
 	    });
 	    this.reload();
@@ -30,18 +47,18 @@ this.BX.Up = this.BX.Up || {};
 	  babelHelpers.createClass(Schedule, [{
 	    key: "reload",
 	    value: function reload() {
-	      var _this = this;
+	      var _this2 = this;
 	      this.loadEventsList(this.idTeam).then(function (eventsList) {
-	        _this.singleEventsList = eventsList['singleEvents'];
-	        _this.regularEventsList = eventsList['regularEvents'];
-	        _this.userStoryEvents = eventsList['userStoryEvents'];
-	        if (_this.isUser) {
-	          _this.setVisibleCalendar();
-	          _this.addEventsForUser();
-	          _this.addRegularEventsForUser();
+	        _this2.singleEventsList = eventsList['singleEvents'];
+	        _this2.regularEventsList = eventsList['regularEvents'];
+	        _this2.userStoryEvents = eventsList['userStoryEvents'];
+	        if (_this2.isUser) {
+	          _this2.setVisibleCalendar();
+	          _this2.addEventsForUser();
+	          _this2.addRegularEventsForUser();
 	        } else {
-	          _this.addEvents();
-	          _this.addRegularEvents();
+	          _this2.addEvents();
+	          _this2.addRegularEvents();
 	        }
 	      });
 	    }
@@ -292,6 +309,18 @@ this.BX.Up = this.BX.Up || {};
 	        dragBackgroundColor: '#bbb'
 	      });
 	      return calendars;
+	    }
+	  }, {
+	    key: "geCalendarById",
+	    value: function geCalendarById(calendarId) {
+	      var teamCalendar;
+	      var calendars = this.getCalendarsList();
+	      calendars.forEach(function (calendar) {
+	        if (calendar['id'] === calendarId) {
+	          teamCalendar = calendar;
+	        }
+	      });
+	      return teamCalendar;
 	    }
 	  }]);
 	  return Schedule;

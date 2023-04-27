@@ -75,22 +75,22 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 	<div class="toastui-calendar-detail-container">
 		<div class="toastui-calendar-popup-section toastui-calendar-section-header">
 			<div class="toastui-calendar-event-title">
-				<span class="toastui-calendar-template-popupDetailTitle">Пленэр в Ботаническом саду</span>
+				<span class="toastui-calendar-template-popupDetailTitle" id="popupDetailTitle">Пленэр в Ботаническом саду</span>
 			</div>
 			<div class="toastui-calendar-content">
-				<span class="toastui-calendar-template-popupDetailDate">2023.04.27 10:00 am - 11:59 am</span>
+				<span class="toastui-calendar-template-popupDetailDate" id="popupDetailDate">2023.04.27 10:00 am - 11:59 am</span>
 			</div>
 		</div>
 		<div class="toastui-calendar-popup-section toastui-calendar-section-detail">
 			<div class="toastui-calendar-detail-item">
 				<span class="toastui-calendar-icon toastui-calendar-ic-repeat-b"></span>
 				<span class="toastui-calendar-content">
-					<span class="toastui-calendar-template-popupDetailRecurrenceRule">каждые 7 дней</span>
+					<span class="toastui-calendar-template-popupDetailRecurrenceRule" id="popupDetailRecurrenceRule">каждые 7 дней</span>
 				</span>
 			</div>
 			<div class="toastui-calendar-detail-item">
-				<span class="toastui-calendar-icon toastui-calendar-calendar-dot" style="background-color: rgb(131, 109, 182);"></span>
-				<span class="toastui-calendar-content">Художественная школа "Вдохновение"</span>
+				<span class="toastui-calendar-icon toastui-calendar-calendar-dot" id="popupDetailDot" style="background-color: rgb(131, 109, 182);"></span>
+				<span class="toastui-calendar-content" id="popupDetailTeam">Художественная школа "Вдохновение"</span>
 			</div>
 		</div>
 		<div class="toastui-calendar-popup-section toastui-calendar-section-button">
@@ -108,7 +108,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 			</button>
 		</div>
 	</div>
-	<div class="toastui-calendar-popup-top-line" style="background-color: rgb(131, 109, 182);"></div>
+	<div class="toastui-calendar-popup-top-line" id="popupTopLine" style="background-color: rgb(131, 109, 182);"></div>
 	<div class="toastui-calendar-popup-arrow toastui-calendar-left">
 		<div class="toastui-calendar-popup-arrow-border" style="top: 94px;">
 			<div class="toastui-calendar-popup-arrow-fill"></div>
