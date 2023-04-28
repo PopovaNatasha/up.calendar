@@ -134,6 +134,10 @@ textarea:focus {
 	justify-content: flex-start;
 }
 
+p.modal-card-title {
+	margin-bottom: 0 !important;
+}
+
 /* Календарь */
 
 .toastui-calendar-panel.toastui-calendar-day-view-day-names,

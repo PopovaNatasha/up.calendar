@@ -18,29 +18,6 @@ export class Schedule
 			this.setCheckboxBackgroundColor();
 		}
 		this.calendar = this.createCalendar();
-
-		this.calendar.on('clickEvent', ({ event }) => {
-			let popupForm, eventElem, coordinates;
-			popupForm = document.getElementById('event-detail-popup');
-			eventElem = window.event.srcElement;
-			coordinates = eventElem.getBoundingClientRect();
-			popupForm.style.left = coordinates.right + 'px';
-			popupForm.style.top = (coordinates.top - 85) + 'px';
-
-			let start, end, calendarTeam;
-			document.getElementById('popupDetailTitle').innerHTML = event.title;
-			document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? event.recurrenceRule : 'не повторяется';
-			calendarTeam = this.geCalendarById(event.calendarId);
-			document.getElementById('popupDetailTeam').innerHTML = calendarTeam.name;
-			document.getElementById('popupDetailDot').style.backgroundColor = calendarTeam.color;
-			document.getElementById('popupTopLine').style.backgroundColor = calendarTeam.color;
-			start = moment(event.start.toDate()).format('DD.MM.YY HH:mm');
-			end = moment(event.end.toDate()).format('HH:mm')
-			document.getElementById('popupDetailDate').innerHTML = start + ' - ' + end;
-
-			popupForm.style.display = 'block';
-		});
-
 		this.reload();
 	}
 
@@ -63,6 +40,7 @@ export class Schedule
 					this.addEvents();
 					this.addRegularEvents();
 				}
+				this.OpenEventDetailPopup();
 			});
 	}
 
@@ -93,9 +71,9 @@ export class Schedule
 			isReadOnly: true,
 			// showSlidebar: true,
 			// showMenu: true,
-			useFormPopup: false,
+			// useFormPopup: true,
 			useDetailPopup: true,
-			useCreationPopup: false,
+			// useCreationPopup: false,
 			defaultView: 'month',
 			taskView: true,
 			scheduleView: false,
@@ -168,7 +146,7 @@ export class Schedule
 						start: dayTimeStart,
 						end: dayTimeEnd,
 						category: 'time',
-						recurrenceRule: 'каждые' + event['DAY_STEP'] + 'дней',
+						recurrenceRule: 'каждые ' + event['DAY_STEP'] + ' дней',
 					},
 				]);
 				dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -355,5 +333,63 @@ export class Schedule
 			}
 		});
 		return teamCalendar;
+	}
+
+	OpenEventDetailPopup()
+	{
+		this.calendar.on('clickEvent', ({ event }) => {
+			let popupForm, eventElem, coordinates;
+			popupForm = document.getElementById('event-detail-popup');
+			eventElem = window.event.srcElement;
+			coordinates = eventElem.getBoundingClientRect();
+			popupForm.style.left = coordinates.right + 'px';
+			popupForm.style.top = (coordinates.top - 85) + 'px';
+
+			let start, end, calendarTeam;
+			document.getElementById('popupDetailTitle').innerHTML = event.title;
+			start = moment(event.start.toDate()).format('DD.MM.YY HH:mm');
+			end = moment(event.end.toDate()).format('HH:mm')
+			document.getElementById('popupDetailDate').innerHTML = start + ' - ' + end;
+			document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? event.recurrenceRule : 'не повторяется';
+			if (this.isUser)
+			{
+				calendarTeam = this.geCalendarById(event.calendarId);
+				document.getElementById('popupDetailTeam').innerHTML = calendarTeam.name;
+				document.getElementById('popupDetailDot').style.backgroundColor = calendarTeam.color;
+				document.getElementById('popupTopLine').style.backgroundColor = calendarTeam.color;
+			}
+			else
+			{
+				document.getElementById('popupTopLine').style.backgroundColor = '#a1b56c';
+			}
+			popupForm.style.display = 'block';
+			this.eventForClosePopup();
+			this.changeEventForm(event);
+		});
+	}
+
+	eventForClosePopup()
+	{
+		const popupForm = document.getElementById('event-detail-popup');
+		document.addEventListener( 'mousedown', (e) => {
+			const withinBoundaries = e.composedPath().includes(popupForm);
+
+			if ( ! withinBoundaries ) {
+				popupForm.style.display = 'none'; // скрываем элемент т к клик был за его пределами
+			}
+		});
+	}
+
+	changeEventForm(event)
+	{
+		document.getElementById('popupChangeEventId').value = event.id;
+		document.getElementById('popupChangeTitle').value = event.title;
+
+		EventDatePickers[1].clear();
+		EventDatePickers[1].value(event.start.toDate());
+		EventDatePickers[1].datePicker.value(event.end.toDate());
+		EventDatePickers[1].timePicker.value(event.end.toDate());
+
+		console.log(EventDatePickers[1]);
 	}
 }

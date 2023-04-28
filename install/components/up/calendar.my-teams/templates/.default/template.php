@@ -20,7 +20,7 @@
 
 <div class="block">
 	<?php foreach ($arResult['Teams'] as $team):?>
-	<a class="group-card block <?= ($team['ID_ADMIN'] == $USER->getID()) ? 'admined' : ''; ?>" href="/group/<?= $team['ID']?>/">
+	<a class="group-card block <?= ($team['ID_ADMIN'] === $USER->getID()) ? 'admined' : ''; ?>" href="/group/<?= $team['ID']?>/">
 		<div class="block group">
 			<div>
                 <figure class="image is-64x64">

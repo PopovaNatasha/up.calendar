@@ -5,7 +5,6 @@ this.BX.Up = this.BX.Up || {};
 
 	var Schedule = /*#__PURE__*/function () {
 	  function Schedule() {
-	    var _this = this;
 	    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    babelHelpers.classCallCheck(this, Schedule);
 	    this.idTeam = options.idTeam;
@@ -20,46 +19,25 @@ this.BX.Up = this.BX.Up || {};
 	      this.setCheckboxBackgroundColor();
 	    }
 	    this.calendar = this.createCalendar();
-	    this.calendar.on('clickEvent', function (_ref) {
-	      var event = _ref.event;
-	      var popupForm, eventElem, coordinates;
-	      console.log(event); // EventObject
-	      popupForm = document.getElementById('event-detail-popup');
-	      eventElem = window.event.srcElement;
-	      coordinates = eventElem.getBoundingClientRect();
-	      popupForm.style.left = coordinates.right + 'px';
-	      popupForm.style.top = coordinates.top - 85 + 'px';
-	      var start, end, calendarTeam;
-	      document.getElementById('popupDetailTitle').innerHTML = event.title;
-	      document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? event.recurrenceRule : 'не повторяется';
-	      calendarTeam = _this.geCalendarById(event.calendarId);
-	      document.getElementById('popupDetailTeam').innerHTML = calendarTeam.name;
-	      document.getElementById('popupDetailDot').style.backgroundColor = calendarTeam.color;
-	      document.getElementById('popupTopLine').style.backgroundColor = calendarTeam.color;
-	      start = moment(event.start.toDate()).format('DD.MM.YY HH:mm');
-	      end = moment(event.end.toDate()).format('HH:mm');
-	      document.getElementById('popupDetailDate').innerHTML = start + ' - ' + end;
-	      console.log();
-	      popupForm.style.display = 'block';
-	    });
 	    this.reload();
 	  }
 	  babelHelpers.createClass(Schedule, [{
 	    key: "reload",
 	    value: function reload() {
-	      var _this2 = this;
+	      var _this = this;
 	      this.loadEventsList(this.idTeam).then(function (eventsList) {
-	        _this2.singleEventsList = eventsList['singleEvents'];
-	        _this2.regularEventsList = eventsList['regularEvents'];
-	        _this2.userStoryEvents = eventsList['userStoryEvents'];
-	        if (_this2.isUser) {
-	          _this2.setVisibleCalendar();
-	          _this2.addEventsForUser();
-	          _this2.addRegularEventsForUser();
+	        _this.singleEventsList = eventsList['singleEvents'];
+	        _this.regularEventsList = eventsList['regularEvents'];
+	        _this.userStoryEvents = eventsList['userStoryEvents'];
+	        if (_this.isUser) {
+	          _this.setVisibleCalendar();
+	          _this.addEventsForUser();
+	          _this.addRegularEventsForUser();
 	        } else {
-	          _this2.addEvents();
-	          _this2.addRegularEvents();
+	          _this.addEvents();
+	          _this.addRegularEvents();
 	        }
+	        _this.OpenEventDetailPopup();
 	      });
 	    }
 	  }, {
@@ -85,9 +63,9 @@ this.BX.Up = this.BX.Up || {};
 	        isReadOnly: true,
 	        // showSlidebar: true,
 	        // showMenu: true,
-	        useFormPopup: false,
+	        // useFormPopup: true,
 	        useDetailPopup: true,
-	        useCreationPopup: false,
+	        // useCreationPopup: false,
 	        defaultView: 'month',
 	        taskView: true,
 	        scheduleView: false,
@@ -156,7 +134,7 @@ this.BX.Up = this.BX.Up || {};
 	            start: dayTimeStart,
 	            end: dayTimeEnd,
 	            category: 'time',
-	            recurrenceRule: 'каждые' + event['DAY_STEP'] + 'дней'
+	            recurrenceRule: 'каждые ' + event['DAY_STEP'] + ' дней'
 	          }]);
 	          dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
 	          dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -321,6 +299,93 @@ this.BX.Up = this.BX.Up || {};
 	        }
 	      });
 	      return teamCalendar;
+	    }
+	  }, {
+	    key: "OpenEventDetailPopup",
+	    value: function OpenEventDetailPopup() {
+	      var _this2 = this;
+	      this.calendar.on('clickEvent', function (_ref) {
+	        var event = _ref.event;
+	        var popupForm, eventElem, coordinates;
+	        popupForm = document.getElementById('event-detail-popup');
+	        eventElem = window.event.srcElement;
+	        coordinates = eventElem.getBoundingClientRect();
+	        popupForm.style.left = coordinates.right + 'px';
+	        popupForm.style.top = coordinates.top - 85 + 'px';
+	        var start, end, calendarTeam;
+	        document.getElementById('popupDetailTitle').innerHTML = event.title;
+	        start = moment(event.start.toDate()).format('DD.MM.YY HH:mm');
+	        end = moment(event.end.toDate()).format('HH:mm');
+	        document.getElementById('popupDetailDate').innerHTML = start + ' - ' + end;
+	        document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? event.recurrenceRule : 'не повторяется';
+	        if (_this2.isUser) {
+	          calendarTeam = _this2.geCalendarById(event.calendarId);
+	          document.getElementById('popupDetailTeam').innerHTML = calendarTeam.name;
+	          document.getElementById('popupDetailDot').style.backgroundColor = calendarTeam.color;
+	          document.getElementById('popupTopLine').style.backgroundColor = calendarTeam.color;
+	        } else {
+	          document.getElementById('popupTopLine').style.backgroundColor = '#a1b56c';
+	        }
+	        popupForm.style.display = 'block';
+	        _this2.eventForClosePopup();
+	        _this2.changeEventForm(event);
+	      });
+	    }
+	  }, {
+	    key: "eventForClosePopup",
+	    value: function eventForClosePopup() {
+	      var popupForm = document.getElementById('event-detail-popup');
+	      document.addEventListener('mousedown', function (e) {
+	        var withinBoundaries = e.composedPath().includes(popupForm);
+	        if (!withinBoundaries) {
+	          popupForm.style.display = 'none'; // скрываем элемент т к клик был за его пределами
+	        }
+	      });
+	    }
+	  }, {
+	    key: "changeEventForm",
+	    value: function changeEventForm(event) {
+	      document.getElementById('popupChangeEventId').value = event.id;
+	      document.getElementById('popupChangeTitle').value = event.title;
+	      // dayStart = moment(event.start.toDate()).format('DD.MM.YYYY HH:mm');
+	      // dayEnd = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
+	      // timeStart = moment(event.start.toDate()).format('DD.MM.YYYY HH:mm');
+	      // timeEnd = moment(event.end.toDate()).format('HH:mm');
+	      EventDatePickers[1].clear();
+	      EventDatePickers[1].value(event.start.toDate());
+	      EventDatePickers[1].datePicker.value(event.end.toDate());
+	      EventDatePickers[1].timePicker.value(event.end.toDate());
+
+	      // EventDatePickers[1].value(event.end.toDate());
+	      // EventDatePickers[1].timePicker.value(event.start.toDate());
+	      // EventDatePickers[1].timePicker.value(event.end.toDate());
+
+	      // EventDatePickers[1].element.value = dayStart + ' - ' + dayEnd;
+	      // EventDatePickers[1].timePicker.value = timeStart + ' - ' + timeEnd;
+
+	      // EventDatePickers[1].save();
+	      // EventDatePickers[1].datePicker.refresh();
+	      // EventDatePickers[1].timePicker.refresh();
+
+	      // ignoreCalenderChange = true;
+	      // let start = event.start.toDate();
+	      // let end = event.end.toDate();
+	      // EventDatePickers[1].value('');
+	      // EventDatePickers[1].start = event.start.toDate();
+	      // EventDatePickers[1].datePicker.start = event.start.toDate();
+	      // EventDatePickers[1].endTime = event.end.toDate();
+	      // EventDatePickers[1].value(start, end);
+	      // EventDatePickers[1].refresh();
+	      // EventDatePickers[1].datePicker.refresh();
+	      // ignoreCalenderChange =false;
+	      // EventDatePickers[1].datePicker._date.start = event.start.toDate();
+	      // EventDatePickers[1].startTime = moment(event.start.toDate());
+	      // EventDatePickers[1].datePicker._visibleDate = moment(event.start.toDate());
+
+	      // // EventDatePickers[1].changeTimeManually();
+	      // EventDatePickers[1].options.startDate = event.start.toDate();
+
+	      console.log(EventDatePickers[1]);
 	    }
 	  }]);
 	  return Schedule;
