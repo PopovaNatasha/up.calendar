@@ -2,11 +2,10 @@
 
 namespace Up\Calendar\Agents;
 
-use Up\Calendar\Model\UserTable;
 
 class AgentStory
 {
-    public static function userHistory()
+    public static function userHistory() :void
     {
         \Bitrix\Main\Loader::includeModule('up.calendar');
         $users = \Bitrix\Main\UserTable::getList([

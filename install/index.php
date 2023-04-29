@@ -83,7 +83,7 @@ class up_calendar extends CModule
             'up.calendar',
             'N',
             '86400',
-            "$nowDate",
+            "",
             'Y',
             "$nowDate",
         );
