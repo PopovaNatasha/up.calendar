@@ -68,8 +68,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 <div class="box">
 	<?php if ($USER->getID() === $arResult['team']['ID_ADMIN']): ?>
-		<div class="buttons admin">
+		<div class="buttons admin is-right">
 			<button class="button is-primary js-modal-trigger" data-target="modal-js-crateEvent">Создать событие</button>
+			<button class="button is-primary js-modal-trigger" data-target="modal-js-example1">Пригласить</button>
+			<button class="button is-primary js-modal-trigger" data-target="modal-js-example2">Настройки</button>
 		</div>
 	<?php endif; ?>
 	<div class="tabs is-right" style="align-items: flex-end">

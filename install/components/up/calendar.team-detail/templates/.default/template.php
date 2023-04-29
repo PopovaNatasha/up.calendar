@@ -3,112 +3,174 @@
  * @var $arResult
  * @var $USER
  */
+\Bitrix\Main\UI\Extension::load('up.schedule');
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 ?>
 <section class="container">
 
-	<div class="columns is-multiline">
-
-		<div class="column has-text-centered">
-
-			<div class="card">
-				<div class="card-image">
-					<figure class="image is-4by3">
-						<?php if ($arResult['PERSONAL_PHOTO']): ?>
-							<?= \CFile::ShowImage($arResult['PERSONAL_PHOTO'], 1280, 960)?>
-						<?php else: ?>
-							<img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-						<?php endif; ?>
-					</figure>
-				</div>
-				<div class="card-content">
-					<p class="description">Участников</p>
-					<h1 class="title is-4"><?= count($arResult['PARTICIPANTS']) ?></h1>
-				</div>
-			</div>
-		</div>
-
-		<div class="column is-half">
 			<div class="box">
-				<h1 class="title is-4"><?= htmlspecialchars($arResult['TITLE']) ?></h1>
-				<p><?= htmlspecialchars($arResult['DESCRIPTION']) ?></p>
+				<div class="columns">
+					<div class="column has-text-centered">
+						<div class="card">
+							<div class="card-image" style="display:flex; justify-content: center;">
+								<figure class="image is-256x256">
+									<?php if ($arResult['PERSONAL_PHOTO']): ?>
+										<?= \CFile::ShowImage($arResult['PERSONAL_PHOTO'], 256, 256)?>
+									<?php else: ?>
+										<img src="https://bulma.io/images/placeholders/256x256.png" alt="Placeholder image">
+									<?php endif; ?>
+								</figure>
+							</div>
 
-				<?php if ($USER->getID() !== $arResult['ID_ADMIN']): ?>
-					<?php foreach ($arResult['PARTICIPANTS'] as $participant): ?>
-						<?php $result .= in_array($USER->getID(), $participant, true); ?>
-					<?php endforeach; ?>
-					<?php if ($result): ?>
-						<div class="buttons">
-							<button class="button is-primary is-light js-modal-trigger" data-target="modal-js-leave-team" style="margin-left: auto">Покинуть</button>
 						</div>
-					<?php else: ?>
-						<form class="buttons" method="post">
-							<input type="hidden" name="action" value="in"/>
-							<button class="button is-primary is-light" style="margin-left: auto">Вcтупить</button>
-						</form>
-					<?php endif; ?>
-				<?php endif; ?>
-
-			</div>
-
-			<form class="box">
-				<div class="field">
-					<div class="control">
-						<textarea class="textarea" placeholder="Введите сообщение" rows="2"></textarea>
 					</div>
-				</div>
-				<button class="button is-primary is-light">Отправить</button>
-			</form>
+					<div class="column is-9" style="display: flex">
+						<div style="display: flex; justify-content: space-between;">
+						<div style="display: flex;flex-direction: column;">
+						<h1 class="title is-4"><?= htmlspecialchars($arResult['TITLE']) ?></h1>
+						<p><?= htmlspecialchars($arResult['DESCRIPTION']) ?></p>
+						</div>
+							<div class="box" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px">
+							<p class="description">Участников:</p>
+							<p class="is-left"><?= count($arResult['PARTICIPANTS']) ?></p>
+							</div>
+						</div>
+						<?php if ($USER->getID() !== $arResult['ID_ADMIN']): ?>
+							<?php foreach ($arResult['PARTICIPANTS'] as $participant): ?>
+								<?php $result .= in_array($USER->getID(), $participant, true); ?>
+							<?php endforeach; ?>
+							<?php if ($result): ?>
+								<div class="buttons">
+									<button class="button is-primary is-light js-modal-trigger" data-target="modal-js-leave-team" style="margin-left: auto">Покинуть</button>
+								</div>
+							<?php else: ?>
+								<form class="buttons" method="post">
+									<input type="hidden" name="action" value="in"/>
+									<button class="button is-primary is-light" style="margin-left: auto">Вcтупить</button>
+								</form>
+							<?php endif; ?>
+						<?php endif; ?>
+						<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
+							<div class="buttons admin is-right">
+								<button class="button is-primary js-modal-trigger" data-target="modal-js-crateEvent">Создать событие</button>
+								<button class="button is-primary js-modal-trigger" data-target="modal-js-example1">Пригласить</button>
+								<button class="button is-primary js-modal-trigger" data-target="modal-js-example2">Настройки</button>
+							</div>
+						<?php endif; ?>
+					</div>
+			</div>
 		</div>
 
-		<div class="column">
 
-			<div class="box">
 
-<!--				<div class="container">-->
-<!--					<p>-->
-<!--						<input type="date" class="input" id="date" name="date" value="2019-10-22">-->
-<!--					</p>-->
-<!--				</div>-->
-<!---->
-<!--				<input type="text" class='date-input'>-->
-<!--				<div class="wrapper">-->
-<!--					<div class="level header is-marginless">-->
-<!--						<span class="left-arrow"><</span>-->
-<!--						<span class="year-month"></span>-->
-<!--						<span class="right-arrow">></span>-->
-<!--					</div>-->
-<!---->
-<!--					<div class="date-wrapper">-->
-<!--						<div class="level-left day-nums">-->
-<!--							<span class='date-item'>Sun</span>-->
-<!--							<span class='date-item'>Mon</span>-->
-<!--							<span class='date-item'>Tue</span>-->
-<!--							<span class='date-item'>Wen</span>-->
-<!--							<span class='date-item'>Thu</span>-->
-<!--							<span class='date-item'>Fri</span>-->
-<!--							<span class='date-item'>Sat</span>-->
-<!--						</div>-->
-<!--						<div class="dates">-->
-<!--						</div>-->
-<!--					</div>-->
-<!--				</div>-->
 
-				<div class="buttons" style="display: flex">
-					<a style="flex: 1" class="button is-primary" href="/group/<?= $arResult['ID'] ?>/schedule/">Расписание</a>
+
+		<form name="create-event" method="post">
+			<div class="modal" id="modal-js-crateEvent">
+				<div class="modal-background"></div>
+				<div class="modal-card">
+					<header class="modal-card-head">
+						<p class="modal-card-title">Новое событие</p>
+						<button class="delete" type="reset" aria-label="close"></button>
+					</header>
+					<section class="modal-card-body">
+						<label>Название cобытия</label>
+						<div class="control">
+							<input name="title" class="input is-primary mb-4" type="text" required>
+						</div>
+						<div class="field">
+							<label>Время</label>
+							<div class="control">
+								<input name="date" type="date" class="input is-primary mb-4" id="date">
+							</div>
+						</div>
+						<div class="field">
+							<label>Повторяемость</label>
+							<div class="columns">
+								<div class="column control">
+									<div class="select is-primary">
+										<select id="selectRepeat" name="rule_repeat" onchange="displayUsgsChange()">
+											<option value="non">Не повторяется</option>
+											<option value="daily">Каждый день</option>
+											<option value="weekly">Каждую неделю</option>
+										</select>
+									</div>
+								</div>
+								<div class="column" id="every">
+									<span class="rule-daily">каждый</span>
+								</div>
+								<div class="column control" id="day_count">
+									<div class="select is-primary">
+										<select name="rule_repeat_count">
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+										</select>
+									</div>
+								</div>
+								<div class="column" id="day">
+									<span class="rule-daily">день</span>
+								</div>
+							</div>
+					</section>
+					<footer class="modal-card-foot">
+						<button class="button is-success" type="submit">Сохранить</button>
+						<button class="button" type="reset">Отмена</button>
+					</footer>
 				</div>
-
-
-
 			</div>
+		</form>
 
-			<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
-				<div class="buttons admin">
-					<button class="button is-primary js-modal-trigger" data-target="modal-js-example1">Пригласить</button>
-					<button class="button is-primary js-modal-trigger" data-target="modal-js-example2">Настройки</button>
+		<div class="box is-9">
+
+			<div class="tabs is-right" style="align-items: flex-end">
+				<div>
+					<button class="button " id="prevBtn"><i class="fa-solid fa-chevron-left"></i></button>
+					<button class="button " id="todayBtn">Сегодня</i></button>
+					<button class="button " id="nextBtn"><i class="fa-solid fa-chevron-right"></i></button>
 				</div>
-			<?php endif ?>
+				<ul>
+					<span id="renderRange" style="margin-right: auto"></span>
+					<li class="tab" onclick="changeView(event, 'day')"><a>День</a></li>
+					<li class="tab" onclick="changeView(event, 'week')"><a>Неделя</a></li>
+					<li class="tab is-active" onclick="changeView(event, 'month')"><a>Месяц</a></li>
+				</ul>
+			</div>
+			<div id="calendar" style="height: 800px">
+			</div>
+		</div>
 
-			<div>
+		<script>
+			var calendars = bulmaCalendar.attach('#date', {
+				type: 'datetime',
+				startDate: new Date(),
+				displayMode: 'dialog',
+				showHeader: false,
+				validateLabel: 'Ввод',
+				cancelLabel: 'Выход',
+				clearLabel: 'Очистить',
+				todayLabel: 'Сегодня',
+				isRange: true,
+				dateFormat: 'DD.MM.YYYY',
+				weekStart: 1,
+				minuteSteps: 1,
+			});
+
+		</script>
+
+		<script>
+			BX.ready(function() {
+				window.CalendarEventsList = new BX.Up.Calendar.Schedule({
+					idTeam: <?= json_encode($arResult['ID'], JSON_THROW_ON_ERROR) ?>,
+					rootNodeId: 'calendar',
+					isUser: false,
+				});
+			});
+		</script>
+
 				<div class="modal" id="modal-js-example1" >
 					<div class="modal-background"></div>
 					<div class="modal-card">
@@ -132,7 +194,7 @@
 						</footer>
 					</div>
 				</div>
-			</div>
+
 
 			<form name="settings" action="" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="settings" value="1"/>
@@ -196,8 +258,6 @@
 					</div>
 				</div>
 			</form>
-		</div>
-	</div>
 </section>
 
 <script>
