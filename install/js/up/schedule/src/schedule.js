@@ -40,7 +40,7 @@ export class Schedule
 					this.addEvents();
 					this.addRegularEvents();
 				}
-				this.OpenEventDetailPopup();
+				this.AddOpenEventDetailPopup();
 			});
 	}
 
@@ -335,7 +335,7 @@ export class Schedule
 		return teamCalendar;
 	}
 
-	OpenEventDetailPopup()
+	AddOpenEventDetailPopup()
 	{
 		this.calendar.on('clickEvent', ({ event }) => {
 			let popupForm, eventElem, coordinates;
@@ -387,9 +387,7 @@ export class Schedule
 
 		EventDatePickers[1].clear();
 		EventDatePickers[1].value(event.start.toDate());
-		EventDatePickers[1].datePicker.value(event.end.toDate());
-		EventDatePickers[1].timePicker.value(event.end.toDate());
-
-		console.log(EventDatePickers[1]);
+		let endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
+		endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm')
 	}
 }

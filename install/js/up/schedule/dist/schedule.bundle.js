@@ -37,7 +37,7 @@ this.BX.Up = this.BX.Up || {};
 	          _this.addEvents();
 	          _this.addRegularEvents();
 	        }
-	        _this.OpenEventDetailPopup();
+	        _this.AddOpenEventDetailPopup();
 	      });
 	    }
 	  }, {
@@ -301,8 +301,8 @@ this.BX.Up = this.BX.Up || {};
 	      return teamCalendar;
 	    }
 	  }, {
-	    key: "OpenEventDetailPopup",
-	    value: function OpenEventDetailPopup() {
+	    key: "AddOpenEventDetailPopup",
+	    value: function AddOpenEventDetailPopup() {
 	      var _this2 = this;
 	      this.calendar.on('clickEvent', function (_ref) {
 	        var event = _ref.event;
@@ -347,45 +347,10 @@ this.BX.Up = this.BX.Up || {};
 	    value: function changeEventForm(event) {
 	      document.getElementById('popupChangeEventId').value = event.id;
 	      document.getElementById('popupChangeTitle').value = event.title;
-	      // dayStart = moment(event.start.toDate()).format('DD.MM.YYYY HH:mm');
-	      // dayEnd = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
-	      // timeStart = moment(event.start.toDate()).format('DD.MM.YYYY HH:mm');
-	      // timeEnd = moment(event.end.toDate()).format('HH:mm');
 	      EventDatePickers[1].clear();
 	      EventDatePickers[1].value(event.start.toDate());
-	      EventDatePickers[1].datePicker.value(event.end.toDate());
-	      EventDatePickers[1].timePicker.value(event.end.toDate());
-
-	      // EventDatePickers[1].value(event.end.toDate());
-	      // EventDatePickers[1].timePicker.value(event.start.toDate());
-	      // EventDatePickers[1].timePicker.value(event.end.toDate());
-
-	      // EventDatePickers[1].element.value = dayStart + ' - ' + dayEnd;
-	      // EventDatePickers[1].timePicker.value = timeStart + ' - ' + timeEnd;
-
-	      // EventDatePickers[1].save();
-	      // EventDatePickers[1].datePicker.refresh();
-	      // EventDatePickers[1].timePicker.refresh();
-
-	      // ignoreCalenderChange = true;
-	      // let start = event.start.toDate();
-	      // let end = event.end.toDate();
-	      // EventDatePickers[1].value('');
-	      // EventDatePickers[1].start = event.start.toDate();
-	      // EventDatePickers[1].datePicker.start = event.start.toDate();
-	      // EventDatePickers[1].endTime = event.end.toDate();
-	      // EventDatePickers[1].value(start, end);
-	      // EventDatePickers[1].refresh();
-	      // EventDatePickers[1].datePicker.refresh();
-	      // ignoreCalenderChange =false;
-	      // EventDatePickers[1].datePicker._date.start = event.start.toDate();
-	      // EventDatePickers[1].startTime = moment(event.start.toDate());
-	      // EventDatePickers[1].datePicker._visibleDate = moment(event.start.toDate());
-
-	      // // EventDatePickers[1].changeTimeManually();
-	      // EventDatePickers[1].options.startDate = event.start.toDate();
-
-	      console.log(EventDatePickers[1]);
+	      var endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
+	      endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
 	    }
 	  }]);
 	  return Schedule;
