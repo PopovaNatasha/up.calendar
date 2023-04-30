@@ -315,7 +315,7 @@ class Calendar
         {
             if ($arguments['is_all'])
             {
-                $event = EventTable::getByPrimary(['ID' => (int)$arguments['id']])->fetchObject();
+                $event = RegularEventTable::getByPrimary(['ID' => (int)$arguments['id']])->fetchObject();
                 $event->setTitle($arguments['title'])
                     ->setDateTimeFrom($arguments['date_from'])
                     ->setDateTimeTo($arguments['date_to'])
@@ -331,6 +331,34 @@ class Calendar
                     ->setDateTimeTo($arguments['date_to'])
                     ->setIdEvent($arguments['id'])
                     ->save();
+            }
+        }
+    }
+
+    public static function deleteEvent($arguments)
+    {
+        unset($events);
+        if (!$arguments['day_step'])
+        {
+            EventTable::delete(['ID' => (int)$arguments['id']]);
+        }
+        else
+        {
+            RegularEventTable::delete(['ID' => (int)$arguments['id']]);
+
+            $events = ChangedEventTable::getList([
+                'select' => ['ID'],
+                'filter' => [
+                    'ID_EVENT' => (int)$arguments['id'],
+                ]
+            ])->fetchAll();
+
+            if ($events)
+            {
+                foreach ($events as $event)
+                {
+                    ChangedEventTable::delete($event['ID']);
+                }
             }
         }
     }
