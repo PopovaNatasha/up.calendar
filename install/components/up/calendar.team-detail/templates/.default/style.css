@@ -40,9 +40,9 @@
 	padding-top: 0;
 }
 
-#every,
-#day_count,
-#day {
+#create-every, #create-day-count, #create-day,
+#change-every, #change-day-count, #change-day,
+#checkboxIsAllLabel, #changeRepeat {
 	display: none;
 }
 

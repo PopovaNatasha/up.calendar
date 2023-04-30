@@ -146,7 +146,7 @@ export class Schedule
 						start: dayTimeStart,
 						end: dayTimeEnd,
 						category: 'time',
-						recurrenceRule: 'каждые ' + event['DAY_STEP'] + ' дней',
+						recurrenceRule: event['DAY_STEP'],
 					},
 				]);
 				dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -222,7 +222,7 @@ export class Schedule
 							start: dayTimeStart,
 							end: dayTimeEnd,
 							category: 'time',
-							recurrenceRule: 'каждые ' + event['DAY_STEP'] + ' дней',
+							recurrenceRule: event['DAY_STEP'],
 						},
 					]);
 				}
@@ -350,7 +350,7 @@ export class Schedule
 			start = moment(event.start.toDate()).format('DD.MM.YY HH:mm');
 			end = moment(event.end.toDate()).format('HH:mm')
 			document.getElementById('popupDetailDate').innerHTML = start + ' - ' + end;
-			document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? event.recurrenceRule : 'не повторяется';
+			document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? 'каждые ' + event.recurrenceRule + ' дней' : 'не повторяется';
 			if (this.isUser)
 			{
 				calendarTeam = this.geCalendarById(event.calendarId);
@@ -375,6 +375,54 @@ export class Schedule
 		EventDatePickers[1].clear();
 		EventDatePickers[1].value(event.start.toDate());
 		let endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
-		endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm')
+		endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
+		this.setViewRule(event);
+
+	}
+
+	setViewRule(event)
+	{
+		let checkbox, checkboxLabel, blockRepeat;
+		checkboxLabel = document.getElementById('checkboxIsAllLabel');
+		checkbox = document.getElementById('checkboxIsAll');
+		blockRepeat = document.getElementById('changeRepeat');
+		checkbox.checked = false;
+		blockRepeat.style.display = 'none';
+
+		if (event.recurrenceRule)
+		{
+			checkboxLabel.style.display = 'block';
+			checkboxLabel.addEventListener('change', e => {
+				if (e.target.checked)
+				{
+					blockRepeat.style.display = 'block';
+				}
+				else
+				{
+					blockRepeat.style.display = 'none';
+				}
+			})
+			if (event.recurrenceRule !== '7')
+			{
+				document.getElementById('changeSelectRepeat').value = 'daily';
+				document.getElementById('change-every').style.display = "block";
+				document.getElementById( 'change-day-count').style.display = "block";
+				document.getElementById('change-day').style.display = "block";
+				document.getElementById('changeSelectCount').value = event.recurrenceRule;
+			}
+			else
+			{
+				document.getElementById('changeSelectRepeat').value = 'weekly';
+				document.getElementById('change-every').style.display = "none";
+				document.getElementById( 'change-day-count').style.display = "none";
+				document.getElementById('change-day').style.display = "none";
+				document.getElementById('changeSelectCount').value = '1';
+			}
+		}
+		else
+		{
+			checkboxLabel.style.display = 'none';
+			blockRepeat.style.display = 'none';
+		}
 	}
 }

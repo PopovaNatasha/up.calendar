@@ -134,7 +134,7 @@ this.BX.Up = this.BX.Up || {};
 	            start: dayTimeStart,
 	            end: dayTimeEnd,
 	            category: 'time',
-	            recurrenceRule: 'каждые ' + event['DAY_STEP'] + ' дней'
+	            recurrenceRule: event['DAY_STEP']
 	          }]);
 	          dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
 	          dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -200,7 +200,7 @@ this.BX.Up = this.BX.Up || {};
 	              start: dayTimeStart,
 	              end: dayTimeEnd,
 	              category: 'time',
-	              recurrenceRule: 'каждые ' + event['DAY_STEP'] + ' дней'
+	              recurrenceRule: event['DAY_STEP']
 	            }]);
 	          }
 	          dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -317,7 +317,7 @@ this.BX.Up = this.BX.Up || {};
 	        start = moment(event.start.toDate()).format('DD.MM.YY HH:mm');
 	        end = moment(event.end.toDate()).format('HH:mm');
 	        document.getElementById('popupDetailDate').innerHTML = start + ' - ' + end;
-	        document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? event.recurrenceRule : 'не повторяется';
+	        document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? 'каждые ' + event.recurrenceRule + ' дней' : 'не повторяется';
 	        if (_this2.isUser) {
 	          calendarTeam = _this2.geCalendarById(event.calendarId);
 	          document.getElementById('popupDetailTeam').innerHTML = calendarTeam.name;
@@ -327,20 +327,9 @@ this.BX.Up = this.BX.Up || {};
 	          document.getElementById('popupTopLine').style.backgroundColor = '#a1b56c';
 	        }
 	        popupForm.style.display = 'block';
-	        // this.eventForClosePopup();
 	        _this2.changeEventForm(event);
 	      });
-	    } // eventForClosePopup()
-	    // {
-	    // 	const popupForm = document.getElementById('event-detail-popup');
-	    // 	document.addEventListener( 'mousedown', (e) => {
-	    // 		const withinBoundaries = e.composedPath().includes(popupForm);
-	    //
-	    // 		if ( ! withinBoundaries ) {
-	    // 			popupForm.style.display = 'none'; // скрываем элемент т к клик был за его пределами
-	    // 		}
-	    // 	});
-	    // }
+	    }
 	  }, {
 	    key: "changeEventForm",
 	    value: function changeEventForm(event) {
@@ -350,6 +339,43 @@ this.BX.Up = this.BX.Up || {};
 	      EventDatePickers[1].value(event.start.toDate());
 	      var endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
 	      endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
+	      this.setViewRule(event);
+	    }
+	  }, {
+	    key: "setViewRule",
+	    value: function setViewRule(event) {
+	      var checkbox, checkboxLabel, blockRepeat;
+	      checkboxLabel = document.getElementById('checkboxIsAllLabel');
+	      checkbox = document.getElementById('checkboxIsAll');
+	      blockRepeat = document.getElementById('changeRepeat');
+	      checkbox.checked = false;
+	      blockRepeat.style.display = 'none';
+	      if (event.recurrenceRule) {
+	        checkboxLabel.style.display = 'block';
+	        checkboxLabel.addEventListener('change', function (e) {
+	          if (e.target.checked) {
+	            blockRepeat.style.display = 'block';
+	          } else {
+	            blockRepeat.style.display = 'none';
+	          }
+	        });
+	        if (event.recurrenceRule !== '7') {
+	          document.getElementById('changeSelectRepeat').value = 'daily';
+	          document.getElementById('change-every').style.display = "block";
+	          document.getElementById('change-day-count').style.display = "block";
+	          document.getElementById('change-day').style.display = "block";
+	          document.getElementById('changeSelectCount').value = event.recurrenceRule;
+	        } else {
+	          document.getElementById('changeSelectRepeat').value = 'weekly';
+	          document.getElementById('change-every').style.display = "none";
+	          document.getElementById('change-day-count').style.display = "none";
+	          document.getElementById('change-day').style.display = "none";
+	          document.getElementById('changeSelectCount').value = '1';
+	        }
+	      } else {
+	        checkboxLabel.style.display = 'none';
+	        blockRepeat.style.display = 'none';
+	      }
 	    }
 	  }]);
 	  return Schedule;

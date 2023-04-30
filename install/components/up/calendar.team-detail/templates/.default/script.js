@@ -55,16 +55,16 @@ function setRenderRangeText() {
 	renderRange.innerHTML = html.join('');
 }
 
-function displayUsgsChange() {
+function displayUsgsChange(prefix) {
 	if(event.target.value === 'daily') {
-		document.getElementById('every').style.display = "block";
-		document.getElementById('day_count').style.display = "block";
-		document.getElementById('day').style.display = "block";
+		document.getElementById(prefix + '-every').style.display = "block";
+		document.getElementById(prefix + '-day-count').style.display = "block";
+		document.getElementById(prefix + '-day').style.display = "block";
 	}
 	else {
-		document.getElementById('every').style.display = "none";
-		document.getElementById('day_count').style.display = "none";
-		document.getElementById('day').style.display = "none";
+		document.getElementById(prefix + '-every').style.display = "none";
+		document.getElementById(prefix + '-day-count').style.display = "none";
+		document.getElementById(prefix + '-day').style.display = "none";
 	}
 }
 

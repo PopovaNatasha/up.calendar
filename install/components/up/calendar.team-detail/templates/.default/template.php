@@ -86,17 +86,17 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 						<div class="columns">
 							<div class="column control">
 								<div class="select is-primary">
-									<select id="selectRepeat" name="rule_repeat" onchange="displayUsgsChange()">
+									<select id="selectRepeat" name="rule_repeat" onchange="displayUsgsChange('create')">
 										<option value="non">Не повторяется</option>
 										<option value="daily">Каждый день</option>
 										<option value="weekly">Каждую неделю</option>
 									</select>
 								</div>
 							</div>
-							<div class="column" id="every">
+							<div class="column" id="create-every">
 								<span class="rule-daily">каждый</span>
 							</div>
-							<div class="column control" id="day_count">
+							<div class="column control" id="create-day-count">
 								<div class="select is-primary">
 									<select name="rule_repeat_count">
 										<option value="1">1</option>
@@ -108,7 +108,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 									</select>
 								</div>
 							</div>
-							<div class="column" id="day">
+							<div class="column" id="create-day">
 								<span class="rule-daily">день</span>
 							</div>
 						</div>
@@ -284,23 +284,28 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 						</div>
 					</div>
 					<div class="field">
+						<label class="checkbox" id="checkboxIsAllLabel">
+							<input name="isAll" type="checkbox" id="checkboxIsAll">
+							Изменить все события в серии
+						</label>
+					</div>
+					<div class="field" id="changeRepeat">
 						<label>Повторяемость</label>
 						<div class="columns">
 							<div class="column control">
 								<div class="select is-primary">
-									<select id="selectRepeat" name="rule_repeat" onchange="displayUsgsChange()">
-										<option value="non">Не повторяется</option>
+									<select id="changeSelectRepeat" name="rule_repeat" onchange="displayUsgsChange('change')">
 										<option value="daily">Каждый день</option>
 										<option value="weekly">Каждую неделю</option>
 									</select>
 								</div>
 							</div>
-							<div class="column" id="every">
+							<div class="column" id="change-every">
 								<span class="rule-daily">каждый</span>
 							</div>
-							<div class="column control" id="day_count">
+							<div class="column control" id="change-day-count">
 								<div class="select is-primary">
-									<select name="rule_repeat_count">
+									<select name="rule_repeat_count" id="changeSelectCount">
 										<option value="1">1</option>
 										<option value="2">2</option>
 										<option value="3">3</option>
@@ -310,10 +315,11 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 									</select>
 								</div>
 							</div>
-							<div class="column" id="day">
+							<div class="column" id="change-day">
 								<span class="rule-daily">день</span>
 							</div>
 						</div>
+					</div>
 				</section>
 				<footer class="modal-card-foot">
 					<button class="button is-success" type="submit">Сохранить</button>

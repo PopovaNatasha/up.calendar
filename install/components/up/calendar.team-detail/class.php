@@ -91,6 +91,7 @@ class CalendarCalendarComponent extends CBitrixComponent
 	{
 		Calendar::updateTeam($idTeam, $post);
 	}
+
     protected function createEvent($arguments, $teamId): void
     {
         if ($arguments['title'] === '' || $arguments['date'] === '')
