@@ -16,6 +16,14 @@
 	justify-content: center;
 	flex-direction: row;
 }
+
+.model-name {
+	margin-left: 10px;
+}
+
+.full-name {
+	margin: 10px;
+}
 .navbar.has-shadow {
 	display: flex;
 	justify-content: space-between;
