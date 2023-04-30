@@ -327,21 +327,20 @@ this.BX.Up = this.BX.Up || {};
 	          document.getElementById('popupTopLine').style.backgroundColor = '#a1b56c';
 	        }
 	        popupForm.style.display = 'block';
-	        _this2.eventForClosePopup();
+	        // this.eventForClosePopup();
 	        _this2.changeEventForm(event);
 	      });
-	    }
-	  }, {
-	    key: "eventForClosePopup",
-	    value: function eventForClosePopup() {
-	      var popupForm = document.getElementById('event-detail-popup');
-	      document.addEventListener('mousedown', function (e) {
-	        var withinBoundaries = e.composedPath().includes(popupForm);
-	        if (!withinBoundaries) {
-	          popupForm.style.display = 'none'; // скрываем элемент т к клик был за его пределами
-	        }
-	      });
-	    }
+	    } // eventForClosePopup()
+	    // {
+	    // 	const popupForm = document.getElementById('event-detail-popup');
+	    // 	document.addEventListener( 'mousedown', (e) => {
+	    // 		const withinBoundaries = e.composedPath().includes(popupForm);
+	    //
+	    // 		if ( ! withinBoundaries ) {
+	    // 			popupForm.style.display = 'none'; // скрываем элемент т к клик был за его пределами
+	    // 		}
+	    // 	});
+	    // }
 	  }, {
 	    key: "changeEventForm",
 	    value: function changeEventForm(event) {

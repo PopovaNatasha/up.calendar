@@ -363,20 +363,7 @@ export class Schedule
 				document.getElementById('popupTopLine').style.backgroundColor = '#a1b56c';
 			}
 			popupForm.style.display = 'block';
-			this.eventForClosePopup();
 			this.changeEventForm(event);
-		});
-	}
-
-	eventForClosePopup()
-	{
-		const popupForm = document.getElementById('event-detail-popup');
-		document.addEventListener( 'mousedown', (e) => {
-			const withinBoundaries = e.composedPath().includes(popupForm);
-
-			if ( ! withinBoundaries ) {
-				popupForm.style.display = 'none'; // скрываем элемент т к клик был за его пределами
-			}
 		});
 	}
 
