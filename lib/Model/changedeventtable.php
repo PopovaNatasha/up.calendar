@@ -81,6 +81,13 @@ class ChangedEventTable extends DataManager
 					'title' => Loc::getMessage('CHANGED_EVENT_ENTITY_DATE_TIME_TO_FIELD')
 				]
 			),
+            new IntegerField(
+                'ID_EVENT',
+                [
+                    'required' => true,
+                    'title' => Loc::getMessage('CHANGED_EVENT_ENTITY_ID_TEAM_FIELD')
+                ]
+            ),
             new Reference(
                 'TEAM',
                 TeamTable::class,

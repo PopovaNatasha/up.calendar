@@ -8,6 +8,7 @@ use Bitrix\Main\UI\PageNavigation,
     Up\Calendar\Model\EventTable,
     Up\Calendar\Model\RegularEventTable;
 use Bitrix\Translate\Controller\Index\CollectLangPath;
+use Up\Calendar\Model\ChangedEventTable;
 use Up\Calendar\Model\UserStoryTable;
 
 class Calendar
@@ -261,6 +262,13 @@ class Calendar
             ],
         ])->fetchAll();
 
+        $changedEvents = ChangedEventTable::getList([
+            'select' => ['*'],
+            'filter' => [
+                '@ID_TEAM' => $idTeam
+            ],
+        ])->fetchAll();
+
 		global $USER;
 		$id = $USER->getID();
 		$userStoryEvents = UserStoryTable::getList([
@@ -273,6 +281,7 @@ class Calendar
         return ['events' => [
             'singleEvents' => $singleEvents,
             'regularEvents' => $regularEvents,
+            'changedEvents' => $changedEvents,
 			'userStoryEvents' => $userStoryEvents,
         ]];
     }
@@ -289,4 +298,40 @@ class Calendar
 			$errors = $result->getErrorMessages();
 		}
 	}
+
+    public static function changeEvent($arguments, $idTeam) :void
+    {
+        unset($event);
+        $idTeam = (int)$idTeam;
+        if (!$arguments['day_step'])
+        {
+            $event = EventTable::getByPrimary(['ID' => (int)$arguments['id']])->fetchObject();
+            $event->setTitle($arguments['title'])
+                ->setDateTimeFrom($arguments['date_from'])
+                ->setDateTimeTo($arguments['date_to'])
+                ->save();
+        }
+        else
+        {
+            if ($arguments['is_all'])
+            {
+                $event = EventTable::getByPrimary(['ID' => (int)$arguments['id']])->fetchObject();
+                $event->setTitle($arguments['title'])
+                    ->setDateTimeFrom($arguments['date_from'])
+                    ->setDateTimeTo($arguments['date_to'])
+                    ->setDayStep($arguments['day_step'])
+                    ->save();
+            }
+            else
+            {
+                ChangedEventTable::createObject()
+                    ->setTitle($arguments['title'])
+                    ->setIdTeam($idTeam)
+                    ->setDateTimeFrom($arguments['date_from'])
+                    ->setDateTimeTo($arguments['date_to'])
+                    ->setIdEvent($arguments['id'])
+                    ->save();
+            }
+        }
+    }
 }

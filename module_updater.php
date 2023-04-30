@@ -79,4 +79,12 @@ __projectorMigrate(7, function($updater, $DB)
 	}
 });
 
+__projectorMigrate(8, function($updater, $DB)
+{
+    if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_changed_event'))
+    {
+        $DB->query("ALTER TABLE up_calendar_changed_event ADD ID_EVENT INT");
+    }
+});
+
 
