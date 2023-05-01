@@ -72,4 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let form = document.getElementById('change-color-form');
         form.style.display = 'none';
     });
+
+	let popupDetailForm = document.getElementById('event-detail-popup');
+	document.addEventListener('mousedown', (e) => {
+		const withinBoundaries = e.composedPath().includes(popupDetailForm);
+
+		if (!withinBoundaries) {
+			popupDetailForm.style.display = 'none'; // скрываем элемент т к клик был за его пределами
+		}
+	});
 });
