@@ -9,6 +9,7 @@
         align-items: center;
         justify-content: center;
     }
+
     .FirstName {
         padding: 10px;
     }

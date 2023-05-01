@@ -1,14 +1,15 @@
 <?php
+
 namespace Up\Calendar\Model;
 
 use Bitrix\Main\Localization\Loc,
     Bitrix\Main\ORM\Data\DataManager,
     Bitrix\Main\ORM\Fields,
-	Bitrix\Main\ORM\Fields\IntegerField,
-	Bitrix\Main\ORM\Fields\StringField,
+    Bitrix\Main\ORM\Fields\IntegerField,
+    Bitrix\Main\ORM\Fields\StringField,
     Bitrix\Main\ORM\Fields\Relations\Reference,
     Bitrix\Main\ORM\Query\Join,
-	Bitrix\Main\ORM\Fields\Validators\LengthValidator;
+    Bitrix\Main\ORM\Fields\Validators\LengthValidator;
 
 Loc::loadMessages(__FILE__);
 
@@ -27,7 +28,6 @@ Loc::loadMessages(__FILE__);
  *
  * @package Bitrix\Calendar
  **/
-
 class TeamTable extends DataManager
 {
     /**
@@ -85,11 +85,11 @@ class TeamTable extends DataManager
                 ]
             ),
             new StringField(
-            'IS_PRIVATE',
-				[
+                'IS_PRIVATE',
+                [
                     'title' => Loc::getMessage('TEAM_ENTITY_IS_PRIVATE_FIELD')
                 ]
-			),
+            ),
             new StringField(
                 'INVITE_LINK',
                 [
@@ -106,13 +106,13 @@ class TeamTable extends DataManager
                 FileTable::class,
                 Join::on('this.PERSONAL_PHOTO', 'ref.ID')
             ),
-			new Reference(
-				'USER',
-				UserTeamTable::class,
-				Join::on('this.ID', 'ref.ID_TEAM')
-			),
-		];
-	}
+            new Reference(
+                'USER',
+                UserTeamTable::class,
+                Join::on('this.ID', 'ref.ID_TEAM')
+            ),
+        ];
+    }
 
     /**
      * Returns validators for TITLE field.

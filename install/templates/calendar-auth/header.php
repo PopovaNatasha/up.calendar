@@ -11,7 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?php $APPLICATION->ShowTitle(); ?></title>
     <?php $APPLICATION->ShowHead(); ?>
-	<script src="https://kit.fontawesome.com/7f025501b5.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/7f025501b5.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <?php $APPLICATION->ShowPanel(); ?>

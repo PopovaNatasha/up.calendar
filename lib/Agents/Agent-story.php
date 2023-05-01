@@ -2,56 +2,50 @@
 
 namespace Up\Calendar\Agents;
 
+use Up\Calendar\API\Team,
+    Up\Calendar\API\Event;
 
 class AgentStory
 {
-    public static function userHistory() :void
+    public static function userHistory(): void
     {
         \Bitrix\Main\Loader::includeModule('up.calendar');
         $users = \Bitrix\Main\UserTable::getList([
             'select' => ['id'],
         ])->fetchAll();
-        foreach ($users as $user)
-        {
-            $userTeams = \Up\Calendar\Calendar::getUserTeams($user['ID']);
-            if(!$userTeams)
-            {
+        foreach ($users as $user) {
+            $userTeams = Team::getUserTeams($user['ID']);
+            if (!$userTeams) {
                 break;
             }
             $teams = [];
-            foreach ($userTeams as $key => $userTeam)
-            {
+            foreach ($userTeams as $key => $userTeam) {
                 $teams[$key] = $userTeam['ID_TEAM'];
             }
             $teams = array_values($teams);
-            $userEvents =  \Up\Calendar\Calendar::getEventsList($teams);
+            $userEvents = Event::getEventsList($teams);
             $singleEventsToSave = [];
-            foreach ($userEvents['events']['singleEvents'] as $singleEvent)
-            {
+            foreach ($userEvents['events']['singleEvents'] as $singleEvent) {
                 $nowDate = date('d.m.Y');
-                $dayEvent = explode(' ,',$singleEvent['DATE_TIME_FROM'] );
+                $dayEvent = explode(' ,', $singleEvent['DATE_TIME_FROM']);
                 $dayEvent = $dayEvent[0];
                 $dayEvent = substr($dayEvent, 0, strpos($dayEvent, ' '));
-                if ($nowDate === $dayEvent)
-                {
+                if ($nowDate === $dayEvent) {
                     $singleEventsToSave[] = $singleEvent;
                 }
             }
             $regularEventsToSave = [];
-            foreach ($userEvents['events']['regularEvents'] as $regularEvent)
-            {
+            foreach ($userEvents['events']['regularEvents'] as $regularEvent) {
                 $nowDate = date('d.m.Y');
-                $dayEvent = explode(' ,',$regularEvent['DATE_TIME_FROM'] );
+                $dayEvent = explode(' ,', $regularEvent['DATE_TIME_FROM']);
                 $dayEvent = $dayEvent[0];
                 $dayEvent = substr($dayEvent, 0, strpos($dayEvent, ' '));
-                if ($nowDate === $dayEvent)
-                {
+                if ($nowDate === $dayEvent) {
                     $regularEventsToSave[] = $regularEvent;
                 }
             }
 
-            foreach ($singleEventsToSave as $singleEventToSave)
-            {
+            foreach ($singleEventsToSave as $singleEventToSave) {
                 $teamTitle = \Up\Calendar\Model\TeamTable::getRowById($singleEventToSave['ID_TEAM']);
                 \Up\Calendar\Model\UserStoryTable::createObject()
                     ->setIdUser($user['ID'])
@@ -63,8 +57,7 @@ class AgentStory
                     ->save();
             }
             unset($teamTitle);
-            foreach ($regularEventsToSave as $regularEventToSave)
-            {
+            foreach ($regularEventsToSave as $regularEventToSave) {
                 $teamTitle = \Up\Calendar\Model\TeamTable::getRowById($regularEventToSave['ID_TEAM']);
                 \Up\Calendar\Model\UserStoryTable::createObject()
                     ->setIdUser($user['ID'])

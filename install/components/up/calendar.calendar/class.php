@@ -1,7 +1,8 @@
 <?php
 
 use Bitrix\Main\Context,
-	Up\Calendar\Calendar,
+	Up\Calendar\API\Team,
+    Up\Calendar\API\Event,
 	Bitrix\Main\Loader;
 
 class CalendarCalendarComponent extends CBitrixComponent
@@ -24,7 +25,7 @@ class CalendarCalendarComponent extends CBitrixComponent
     protected function fetchTeams(): void
 	{
 		global $USER;
-		$teams = Calendar::getUserTeams($USER->getID());
+		$teams = Team::getUserTeams($USER->getID());
 		$idTeams = array_column($teams, 'ID_TEAM');
 
 		$this->arResult['teams'] = $teams;
@@ -33,6 +34,6 @@ class CalendarCalendarComponent extends CBitrixComponent
 
 	protected function changeColor(array $colorTeams): void
 	{
-		Calendar::setUserTeamColor($colorTeams);
+        Team::setUserTeamColor($colorTeams);
 	}
 }

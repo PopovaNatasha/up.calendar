@@ -1,7 +1,7 @@
 <?php
 
 use Bitrix\Main\Loader,
-    Up\Calendar\Calendar,
+    Up\Calendar\API\Team,
     Bitrix\Main\Context;
 
 class CalendarInviteComponent extends CBitrixComponent
@@ -10,11 +10,10 @@ class CalendarInviteComponent extends CBitrixComponent
     {
         Loader::includeModule('up.calendar');
         $request = Context::getCurrent()->getRequest();
-        if ($request->isPost())
-        {
+        if ($request->isPost()) {
             $this->actionPost($request->getPostList());
         }
-            $this->actionGet();
+        $this->actionGet();
         $this->includeComponentTemplate();
     }
 
@@ -22,21 +21,18 @@ class CalendarInviteComponent extends CBitrixComponent
     {
         global $USER;
         $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
-        $team = Calendar::getTeamByLink($request->get('link'));
+        $team = Team::getTeamByLink($request->get('link'));
         $team['link'] = $request->get('link');
-        $participants = Calendar::getParticipantsTeam($team['ID']);
+        $participants = Team::getParticipantsTeam($team['ID']);
 
         $check = 0;
-        foreach ($participants as $participant)
-        {
-            if ($participant['ID_USER'] === $USER->getID())
-            {
+        foreach ($participants as $participant) {
+            if ($participant['ID_USER'] === $USER->getID()) {
                 $check = 1;
             }
         }
-        if ($check === 1)
-        {
-            LocalRedirect('/group/' . $team['ID']. '/');
+        if ($check === 1) {
+            LocalRedirect('/group/' . $team['ID'] . '/');
         }
 
         $this->arResult = $team;
@@ -45,8 +41,8 @@ class CalendarInviteComponent extends CBitrixComponent
     protected function actionPost($post)
     {
 
-        $team = Calendar::getTeamByLink($post['link']);
-        Calendar::joinTheTeam($team['ID']);
+        $team = Team::getTeamByLink($post['link']);
+        Team::joinTheTeam($team['ID']);
         LocalRedirect("/group/{$team['ID']}/");
     }
 

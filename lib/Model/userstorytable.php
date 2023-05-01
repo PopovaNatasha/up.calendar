@@ -1,4 +1,5 @@
 <?php
+
 namespace Up\Calendar\Model;
 
 use Bitrix\Main\Localization\Loc,
@@ -27,7 +28,6 @@ Loc::loadMessages(__FILE__);
  *
  * @package Bitrix\Calendar
  **/
-
 class UserStoryTable extends DataManager
 {
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace Up\Calendar\Model;
 
 use Bitrix\Main\Localization\Loc,
@@ -6,8 +7,8 @@ use Bitrix\Main\Localization\Loc,
     Bitrix\Main\ORM\Fields\Relations\Reference,
     Bitrix\Main\ORM\Query\Join,
     Bitrix\Main\ORM\Fields\IntegerField,
-	Bitrix\Main\ORM\Fields\StringField,
-	Bitrix\Main\ORM\Fields\Validators\LengthValidator;
+    Bitrix\Main\ORM\Fields\StringField,
+    Bitrix\Main\ORM\Fields\Validators\LengthValidator;
 
 Loc::loadMessages(__FILE__);
 
@@ -22,7 +23,6 @@ Loc::loadMessages(__FILE__);
  *
  * @package Bitrix\Calendar
  **/
-
 class UserTeamTable extends DataManager
 {
     /**
@@ -43,27 +43,27 @@ class UserTeamTable extends DataManager
     public static function getMap()
     {
         return [
-			new IntegerField(
-				'ID_USER',
-				[
-					'primary' => true,
-					'title' => Loc::getMessage('USER_TEAM_ENTITY_ID_USER_FIELD')
-				]
-			),
-			new IntegerField(
-				'ID_TEAM',
-				[
-					'primary' => true,
-					'title' => Loc::getMessage('USER_TEAM_ENTITY_ID_TEAM_FIELD')
-				]
-			),
-			new StringField(
-				'COLOR',
-				[
-					'validation' => [__CLASS__, 'validateColor'],
-					'title' => Loc::getMessage('USER_TEAM_ENTITY_COLOR_FIELD')
-				]
-			),
+            new IntegerField(
+                'ID_USER',
+                [
+                    'primary' => true,
+                    'title' => Loc::getMessage('USER_TEAM_ENTITY_ID_USER_FIELD')
+                ]
+            ),
+            new IntegerField(
+                'ID_TEAM',
+                [
+                    'primary' => true,
+                    'title' => Loc::getMessage('USER_TEAM_ENTITY_ID_TEAM_FIELD')
+                ]
+            ),
+            new StringField(
+                'COLOR',
+                [
+                    'validation' => [__CLASS__, 'validateColor'],
+                    'title' => Loc::getMessage('USER_TEAM_ENTITY_COLOR_FIELD')
+                ]
+            ),
             new Reference(
                 'TEAM',
                 TeamTable::class,
@@ -76,15 +76,16 @@ class UserTeamTable extends DataManager
             ),
         ];
     }
-	/**
-	 * Returns validators for COLOR field.
-	 *
-	 * @return array
-	 */
-	public static function validateColor()
-	{
-		return [
-			new LengthValidator(null, 7),
-		];
-	}
+
+    /**
+     * Returns validators for COLOR field.
+     *
+     * @return array
+     */
+    public static function validateColor()
+    {
+        return [
+            new LengthValidator(null, 7),
+        ];
+    }
 }

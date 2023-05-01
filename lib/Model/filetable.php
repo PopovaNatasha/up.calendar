@@ -1,4 +1,5 @@
 <?php
+
 namespace Up\Calendar\Model;
 
 use Bitrix\Main\Localization\Loc,
@@ -35,7 +36,6 @@ Loc::loadMessages(__FILE__);
  *
  * @package Bitrix\File
  **/
-
 class FileTable extends DataManager
 {
     /**

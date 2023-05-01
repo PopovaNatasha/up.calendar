@@ -2,7 +2,7 @@
 
 use Bitrix\Main\Application,
 	Bitrix\Main\Loader,
-	Up\Calendar\Calendar,
+	Up\Calendar\API\Team,
 	Bitrix\Main\Context;
 
 class CalendarCalendarComponent extends CBitrixComponent
@@ -40,12 +40,12 @@ class CalendarCalendarComponent extends CBitrixComponent
 		if ($request->get('id'))
 		{
 			$idTeam = (int)$request->get('id');
-			$team = Calendar::getTeamById($idTeam);
+			$team = Team::getTeamById($idTeam);
             if (!$team)
             {
                 LocalRedirect('/404');
             }
-            $participants = Calendar::getParticipantsTeam($idTeam);
+            $participants = Team::getParticipantsTeam($idTeam);
 
             if ($team['IS_PRIVATE'] === '1')
             {
@@ -65,7 +65,7 @@ class CalendarCalendarComponent extends CBitrixComponent
 
             if(!$team['INVITE_LINK'])
             {
-                $team['INVITE_LINK'] = Calendar::createInviteLink($idTeam);
+                $team['INVITE_LINK'] = Team::createInviteLink($idTeam);
             }
 
 			$this->arResult = $team;
@@ -78,17 +78,17 @@ class CalendarCalendarComponent extends CBitrixComponent
 		$request = Context::getCurrent()->getRequest()->getPostList()->toArray();
 		if ($request['action'] === 'in')
 		{
-			Calendar::joinTheTeam($idTeam);
+            Team::joinTheTeam($idTeam);
 		}
 		elseif ($request['action'] === 'out')
 		{
-			Calendar::leaveTeam($idTeam);
+            Team::leaveTeam($idTeam);
 		}
 	}
 
 	protected function updateTeam($idTeam, $post)
 	{
-		Calendar::updateTeam($idTeam, $post);
+        Team::updateTeam($idTeam, $post);
 	}
 
     protected function createEvent($arguments, $teamId): void

@@ -1,132 +1,132 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css";
 
 .navbar-brand .logo {
-	position: relative;
-	top: -2px;
+    position: relative;
+    top: -2px;
 }
 
 .navbar-brand .logo span {
-	margin-right: 10px;
-	font-size: 36px;
+    margin-right: 10px;
+    font-size: 36px;
 }
 
 .project-card .icon.disabled {
-	filter: grayscale(100%);
+    filter: grayscale(100%);
 }
 
 .tabs-content > div {
-	display: none;
+    display: none;
 }
 
 .tabs-content > div.active {
-	display: flex;
+    display: flex;
 }
 
 .tabs-content .pagination {
-	justify-content: center;
+    justify-content: center;
 }
 
 .tabs-content .pagination-list {
-	flex-grow: 0;
+    flex-grow: 0;
 }
 
 /* Кастомизация */
 
 :root {
-	--brandColor: hsl(166, 67%, 51%);
-	--background: rgb(247, 247, 247);
-	--textDark: hsla(0, 0%, 0%, 0.66);
-	--textLight: hsla(0, 0%, 0%, 0.33);
+    --brandColor: hsl(166, 67%, 51%);
+    --background: rgb(247, 247, 247);
+    --textDark: hsla(0, 0%, 0%, 0.66);
+    --textLight: hsla(0, 0%, 0%, 0.33);
 }
 
 body {
-	background: var(--background);
-	/*height: 100%;*/
-	min-height: 100vh;
-	color: var(--textDark);
+    background: var(--background);
+    /*height: 100%;*/
+    min-height: 100vh;
+    color: var(--textDark);
 }
 
 .field:not(:last-child) {
-	margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 .register {
-	margin-top: 10rem;
-	background: white;
-	border-radius: 10px;
+    margin-top: 10rem;
+    background: white;
+    border-radius: 10px;
 }
 
 .left {
-	padding: 4.5rem;
-	border-right: 5px solid var(--background);
+    padding: 4.5rem;
+    border-right: 5px solid var(--background);
 }
 
 .right {
-	padding: 4.5rem;
+    padding: 4.5rem;
 }
 
 .login {
-	margin-top: 3rem;
-	margin-bottom: 3rem;
-	padding: 2.8rem;
-	background: white;
-	border-radius: 10px;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    padding: 2.8rem;
+    background: white;
+    border-radius: 10px;
 }
 
 .left .title,
 .login .title {
-	font-weight: 800;
-	letter-spacing: -2px;
+    font-weight: 800;
+    letter-spacing: -2px;
 }
 
 .left .colored {
-	color: var(--brandColor);
-	font-weight: 500;
-	margin-top: 1rem !important;
-	letter-spacing: -1px;
+    color: var(--brandColor);
+    font-weight: 500;
+    margin-top: 1rem !important;
+    letter-spacing: -1px;
 }
 
 .left p {
-	color: var(--textLight);
-	font-size: 1.15rem;
+    color: var(--textLight);
+    font-size: 1.15rem;
 }
 
 .right .title {
-	font-weight: 800;
-	letter-spacing: -1px;
+    font-weight: 800;
+    letter-spacing: -1px;
 }
 
 .right .description,
 .login .description {
-	margin-top: 1rem;
-	margin-bottom: 1rem !important;
-	color: var(--textLight);
-	font-size: 1.15rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem !important;
+    color: var(--textLight);
+    font-size: 1.15rem;
 }
 
 p.description.register-pass {
-	margin-bottom: 0 !important;
-	margin-top: auto;
-	font-size: medium !important;
+    margin-bottom: 0 !important;
+    margin-top: auto;
+    font-size: medium !important;
 }
 
 .right small {
-	color: var(--textLight);
+    color: var(--textLight);
 }
 
 input {
-	font-size: 1rem;
+    font-size: 1rem;
 }
 
 input:focus {
-	border-color: var(--brandColor) !important;
-	box-shadow: 0 0 0 1px var(--brandColor) !important;
+    border-color: var(--brandColor) !important;
+    box-shadow: 0 0 0 1px var(--brandColor) !important;
 }
 
 .bx-auth {
-	max-width: fit-content;
+    max-width: fit-content;
 }
 
 label.label {
-	text-align: initial;
+    text-align: initial;
 }

@@ -11,22 +11,23 @@
 }
 
 .user-info {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
 }
 
 .model-name {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 .full-name {
-	margin: 10px;
+    margin: 10px;
 }
+
 .navbar.has-shadow {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 
@@ -53,102 +54,102 @@
 /* Кастомизация шаблонов регистрации и авторизации */
 
 :root {
-	--brandColor: hsl(166, 67%, 51%);
-	--background: rgb(247, 247, 247);
-	--textDark: hsla(0, 0%, 0%, 0.66);
-	--textLight: hsla(0, 0%, 0%, 0.33);
+    --brandColor: hsl(166, 67%, 51%);
+    --background: rgb(247, 247, 247);
+    --textDark: hsla(0, 0%, 0%, 0.66);
+    --textLight: hsla(0, 0%, 0%, 0.33);
 }
 
 body {
-	background: var(--background);
-	min-height: 100vh;
-	color: var(--textDark);
+    background: var(--background);
+    min-height: 100vh;
+    color: var(--textDark);
 }
 
 .field:not(:last-child) {
-	margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 .register,
 .login {
-	margin-top: 10rem;
-	background: white;
-	border-radius: 10px;
+    margin-top: 10rem;
+    background: white;
+    border-radius: 10px;
 }
 
 .left {
-	padding: 4.5rem;
-	border-right: 5px solid var(--background);
+    padding: 4.5rem;
+    border-right: 5px solid var(--background);
 }
 
 .right,
 .login {
-	padding: 4.5rem;
+    padding: 4.5rem;
 }
 
 .left .title,
 .login .title {
-	font-weight: 800;
-	letter-spacing: -2px;
+    font-weight: 800;
+    letter-spacing: -2px;
 }
 
 .left .colored {
-	color: var(--brandColor);
-	font-weight: 500;
-	margin-top: 1rem !important;
-	letter-spacing: -1px;
+    color: var(--brandColor);
+    font-weight: 500;
+    margin-top: 1rem !important;
+    letter-spacing: -1px;
 }
 
 .left p {
-	color: var(--textLight);
-	font-size: 1.15rem;
+    color: var(--textLight);
+    font-size: 1.15rem;
 }
 
 .right .title {
-	font-weight: 800;
-	letter-spacing: -1px;
+    font-weight: 800;
+    letter-spacing: -1px;
 }
 
 .right .description,
 .login .description {
-	margin-top: 1rem;
-	margin-bottom: 1rem !important;
-	color: var(--textLight);
-	font-size: 1.15rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem !important;
+    color: var(--textLight);
+    font-size: 1.15rem;
 }
 
 .right small {
-	color: var(--textLight);
+    color: var(--textLight);
 }
 
 input {
-	font-size: 1rem;
+    font-size: 1rem;
 }
 
 input:focus,
 textarea:focus {
-	border-color: var(--brandColor) !important;
-	box-shadow: 0 0 0 1px var(--brandColor) !important;
+    border-color: var(--brandColor) !important;
+    box-shadow: 0 0 0 1px var(--brandColor) !important;
 }
 
 .bx-auth {
-	max-width: fit-content;
+    max-width: fit-content;
 }
 
-.block.group{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: flex-start;
+.block.group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 p.modal-card-title {
-	margin-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 /* Календарь */
 
 .toastui-calendar-panel.toastui-calendar-day-view-day-names,
 .toastui-calendar-panel.toastui-calendar-week-view-day-names {
-	overflow-y: visible !important;
+    overflow-y: visible !important;
 }

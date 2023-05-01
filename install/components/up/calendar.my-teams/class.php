@@ -1,6 +1,6 @@
 <?php
 use Bitrix\Main\Loader,
-	Up\Calendar\Calendar;
+	Up\Calendar\API\Team;
 
 class CalendarMyTeamsComponent extends CBitrixComponent
 {
@@ -17,18 +17,18 @@ class CalendarMyTeamsComponent extends CBitrixComponent
         global $APPLICATION;
         $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
         if ($request->getRequestMethod() === 'POST') {
-            Calendar::createTeam($request->getPostList());
+            Team::createTeam($request->getPostList());
             LocalRedirect('/groups/my/');
             exit;
         } elseif ($request->getRequestMethod() === 'GET') {
             if ($request->get('query')) {
                 $query = $request->get('query');
-                $result = Calendar::getTeams($USER->getID(),$query);
+                $result = Team::getTeams($USER->getID(),$query);
                 $teams = $result['teams'];
                 $nav = $result['nav'];
                 $this->arResult['Teams'] = $teams;
             } else {
-                $result = Calendar::getTeams($USER->getID());
+                $result = Team::getTeams($USER->getID());
                 $teams = $result['teams'];
                 $nav = $result['nav'];
                 $this->arResult['Teams'] = $teams;

@@ -1,60 +1,61 @@
 .current {
-	background-color: #00d1b2;
+    background-color: #00d1b2;
 }
 
 .dates {
-	display: flex;
-	flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
 }
+
 .dates .date-item:hover {
-	background-color: #00ebc7;
+    background-color: #00ebc7;
 }
 
 .day-nums {
-	border: 1px solid #00d1b2;
+    border: 1px solid #00d1b2;
 }
 
 .date-item {
-	width: 14.2857123%;
-	text-align: center;
+    width: 14.2857123%;
+    text-align: center;
 }
 
 .date-wrapper {
-	background-color: #d1fff8;
+    background-color: #d1fff8;
 }
 
 .header {
-	background-color: #00d1b2;
+    background-color: #00d1b2;
 }
 
 .wrapper {
-	width: 100%;
+    width: 100%;
 }
 
 .buttons.admin {
-	display: flex;
-	justify-content: center;
+    display: flex;
+    justify-content: center;
 }
 
 .section.content {
-	padding-top: 0;
+    padding-top: 0;
 }
 
 #create-every, #create-day-count, #create-day,
 #change-every, #change-day-count, #change-day,
 #checkboxIsAllLabel, #changeRepeat {
-	display: none;
+    display: none;
 }
 
 .column.is-9 {
-	justify-content: space-between;
-	align-content: space-between;
-	flex-direction: column;
+    justify-content: space-between;
+    align-content: space-between;
+    flex-direction: column;
 }
 
 /* form detail event*/
 
 .toastui-calendar-popup-container {
-	display: none;
-	position: fixed !important;
+    display: none;
+    position: fixed !important;
 }

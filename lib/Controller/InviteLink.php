@@ -3,11 +3,12 @@
 namespace Up\Calendar\Controller;
 
 use Bitrix\Main\Engine\Controller;
+use Up\Calendar\API\Team;
 
 class InviteLink extends Controller
 {
-    public function createInviteLinkAction($idTeam) : ?string
+    public function createInviteLinkAction($idTeam): ?string
     {
-        return \Up\Calendar\Calendar::createInviteLink($idTeam);
+        return Team::createInviteLink($idTeam);
     }
 }

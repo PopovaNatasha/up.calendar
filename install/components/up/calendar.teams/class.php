@@ -1,6 +1,7 @@
 <?php
+
 use Bitrix\Main\Loader,
-    Up\Calendar\Calendar;
+    Up\Calendar\API\Team;
 
 class CalendarTeamsComponent extends CBitrixComponent
 {
@@ -14,30 +15,28 @@ class CalendarTeamsComponent extends CBitrixComponent
     {
         global $APPLICATION;
         $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
-        if ($request->get('query'))
-            {
-                $query = $request->get('query');
-                $result = Calendar::getTeams('',$query);
-                $teams = $result['teams'];
-                $nav = $result['nav'];
-                $this->arResult['Teams'] = $teams;
-            } else
-            {
-                $result = Calendar::getTeams();
-                $teams = $result['teams'];
-                $nav = $result['nav'];
-                $this->arResult['Teams'] = $teams;
-            }
-            $this->includeComponentTemplate();
-            $APPLICATION->IncludeComponent(
-                "bitrix:main.pagenavigation",
-                "",
-                array(
-                    "NAV_OBJECT" => $nav,
-                    "SEF_MODE" => "N",
-                ),
-                false
-            );
+        if ($request->get('query')) {
+            $query = $request->get('query');
+            $result = Team::getTeams('', $query);
+            $teams = $result['teams'];
+            $nav = $result['nav'];
+            $this->arResult['Teams'] = $teams;
+        } else {
+            $result = Team::getTeams();
+            $teams = $result['teams'];
+            $nav = $result['nav'];
+            $this->arResult['Teams'] = $teams;
+        }
+        $this->includeComponentTemplate();
+        $APPLICATION->IncludeComponent(
+            "bitrix:main.pagenavigation",
+            "",
+            array(
+                "NAV_OBJECT" => $nav,
+                "SEF_MODE" => "N",
+            ),
+            false
+        );
     }
 
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Up\Calendar\Model;
 
 use Bitrix\Main\Localization\Loc,
@@ -88,7 +89,6 @@ Loc::loadMessages(__FILE__);
  *
  * @package Bitrix\User
  **/
-
 class UserTable extends DataManager
 {
     /**
@@ -544,17 +544,17 @@ class UserTable extends DataManager
             new Reference(
                 'STORY',
                 UserStoryTable::class,
-                Join::on('this.ID','ref.ID_USER')
+                Join::on('this.ID', 'ref.ID_USER')
             ),
             new Reference(
                 'PHOTO',
                 FileTable::class,
-                Join::on('this.PERSONAL_PHOTO','ref.ID')
+                Join::on('this.PERSONAL_PHOTO', 'ref.ID')
             ),
             new Reference(
                 'USER_TEAM',
                 UserTeamTable::class,
-                Join::on('this.ID','ref.ID_USER')
+                Join::on('this.ID', 'ref.ID_USER')
             ),
         ];
     }
