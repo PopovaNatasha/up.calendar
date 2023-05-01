@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setRenderRangeText();
     });
 
-    const popupForm = document.getElementById('event-detail-popup');
+    let popupForm = document.getElementById('event-detail-popup');
     document.addEventListener('mousedown', (e) => {
         const withinBoundaries = e.composedPath().includes(popupForm);
 
