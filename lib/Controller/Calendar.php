@@ -2,9 +2,8 @@
 
 namespace Up\Calendar\Controller;
 
-use Bitrix\Main\DB\Exception;
-use Bitrix\Main\Engine\Controller;
-use Up\Calendar\API\Event;
+use Bitrix\Main\Engine\Controller,
+	Up\Calendar\API\Event;
 
 class Calendar extends Controller
 {
@@ -13,7 +12,7 @@ class Calendar extends Controller
         return Event::getEventsList($idTeam);
     }
 
-    public function changeEventAction($event)
+    public function changeEventAction($event): bool
     {
         return Event::changeEvent($event);
     }

@@ -71,4 +71,9 @@ __projectorMigrate(8, function ($updater, $DB) {
     }
 });
 
+__projectorMigrate(9, function ($updater, $DB) {
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_regular_event')) {
+		$DB->query("ALTER TABLE up_calendar_regular_event CHANGE COLUMN DATE_END DATE_END DATETIME");
+	}
+});
 

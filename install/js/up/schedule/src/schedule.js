@@ -25,6 +25,7 @@ export class Schedule {
                 this.singleEventsList = eventsList['singleEvents'];
                 this.regularEventsList = eventsList['regularEvents'];
                 this.userStoryEvents = eventsList['userStoryEvents'];
+				this.changedEvents = eventsList['changedEvents'];
 
                 if (this.isUser) {
                     this.setVisibleCalendar();
@@ -121,25 +122,45 @@ export class Schedule {
     addRegularEvents() {
         let eventsList = this.regularEventsList;
         let calendar = this.calendar;
-        let repeatUntil = '2023-12-31';
+		let changedEvents = this.changedEvents;
         eventsList.forEach(event => {
+			let changedEventsById = changedEvents.filter(element => element['ID_EVENT'] === event['ID']);
+			let repeatUntil = event['DATE_END'] ? moment(event['DATE_END']).format('YYYY-MM-DD') : '2023-12-31';
             let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
             let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
             let dayStep = Number(event['DAY_STEP']);
+			let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
             while (moment(dayTimeStart).isBefore(repeatUntil)) {
+				let regularEvent = event;
+				regularEvent['START'] = dayTimeStart;
+				regularEvent['END'] = dayTimeEnd;
+
+				if (changedEventsById.length > 0)
+				{
+					changedEventsById.forEach(changedEvent => {
+						let dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
+						if (moment(dayStartChanged).isSame(dayStart))
+						{
+							regularEvent = changedEvent;
+							regularEvent['START'] = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+							regularEvent['END'] = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+						}
+					});
+				}
                 calendar.createEvents([
                     {
-                        id: event['ID'],
-                        calendarId: event['ID_TEAM'],
-                        title: event['TITLE'],
-                        start: dayTimeStart,
-                        end: dayTimeEnd,
+                        id: regularEvent['ID'],
+                        calendarId: regularEvent['ID_TEAM'],
+                        title: regularEvent['TITLE'],
+                        start: regularEvent['START'],
+                        end: regularEvent['END'],
                         category: 'time',
-                        recurrenceRule: event['DAY_STEP'],
+                        recurrenceRule: regularEvent['DAY_STEP'],
                     },
                 ]);
                 dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
                 dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+				dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
             }
         });
     }
@@ -188,8 +209,10 @@ export class Schedule {
         let eventsList = this.regularEventsList;
         let storyEventList = this.userStoryEvents;
         let calendar = this.calendar;
-        let repeatUntil = '2023-12-31';
+		let changedEvents = this.changedEvents;
         eventsList.forEach(event => {
+			let changedEventsById = changedEvents.filter(element => element['ID_EVENT'] === event['ID']);
+			let repeatUntil = event['DATE_END'] ? moment(event['DATE_END']).format('YYYY-MM-DD') : '2023-12-31';
             let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
             let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
             let dayStep = Number(event['DAY_STEP']);
@@ -197,13 +220,29 @@ export class Schedule {
                 let nowDay = moment().format('YYYY-MM-DD');
                 let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
                 if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart)) {
+					let regularEvent = event;
+					regularEvent['START'] = dayTimeStart;
+					regularEvent['END'] = dayTimeEnd;
+
+					if (changedEventsById.length > 0)
+					{
+						changedEventsById.forEach(changedEvent => {
+							let dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
+							if (moment(dayStartChanged).isSame(dayStart))
+							{
+								regularEvent = changedEvent;
+								regularEvent['START'] = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+								regularEvent['END'] = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+							}
+						});
+					}
                     calendar.createEvents([
                         {
-                            id: event['ID'],
-                            calendarId: event['ID_TEAM'],
-                            title: event['TITLE'],
-                            start: dayTimeStart,
-                            end: dayTimeEnd,
+                            id: regularEvent['ID'],
+                            calendarId: regularEvent['ID_TEAM'],
+                            title: regularEvent['TITLE'],
+                            start: regularEvent['START'],
+                            end: regularEvent['END'],
                             category: 'time',
                             recurrenceRule: event['DAY_STEP'],
                         },
@@ -330,7 +369,10 @@ export class Schedule {
                 document.getElementById('popupTopLine').style.backgroundColor = '#a1b56c';
             }
             popupForm.style.display = 'block';
-            this.changeEventForm(event);
+			if (!this.isUser)
+			{
+				this.changeEventForm(event);
+			}
         });
     }
 
@@ -344,6 +386,7 @@ export class Schedule {
         let endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
         endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
         this.setViewRule(event);
+		console.log(event);
     }
 
     changeEvent() {
@@ -372,9 +415,15 @@ export class Schedule {
                     },
                 })
                 .then((response) => {
-                    console.log(response.data);
-                    // const eventsList = response.data.events;
-                    // resolve(eventsList);
+					if (response.data)
+					{
+						this.calendar.clear();
+						this.reload();
+					}
+					else
+					{
+						alert('Не удалось изменить соыбытие');
+					}
                 })
                 .catch((error) => {
                     reject(error);
@@ -416,6 +465,7 @@ export class Schedule {
         } else {
             checkboxLabel.style.display = 'none';
             blockRepeat.style.display = 'none';
+			document.getElementById('changeSelectCount').value = '';
         }
     }
 }

@@ -74,15 +74,15 @@ class Event
     }
 
 
-    public static function changeEvent($arguments)
+    public static function changeEvent($arguments): bool
     {
         unset($event);
         $idEvent = (int)$arguments['idEvent'];
         $idTeam = (int)$arguments['idTeam'];
-        $title = $arguments['titleEvent'];
         $dateTimeFrom = new DateTime($arguments['dateFrom'], "d.m.Y H:i");
         $dateTimeTo = new DateTime($arguments['dateTo'], "d.m.Y H:i");
-        if (!$arguments['dayStep']) {
+
+        if ($arguments['dayStep'] === '') {
             // $result = EventTable::update($idEvent, [
             // 	'TITLE' => $arguments['titleEvent'],
             // 	'DATE_TIME_FROM' => $dateTimeFrom,
@@ -93,11 +93,11 @@ class Event
             // 	return false;
             // }
             $event = EventTable::getByPrimary(['ID' => $idEvent])->fetchObject();
-            $event->setTitle($title)
+            $event->setTitle($arguments['titleEvent'])
                 ->setDateTimeFrom($dateTimeFrom)
                 ->setDateTimeTo($dateTimeTo)
                 ->save();
-        } elseif (!$arguments['isAll']) {
+        } elseif ($arguments['isAll'] === 'true') {
             // $result = RegularEventTable::update($idEvent, [
             // 	'TITLE' => $arguments['titleEvent'],
             // 	'DATE_TIME_FROM' => $dateTimeFrom,
@@ -109,14 +109,18 @@ class Event
             // 	return false;
             // }
             $event = RegularEventTable::getByPrimary(['ID' => (int)$arguments['idEvent']])->fetchObject();
-            $event->setTitle($title)
+			$event->setDateEnd($dateTimeFrom)->save();
+
+			RegularEventTable::createObject()
+				->setTitle($arguments['titleEvent'])
+				->setIdTeam($idTeam)
                 ->setDateTimeFrom($dateTimeFrom)
                 ->setDateTimeTo($dateTimeTo)
                 ->setDayStep($arguments['dayStep'])
                 ->save();
         } else {
-            $event = ChangedEventTable::createObject()
-                ->setTitle($title)
+            ChangedEventTable::createObject()
+                ->setTitle($arguments['titleEvent'])
                 ->setIdTeam($idTeam)
                 ->setDateTimeFrom($dateTimeFrom)
                 ->setDateTimeTo($dateTimeTo)
