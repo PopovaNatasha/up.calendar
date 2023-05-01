@@ -54,8 +54,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 				<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
 					<div class="buttons admin is-right">
 						<button class="button is-primary js-modal-trigger" data-target="modal-js-crateEvent">Создать событие</button>
-						<button class="button is-primary js-modal-trigger" data-target="modal-js-example1">Пригласить</button>
-						<button class="button is-primary js-modal-trigger" data-target="modal-js-example2">Настройки</button>
+						<button class="button is-primary js-modal-trigger" data-target="modal-js-invite">Пригласить</button>
+						<button class="button is-primary js-modal-trigger" data-target="modal-js-settings">Настройки</button>
 					</div>
 				<?php endif; ?>
 			</div>
@@ -139,7 +139,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 		</div>
 	</div>
 
-	<div class="modal" id="modal-js-example1" >
+	<div class="modal" id="modal-js-invite" >
 		<div class="modal-background"></div>
 		<div class="modal-card">
 			<header class="modal-card-head">
@@ -163,7 +163,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 	<form name="settings" action="" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="settings" value="1"/>
-		<div class="modal" id="modal-js-example2" >
+		<div class="modal" id="modal-js-settings" >
 			<div class="modal-background"></div>
 			<div class="modal-card">
 				<header class="modal-card-head">
@@ -202,7 +202,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 		</div>
 	</form>
 
-	<form name="confirmation" action="" method="post">
+	<form name="confirmation" method="post">
 		<input type="hidden" name="action" value="out"/>
 		<div class="modal" id="modal-js-leave-team">
 			<div class="modal-background"></div>
@@ -263,71 +263,70 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 		</div>
 	</div>
 
-	<form name="change-event" method="post">
-		<div class="modal" id="modal-js-changeEvent">
-			<div class="modal-background"></div>
-			<div class="modal-card">
-				<header class="modal-card-head">
-					<p class="modal-card-title">Изменить событие</p>
-					<button class="delete" type="reset" aria-label="close"></button>
-				</header>
-				<section class="modal-card-body">
-					<label>Название cобытия</label>
+
+	<div class="modal" id="modal-js-changeEvent">
+		<div class="modal-background"></div>
+		<div class="modal-card">
+			<header class="modal-card-head">
+				<p class="modal-card-title">Изменить событие</p>
+				<button class="delete" type="reset" aria-label="close"></button>
+			</header>
+			<section class="modal-card-body">
+				<label>Название cобытия</label>
+				<div class="control">
+					<input name="id" type="hidden" id="popupChangeEventId" required>
+					<input name="title" class="input is-primary mb-4" type="text" id="popupChangeTitle" required>
+				</div>
+				<div class="field">
+					<label>Время</label>
 					<div class="control">
-						<input name="id" type="hidden" id="popupChangeEventId" required>
-						<input name="title" class="input is-primary mb-4" type="text" id="popupChangeTitle" required>
+						<input name="date" type="date" class="input is-primary mb-4" id="date">
 					</div>
-					<div class="field">
-						<label>Время</label>
-						<div class="control">
-							<input name="date" type="date" class="input is-primary mb-4" id="date">
-						</div>
-					</div>
-					<div class="field">
-						<label class="checkbox" id="checkboxIsAllLabel">
-							<input name="isAll" type="checkbox" id="checkboxIsAll">
-							Изменить все события в серии
-						</label>
-					</div>
-					<div class="field" id="changeRepeat">
-						<label>Повторяемость</label>
-						<div class="columns">
-							<div class="column control">
-								<div class="select is-primary">
-									<select id="changeSelectRepeat" name="rule_repeat" onchange="displayUsgsChange('change')">
-										<option value="daily">Каждый день</option>
-										<option value="weekly">Каждую неделю</option>
-									</select>
-								</div>
-							</div>
-							<div class="column" id="change-every">
-								<span class="rule-daily">каждый</span>
-							</div>
-							<div class="column control" id="change-day-count">
-								<div class="select is-primary">
-									<select name="rule_repeat_count" id="changeSelectCount">
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="6">6</option>
-									</select>
-								</div>
-							</div>
-							<div class="column" id="change-day">
-								<span class="rule-daily">день</span>
+				</div>
+				<div class="field">
+					<label class="checkbox" id="checkboxIsAllLabel">
+						<input name="isAll" type="checkbox" id="checkboxIsAll">
+						Изменить все события в серии
+					</label>
+				</div>
+				<div class="field" id="changeRepeat">
+					<label>Повторяемость</label>
+					<div class="columns">
+						<div class="column control">
+							<div class="select is-primary">
+								<select id="changeSelectRepeat" name="rule_repeat" onchange="displayUsgsChange('change')">
+									<option value="daily">Каждый день</option>
+									<option value="weekly">Каждую неделю</option>
+								</select>
 							</div>
 						</div>
+						<div class="column" id="change-every">
+							<span class="rule-daily">каждый</span>
+						</div>
+						<div class="column control" id="change-day-count">
+							<div class="select is-primary">
+								<select name="rule_repeat_count" id="changeSelectCount">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+								</select>
+							</div>
+						</div>
+						<div class="column" id="change-day">
+							<span class="rule-daily">день</span>
+						</div>
 					</div>
-				</section>
-				<footer class="modal-card-foot">
-					<button class="button is-success" type="submit">Сохранить</button>
-					<button class="button" type="reset">Отмена</button>
-				</footer>
-			</div>
+				</div>
+			</section>
+			<footer class="modal-card-foot">
+				<button class="button is-success" onclick="CalendarEventsList.changeEvent()">Сохранить</button>
+				<button class="button" type="reset">Отмена</button>
+			</footer>
 		</div>
-	</form>
+	</div>
 </section>
 
 <script>

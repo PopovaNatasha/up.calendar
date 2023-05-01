@@ -5,6 +5,7 @@ export class Schedule
 	constructor(options = {})
 	{
 		this.idTeam = options.idTeam;
+		console.log(this.idTeam);
 		this.rootNodeId = options.rootNodeId;
 		this.rootNode = document.getElementById(this.rootNodeId);
 		this.teams = options.teams;
@@ -374,10 +375,49 @@ export class Schedule
 
 		EventDatePickers[1].clear();
 		EventDatePickers[1].value(event.start.toDate());
+		console.log(document.getElementById('date').value)
 		let endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
 		endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
 		this.setViewRule(event);
+	}
 
+	changeEvent()
+	{
+		let dayStep = document.getElementById('changeSelectCount').value;
+		let selectRepeat = document.getElementById('changeSelectRepeat').value;
+		if (selectRepeat === 'weekly')
+		{
+			dayStep = '7';
+		}
+		let dateFrom = document.getElementsByClassName('datetimepicker-dummy-input')[2].value;
+		let dateTo = document.getElementsByClassName('datetimepicker-dummy-input')[3].value;
+
+		return new Promise((resolve, reject) => {
+			BX.ajax.runAction(
+					'up:calendar.calendar.changeEvent',
+					{
+						data: {
+							event: {
+								idEvent: document.getElementById('popupChangeEventId').value,
+								titleEvent: document.getElementById('popupChangeTitle').value,
+								dateFrom: dateFrom,
+								dateTo: dateTo,
+								dayStep: dayStep,
+								idTeam: this.idTeam,
+								isAll: document.getElementById('checkboxIsAll').checked
+							}
+						},
+					})
+				.then((response) => {
+					console.log(response.data);
+					// const eventsList = response.data.events;
+					// resolve(eventsList);
+				})
+				.catch((error) => {
+					reject(error);
+				})
+			;
+		});
 	}
 
 	setViewRule(event)

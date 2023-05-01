@@ -9,7 +9,7 @@ class CalendarCalendarComponent extends CBitrixComponent
 {
 	public function executeComponent()
 	{
-		\Bitrix\Main\Loader::includeModule('up.calendar');
+		Loader::includeModule('up.calendar');
 		$this->getTeam();
 		$this->includeComponentTemplate();
 
@@ -31,7 +31,6 @@ class CalendarCalendarComponent extends CBitrixComponent
             }
 			header("Refresh: 0");
 		}
-
 	}
 
 	protected function getTeam()

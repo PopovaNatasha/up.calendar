@@ -19,7 +19,6 @@ function generateLink(link, idTeam)
 			})
 		;
 	});
-
 }
 
 function changeView(evt, tabName)

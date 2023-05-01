@@ -2,6 +2,8 @@
 
 namespace Up\Calendar;
 
+use Bitrix\Main\DB\Exception;
+use Bitrix\Main\Type\DateTime;
 use Bitrix\Main\UI\PageNavigation,
     Up\Calendar\Model\TeamTable,
     Up\Calendar\Model\UserTeamTable,
@@ -299,40 +301,61 @@ class Calendar
 		}
 	}
 
-    public static function changeEvent($arguments, $idTeam) :void
+	public static function changeEvent($arguments)
     {
         unset($event);
-        $idTeam = (int)$idTeam;
-        if (!$arguments['day_step'])
+		$idEvent = (int)$arguments['idEvent'];
+        $idTeam = (int)$arguments['idTeam'];
+		$title = $arguments['titleEvent'];
+		$dateTimeFrom = new DateTime($arguments['dateFrom'], "d.m.Y H:i");
+		$dateTimeTo = new DateTime($arguments['dateTo'], "d.m.Y H:i");
+        if (!$arguments['dayStep'])
         {
-            $event = EventTable::getByPrimary(['ID' => (int)$arguments['id']])->fetchObject();
-            $event->setTitle($arguments['title'])
-                ->setDateTimeFrom($arguments['date_from'])
-                ->setDateTimeTo($arguments['date_to'])
+			// $result = EventTable::update($idEvent, [
+			// 	'TITLE' => $arguments['titleEvent'],
+			// 	'DATE_TIME_FROM' => $dateTimeFrom,
+			// 	'DATE_TIME_TO' => $dateTimeTo
+			// ]);
+			// if (!$result->isSuccess())
+			// {
+			// 	return false;
+			// }
+            $event = EventTable::getByPrimary(['ID' => $idEvent])->fetchObject();
+            $event->setTitle($title)
+                ->setDateTimeFrom($dateTimeFrom)
+                ->setDateTimeTo($dateTimeTo)
                 ->save();
         }
-        else
-        {
-            if ($arguments['is_all'])
-            {
-                $event = RegularEventTable::getByPrimary(['ID' => (int)$arguments['id']])->fetchObject();
-                $event->setTitle($arguments['title'])
-                    ->setDateTimeFrom($arguments['date_from'])
-                    ->setDateTimeTo($arguments['date_to'])
-                    ->setDayStep($arguments['day_step'])
-                    ->save();
-            }
-            else
-            {
-                ChangedEventTable::createObject()
-                    ->setTitle($arguments['title'])
-                    ->setIdTeam($idTeam)
-                    ->setDateTimeFrom($arguments['date_from'])
-                    ->setDateTimeTo($arguments['date_to'])
-                    ->setIdEvent($arguments['id'])
-                    ->save();
-            }
-        }
+        elseif (!$arguments['isAll'])
+		{
+			// $result = RegularEventTable::update($idEvent, [
+			// 	'TITLE' => $arguments['titleEvent'],
+			// 	'DATE_TIME_FROM' => $dateTimeFrom,
+			// 	'DATE_TIME_TO' => $dateTimeTo,
+			// 	'DAY_STEP' => $arguments['dayStep'],
+			// ]);
+			// if (!$result->isSuccess())
+			// {
+			// 	return false;
+			// }
+			$event = RegularEventTable::getByPrimary(['ID' => (int)$arguments['idEvent']])->fetchObject();
+			$event->setTitle($title)
+				->setDateTimeFrom($dateTimeFrom)
+				->setDateTimeTo($dateTimeTo)
+				->setDayStep($arguments['dayStep'])
+				->save();
+		}
+		else
+		{
+			$event = ChangedEventTable::createObject()
+				->setTitle($title)
+				->setIdTeam($idTeam)
+				->setDateTimeFrom($dateTimeFrom)
+				->setDateTimeTo($dateTimeTo)
+				->setIdEvent($arguments['idEvent'])
+				->save();
+		}
+		return true;
     }
 
     public static function deleteEvent($arguments)

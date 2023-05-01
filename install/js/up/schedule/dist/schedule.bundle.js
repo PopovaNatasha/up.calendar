@@ -8,6 +8,7 @@ this.BX.Up = this.BX.Up || {};
 	    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    babelHelpers.classCallCheck(this, Schedule);
 	    this.idTeam = options.idTeam;
+	    console.log(this.idTeam);
 	    this.rootNodeId = options.rootNodeId;
 	    this.rootNode = document.getElementById(this.rootNodeId);
 	    this.teams = options.teams;
@@ -337,9 +338,43 @@ this.BX.Up = this.BX.Up || {};
 	      document.getElementById('popupChangeTitle').value = event.title;
 	      EventDatePickers[1].clear();
 	      EventDatePickers[1].value(event.start.toDate());
+	      console.log(document.getElementById('date').value);
 	      var endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
 	      endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
 	      this.setViewRule(event);
+	    }
+	  }, {
+	    key: "changeEvent",
+	    value: function changeEvent() {
+	      var _this3 = this;
+	      var dayStep = document.getElementById('changeSelectCount').value;
+	      var selectRepeat = document.getElementById('changeSelectRepeat').value;
+	      if (selectRepeat === 'weekly') {
+	        dayStep = '7';
+	      }
+	      var dateFrom = document.getElementsByClassName('datetimepicker-dummy-input')[2].value;
+	      var dateTo = document.getElementsByClassName('datetimepicker-dummy-input')[3].value;
+	      return new Promise(function (resolve, reject) {
+	        BX.ajax.runAction('up:calendar.calendar.changeEvent', {
+	          data: {
+	            event: {
+	              idEvent: document.getElementById('popupChangeEventId').value,
+	              titleEvent: document.getElementById('popupChangeTitle').value,
+	              dateFrom: dateFrom,
+	              dateTo: dateTo,
+	              dayStep: dayStep,
+	              idTeam: _this3.idTeam,
+	              isAll: document.getElementById('checkboxIsAll').checked
+	            }
+	          }
+	        }).then(function (response) {
+	          console.log(response.data);
+	          // const eventsList = response.data.events;
+	          // resolve(eventsList);
+	        })["catch"](function (error) {
+	          reject(error);
+	        });
+	      });
 	    }
 	  }, {
 	    key: "setViewRule",
