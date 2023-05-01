@@ -230,7 +230,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 </section>
                 <footer class="modal-card-foot" style="border: none">
                     <button class="button is-danger" type="submit">Покинуть</button>
-                    <button class="button" type="reset">Отмена</button>
+                    <button class="button" type="reset">Остаться</button>
                 </footer>
             </div>
         </div>

@@ -19,7 +19,7 @@ ShowMessage($arResult['ERROR_MESSAGE']);
             <div class="columns">
                 <div class="column left">
                     <h1 class="title is-1">Хобби Календарь</h1>
-                    <h2 class="subtitle colored is-4">Ведение расписаний в одном месте</h2>
+                    <h2 class="subtitle colored is-4">Ведение расписаний в&nbspодном&nbspместе</h2>
                     <p>Следите за расписанием любых занятий и встреч. Всегда актуальная информация и новости от
                         организаторов</p>
                 </div>
