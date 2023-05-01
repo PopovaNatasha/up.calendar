@@ -18,7 +18,6 @@ class CalendarCalendarComponent extends CBitrixComponent
 		{
 			$post = $request->getPostList()->toArray();
 			$this->changeColor($post);
-			header("Refresh: 0");
 		}
     }
 

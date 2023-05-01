@@ -3,6 +3,7 @@
 use Bitrix\Main\Application,
 	Bitrix\Main\Loader,
 	Up\Calendar\API\Team,
+    Up\Calendar\API\Event,
 	Bitrix\Main\Context;
 
 class CalendarCalendarComponent extends CBitrixComponent
@@ -10,9 +11,7 @@ class CalendarCalendarComponent extends CBitrixComponent
 	public function executeComponent()
 	{
 		Loader::includeModule('up.calendar');
-		$this->getTeam();
-		$this->includeComponentTemplate();
-
+        $this->getTeam();
 		$request = Context::getCurrent()->getRequest();
 		if ($request->isPost())
 		{
@@ -29,8 +28,8 @@ class CalendarCalendarComponent extends CBitrixComponent
             {
                 $this->createEvent($post, $request->get('id'));
             }
-			header("Refresh: 0");
 		}
+        $this->includeComponentTemplate();
 	}
 
 	protected function getTeam()
@@ -107,14 +106,14 @@ class CalendarCalendarComponent extends CBitrixComponent
         switch ($arguments['rule_repeat'])
         {
             case 'non':
-                Calendar::createEvent($arguments);
+                Event::createEvent($arguments);
                 break;
             case 'daily':
-                Calendar::createRegularEvent($arguments);
+                Event::createRegularEvent($arguments);
                 break;
             case 'weekly':
                 $arguments['rule_repeat_count'] = 7;
-                Calendar::createRegularEvent($arguments);
+                Event::createRegularEvent($arguments);
                 break;
             default:
                 throw new Exception('Invalid type repeat rule');
