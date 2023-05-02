@@ -4,7 +4,7 @@ namespace Up\Calendar\API;
 
 use Up\Calendar\Model\TeamTable;
 
-function nowUserIsTeamAdmin($idTeam) :bool
+function userIsTeamAdmin($idTeam) :bool
 {
     global $USER;
     $idTeam = (int)$idTeam;

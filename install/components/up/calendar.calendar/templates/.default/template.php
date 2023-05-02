@@ -20,14 +20,14 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             <?php foreach ($arResult['teams'] as $team): ?>
                 <div class="field">
                     <label class="calendars-team">
-                        <input type="checkbox" class="checkbox-round" value="<?= $team['ID_TEAM'] ?>"
-                               id="chbox-<?= $team['ID_TEAM'] ?>" checked
+                        <input type="checkbox" class="checkbox-round" value="<?= htmlspecialchars($team['ID_TEAM']) ?>"
+                               id="chbox-<?= htmlspecialchars($team['ID_TEAM']) ?>" checked
                                onfocus="this.blur()"
                                style="border:<?= $team['COLOR'] ? '2px solid ' . $team['COLOR']
                                    : '2px solid #a1b56c' ?>;">
-                        <span class="team-title"><?= $team['TITLE'] ?></span>
-                        <button class="button is-small change-color" id="<?= $team['ID_TEAM'] ?>"
-                                data-title="<?= $team['TITLE'] ?>" data-color="<?= $team['COLOR'] ?: '#a1b56c' ?>">
+                        <span class="team-title"><?= htmlspecialchars($team['TITLE']) ?></span>
+                        <button class="button is-small change-color" id="<?= htmlspecialchars($team['ID_TEAM']) ?>"
+                                data-title="<?= $team['TITLE'] ?>" data-color="<?= htmlspecialchars($team['COLOR'] ?: '#a1b56c') ?>">
 							<span class="icon is-small">
 								<i class="fa-solid fa-pen"></i>
 							</span>
