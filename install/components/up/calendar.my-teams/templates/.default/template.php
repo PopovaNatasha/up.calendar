@@ -22,12 +22,12 @@
 <div class="block">
     <?php foreach ($arResult['Teams'] as $team): ?>
         <a class="group-card block <?= ($team['ID_ADMIN'] === $USER->getID()) ? 'admined' : ''; ?>"
-           href="/group/<?= $team['ID'] ?>/">
+           href="/group/<?= htmlspecialchars($team['ID']) ?>/">
             <div class="block group">
                 <div>
                     <figure class="image is-64x64">
                         <?php if ($team['PERSONAL_PHOTO']): ?>
-                            <?= \CFile::ShowImage($team['PERSONAL_PHOTO'], 64, 64) ?>
+                            <?= \CFile::ShowImage($team['PERSONAL_PHOTO'], 64, 64); ?>
                         <?php else: ?>
                             <img src="https://bulma.io/images/placeholders/64x64.png" alt="Placeholder image">
                         <?php endif; ?>

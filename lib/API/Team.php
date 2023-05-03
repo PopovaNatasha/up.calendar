@@ -191,6 +191,11 @@ class Team
             $team->setPersonalPhoto($idImage);
         }
 
+        if(!$idImage)
+        {
+            throw new \Exception('Invalid type file');
+        }
+
         $teamTitle = trim($arguments['title']);
         if ($teamTitle === '') {
             throw new \Exception('Title can not be empty');
@@ -210,6 +215,11 @@ class Team
     {
         $arImage = $_FILES['img'];
         $arImage['MODULE_ID'] = 'up.calendar';
+
+        if (!\CFile::IsImage($arImage['name']))
+        {
+            return false;
+        }
         $idImage = \CFile::SaveFile($arImage, 'up.calendar', false, false, 'team_image');
 
         if (!((int)$idImage > 0)) {
