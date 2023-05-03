@@ -59,3 +59,8 @@
     display: none;
     position: fixed !important;
 }
+
+.modal-card.delete-event,
+.modal-card.leave-team {
+	width: 400px;
+}

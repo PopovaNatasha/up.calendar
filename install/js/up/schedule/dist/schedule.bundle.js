@@ -373,6 +373,7 @@ this.BX.Up = this.BX.Up || {};
             popupForm.style.display = 'block';
             if (!_this2.isUser) {
               _this2.changeEventForm(event);
+              _this2.setViewRule(event);
             }
           });
         }
@@ -383,10 +384,9 @@ this.BX.Up = this.BX.Up || {};
           document.getElementById('popupChangeTitle').value = event.title;
           EventDatePickers[1].clear();
           EventDatePickers[1].value(event.start.toDate());
-          console.log(document.getElementById('date').value);
           var endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
           endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
-          this.setViewRule(event);
+          // this.setViewRule(event);
           console.log(event);
         }
       }, {
@@ -427,17 +427,26 @@ this.BX.Up = this.BX.Up || {};
           });
         }
       }, {
+        key: "displayElementById",
+        value: function displayElementById(idElement, display) {
+          var element = document.getElementById(idElement);
+          element.style.display = display;
+        }
+      }, {
         key: "setViewRule",
         value: function setViewRule(event) {
-          var checkbox, checkboxLabel, blockRepeat;
-          checkboxLabel = document.getElementById('checkboxIsAllLabel');
-          checkbox = document.getElementById('checkboxIsAll');
+          var checkboxChange, checkboxDelete, blockRepeat;
+          // checkboxLabel = document.getElementById('checkboxIsAllLabel');
+          checkboxChange = document.getElementById('checkboxIsAll');
+          checkboxDelete = document.getElementById('checkboxDeleteIsAll');
           blockRepeat = document.getElementById('changeRepeat');
-          checkbox.checked = false;
+          checkboxChange.checked = false;
+          checkboxDelete.checked = false;
           blockRepeat.style.display = 'none';
           if (event.recurrenceRule) {
-            checkboxLabel.style.display = 'block';
-            checkboxLabel.addEventListener('change', function (e) {
+            this.displayElementById('checkboxIsAllLabel', 'block');
+            this.displayElementById('checkboxDeleteIsAllLabel', 'block');
+            checkboxChange.addEventListener('change', function (e) {
               if (e.target.checked) {
                 blockRepeat.style.display = 'block';
               } else {
@@ -458,7 +467,8 @@ this.BX.Up = this.BX.Up || {};
               document.getElementById('changeSelectCount').value = '1';
             }
           } else {
-            checkboxLabel.style.display = 'none';
+            this.displayElementById('checkboxIsAllLabel', 'none');
+            this.displayElementById('checkboxDeleteIsAllLabel', 'none');
             blockRepeat.style.display = 'none';
             document.getElementById('changeSelectCount').value = '';
           }

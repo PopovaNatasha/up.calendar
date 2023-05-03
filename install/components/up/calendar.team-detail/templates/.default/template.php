@@ -220,7 +220,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <input type="hidden" name="action" value="out"/>
         <div class="modal" id="modal-js-leave-team">
             <div class="modal-background"></div>
-            <div class="modal-card">
+            <div class="modal-card leave-team">
                 <header class="modal-card-head" style="border: none">
                     <p class="modal-card-title">Подтверждение</p>
                     <button class="delete" type="reset" aria-label="close"></button>
@@ -265,7 +265,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <div class="toastui-calendar-vertical-line"></div>
                 <button type="button" class="toastui-calendar-delete-button">
                     <span class="toastui-calendar-icon toastui-calendar-ic-delete"></span>
-                    <span class="toastui-calendar-content">Удалить</span>
+                    <span class="toastui-calendar-content js-modal-trigger"
+						  data-target="modal-js-deleteEvent">Удалить</span>
                     </span>
                 </button>
             </div>
@@ -302,7 +303,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <div class="field">
                     <label class="checkbox" id="checkboxIsAllLabel">
                         <input name="isAll" type="checkbox" id="checkboxIsAll">
-                        Изменить все последующие
+                        Изменить все следующие
                     </label>
                 </div>
                 <div class="field" id="changeRepeat">
@@ -344,6 +345,53 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </footer>
         </div>
     </div>
+
+	<div class="modal" id="modal-js-deleteEvent">
+		<div class="modal-background"></div>
+		<div class="modal-card delete-event">
+			<header class="modal-card-head" style="border: none">
+				<p class="modal-card-title">Удалить событие</p>
+				<button class="delete" type="reset" aria-label="close"></button>
+			</header>
+			<section class="modal-card-body" style="background-color: #f5f5f5; ">
+				<p>Вы уверены, что хотите удалить это событие?</p>
+				<div class="field">
+					<label class="checkbox" id="checkboxDeleteIsAllLabel">
+						<input name="isAll" type="checkbox" id="checkboxDeleteIsAll">
+						Удалить все следующие
+					</label>
+				</div>
+			</section>
+			<footer class="modal-card-foot" style="border: none">
+				<button class="button is-danger" onclick="CalendarEventsList.deleteEvent()">Удалить</button>
+				<button class="button" type="reset">Отмена</button>
+			</footer>
+		</div>
+	</div>
+
+<!--	<div class="modal" id="modal-js-deleteEvent">-->
+<!--		<div class="modal-background"></div>-->
+<!--		<div class="modal-card">-->
+<!--			<header class="modal-card-head">-->
+<!--				<p class="modal-card-title">Удалить событие</p>-->
+<!--				<button class="delete" type="reset" aria-label="close"></button>-->
+<!--			</header>-->
+<!--			<section class="modal-card-body">-->
+<!--				<label>Вы уверены, что хотите удалить событие?</label>-->
+<!--				<div class="field">-->
+<!--					<label class="checkbox" id="checkboxIsAllLabel">-->
+<!--						<input name="isAll" type="checkbox" id="checkboxIsAll">-->
+<!--						Удалить все последующие-->
+<!--					</label>-->
+<!--				</div>-->
+<!--			</section>-->
+<!--			<footer class="modal-card-foot">-->
+<!--				<button class="button is-success" onclick="CalendarEventsList.deleteEvent()">Сохранить</button>-->
+<!--				<button class="button" type="reset">Отмена</button>-->
+<!--			</footer>-->
+<!--		</div>-->
+<!--	</div>-->
+
 </section>
 
 <script>

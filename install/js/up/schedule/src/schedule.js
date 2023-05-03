@@ -372,6 +372,7 @@ export class Schedule {
 			if (!this.isUser)
 			{
 				this.changeEventForm(event);
+				this.setViewRule(event);
 			}
         });
     }
@@ -382,10 +383,9 @@ export class Schedule {
 
         EventDatePickers[1].clear();
         EventDatePickers[1].value(event.start.toDate());
-        console.log(document.getElementById('date').value)
         let endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
         endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
-        this.setViewRule(event);
+        // this.setViewRule(event);
 		console.log(event);
     }
 
@@ -433,17 +433,27 @@ export class Schedule {
         });
     }
 
+	displayElementById(idElement, display)
+	{
+		let element = document.getElementById(idElement);
+		element.style.display = display;
+	}
+
     setViewRule(event) {
-        let checkbox, checkboxLabel, blockRepeat;
-        checkboxLabel = document.getElementById('checkboxIsAllLabel');
-        checkbox = document.getElementById('checkboxIsAll');
+        let checkboxChange, checkboxDelete, blockRepeat;
+        // checkboxLabel = document.getElementById('checkboxIsAllLabel');
+        checkboxChange = document.getElementById('checkboxIsAll');
+		checkboxDelete = document.getElementById('checkboxDeleteIsAll');
         blockRepeat = document.getElementById('changeRepeat');
-        checkbox.checked = false;
+		checkboxChange.checked = false;
+		checkboxDelete.checked = false;
         blockRepeat.style.display = 'none';
 
         if (event.recurrenceRule) {
-            checkboxLabel.style.display = 'block';
-            checkboxLabel.addEventListener('change', e => {
+            // checkboxLabel.style.display = 'block';
+			this.displayElementById('checkboxIsAllLabel', 'block');
+			this.displayElementById('checkboxDeleteIsAllLabel', 'block');
+			checkboxChange.addEventListener('change', e => {
                 if (e.target.checked) {
                     blockRepeat.style.display = 'block';
                 } else {
@@ -464,7 +474,8 @@ export class Schedule {
                 document.getElementById('changeSelectCount').value = '1';
             }
         } else {
-            checkboxLabel.style.display = 'none';
+			this.displayElementById('checkboxIsAllLabel', 'none');
+			this.displayElementById('checkboxDeleteIsAllLabel', 'none');
             blockRepeat.style.display = 'none';
 			document.getElementById('changeSelectCount').value = '';
         }
