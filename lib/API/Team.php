@@ -91,6 +91,8 @@ class Team
 
     public static function createTeam($arguments): void
     {
+        global $USER;
+        $adminId = (int) $USER->getId();
         $result = TeamTable::createObject()
             ->setTitle($arguments['title'])
             ->setDescription($arguments['description'] ?: '')
@@ -100,7 +102,7 @@ class Team
 
         $idTeam = $result->getId();
         UserTeamTable::createObject()
-            ->setIdUser($arguments['adminId'])
+            ->setIdUser($adminId)
             ->setIdTeam($idTeam)
             ->save();
 

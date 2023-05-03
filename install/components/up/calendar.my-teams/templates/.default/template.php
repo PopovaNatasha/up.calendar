@@ -41,7 +41,6 @@
 </div>
 
 <form name="Create Team" action="" method="post">
-    <input name="adminId" type="hidden" value="<?= $USER->getID() ?>">
     <div class="modal" id="modal-js-example">
         <div class="modal-background"></div>
         <div class="modal-card">
