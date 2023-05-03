@@ -47,6 +47,19 @@
     display: none;
 }
 
+#create-day-count, #change-day-count {
+	text-align: center;
+}
+
+#create-every, #change-every {
+	text-align: end;
+}
+
+.columns.create-event,
+.columns.change-event {
+	align-items: center;
+}
+
 .column.is-9 {
     justify-content: space-between;
     align-content: space-between;

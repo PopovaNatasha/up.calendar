@@ -90,7 +90,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div>
                     <div class="field">
                         <label>Повторяемость</label>
-                        <div class="columns">
+                        <div class="columns create-event">
                             <div class="column control">
                                 <div class="select is-primary">
                                     <select id="selectRepeat" name="rule_repeat" onchange="displayUsgsChange('create')">
@@ -100,10 +100,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                     </select>
                                 </div>
                             </div>
-                            <div class="column" id="create-every">
+                            <div class="column is-2" id="create-every">
                                 <span class="rule-daily">каждый</span>
                             </div>
-                            <div class="column control" id="create-day-count">
+                            <div class="column control is-2" id="create-day-count">
                                 <div class="select is-primary">
                                     <select name="rule_repeat_count">
                                         <option value="1">1</option>
@@ -308,7 +308,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 </div>
                 <div class="field" id="changeRepeat">
                     <label>Повторяемость</label>
-                    <div class="columns">
+                    <div class="columns change-event">
                         <div class="column control">
                             <div class="select is-primary">
                                 <select id="changeSelectRepeat" name="rule_repeat"
@@ -318,10 +318,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 </select>
                             </div>
                         </div>
-                        <div class="column" id="change-every">
+                        <div class="column is-2" id="change-every">
                             <span class="rule-daily">каждый</span>
                         </div>
-                        <div class="column control" id="change-day-count">
+                        <div class="column control is-2" id="change-day-count">
                             <div class="select is-primary">
                                 <select name="rule_repeat_count" id="changeSelectCount">
                                     <option value="1">1</option>
