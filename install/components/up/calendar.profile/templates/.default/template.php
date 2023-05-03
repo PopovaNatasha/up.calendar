@@ -92,52 +92,28 @@ var cookie_prefix = '<?=$arResult["COOKIE_PREFIX"]?>';
 <div class="column is-8">
 <table class="profile-table data-table">
 	<tbody>
-	<?
-	if($arResult["ID"]>0)
-	{
-	?>
-		<?
-		if ($arResult["arUser"]["TIMESTAMP_X"] <> '')
-		{
-		?>
 
-			<td><?=GetMessage('LAST_UPDATE')?></td>
-			<td><?=$arResult["arUser"]["TIMESTAMP_X"]?></td>
-
-		<?
-		}
-		?>
-		<?
-		if ($arResult["arUser"]["LAST_LOGIN"] <> '')
-		{
-		?>
-		<?
-		}
-		?>
-	<?
-	}
-	?>
 	<tr>
-		<td class="title is-4"><?=GetMessage('LAST_NAME')?></td>
-		<td><input class="input is-info" type="text" name="LAST_NAME" maxlength="50" value="<?=$arResult["arUser"]["LAST_NAME"]?>" /></td>
+		<td class="title is-5"><?=GetMessage('LAST_NAME')?></td>
+		<td><input class="input is-primary" type="text" name="LAST_NAME" maxlength="50" value="<?=$arResult["arUser"]["LAST_NAME"]?>" /></td>
 	</tr>
 	<tr>
-		<td class="title is-4"><?=GetMessage('NAME')?></td>
-		<td><input class="input is-info" type="text" name="NAME" maxlength="50" value="<?=$arResult["arUser"]["NAME"]?>" /></td>
+		<td class="title is-5"><?=GetMessage('NAME')?></td>
+		<td><input class="input is-primary" type="text" name="NAME" maxlength="50" value="<?=$arResult["arUser"]["NAME"]?>" /></td>
 	</tr>
 	<tr>
-		<td class="title is-4"><?=GetMessage('LOGIN')?><span class="starrequired">*</span></td>
-		<td><input class="input is-info" type="text" name="LOGIN" maxlength="50" value="<? echo $arResult["arUser"]["LOGIN"]?>" /></td>
+		<td class="title is-5"><?=GetMessage('LOGIN')?><span class="starrequired">*</span></td>
+		<td><input class="input is-primary" type="text" name="LOGIN" maxlength="50" value="<? echo $arResult["arUser"]["LOGIN"]?>" /></td>
 	</tr>
 	<tr>
-		<td class="title is-4"><?=GetMessage('EMAIL')?><?if($arResult["EMAIL_REQUIRED"]):?><span class="starrequired">*</span><?endif?></td>
-		<td><input class="input is-info" type="text" name="EMAIL" maxlength="50" value="<? echo $arResult["arUser"]["EMAIL"]?>" /></td>
+		<td class="title is-5"><?=GetMessage('EMAIL')?><?if($arResult["EMAIL_REQUIRED"]):?><span class="starrequired">*</span><?endif?></td>
+		<td><input class="input is-primary" type="text" name="EMAIL" maxlength="50" value="<? echo $arResult["arUser"]["EMAIL"]?>" /></td>
 	</tr>
 <?if($arResult['CAN_EDIT_PASSWORD']):?>
 	<tr>
-		<td class="title is-4"><?=GetMessage('NEW_PASSWORD_REQ')?></td>
+		<td class="title is-5"><?=GetMessage('NEW_PASSWORD_REQ')?></td>
 		<td>
-	<input title="<?echo $arResult["GROUP_POLICY"]["PASSWORD_REQUIREMENTS"];?>" class="input is-info" type="password" name="NEW_PASSWORD" maxlength="50" value="" autocomplete="off" class="bx-auth-input" />
+	<input title="<?echo $arResult["GROUP_POLICY"]["PASSWORD_REQUIREMENTS"];?>" class="input is-primary" type="password" name="NEW_PASSWORD" maxlength="50" value="" autocomplete="off" class="bx-auth-input" />
 
 <?if($arResult["SECURE_AUTH"]):?>
 				<span class="bx-auth-secure" id="bx_auth_secure" title="<?echo GetMessage("AUTH_SECURE_NOTE")?>" style="display:none">
@@ -155,9 +131,9 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 	</tr>
 <?endif?>
 	<tr>
-		<td class="title is-4"><?=GetMessage('NEW_PASSWORD_CONFIRM')?></td>
+		<td class="title is-5"><?=GetMessage('NEW_PASSWORD_CONFIRM')?></td>
 		<td>
-			<input title="<?echo $arResult["GROUP_POLICY"]["PASSWORD_REQUIREMENTS"];?>" class="input is-info" type="password" name="NEW_PASSWORD_CONFIRM" maxlength="50" value="" autocomplete="off" />
+			<input title="<?echo $arResult["GROUP_POLICY"]["PASSWORD_REQUIREMENTS"];?>" class="input is-primary" type="password" name="NEW_PASSWORD_CONFIRM" maxlength="50" value="" autocomplete="off" />
 			<p></p>
 		</td>
 	</tr>
@@ -198,7 +174,7 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 	<?// ******************** /User properties ***************************************************?>
 	<div class="columns">
 		<div class="column is-8">
-			<div class="buttons" style="display: flex; justify-content: flex-end;">
+			<div class="buttons" style="display: flex; justify-content: flex-start;">
 				<input class="button is-success" type="submit" name="save" value="<?=(($arResult["ID"]>0) ? GetMessage("MAIN_SAVE") : GetMessage("MAIN_ADD"))?>">&nbsp;&nbsp;
 				<input class="button is-warning" type="reset" value="<?=GetMessage('MAIN_RESET');?>">
 			</div>
