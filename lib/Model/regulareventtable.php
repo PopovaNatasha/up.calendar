@@ -25,6 +25,7 @@ Loc::loadMessages(__FILE__);
  * <li> DATE_TIME datetime mandatory
  * <li> DAY_STEP int mandatory
  * <li> DATE_END date optional
+ * <li> ID_LAST_CHANGED_EVENT int optional
  * </ul>
  *
  * @package Bitrix\Calendar
@@ -97,6 +98,12 @@ class RegularEventTable extends DataManager
                     'title' => Loc::getMessage('REGULAR_EVENT_ENTITY_DATE_TIME_TO_FIELD')
                 ]
             ),
+			new IntegerField(
+				'ID_LAST_CHANGED_EVENT',
+				[
+					'title' => Loc::getMessage('REGULAR_EVENT_ENTITY_ID_ORIGINAL_EVENT_FIELD')
+				]
+			),
             new Reference(
                 'TEAM',
                 TeamTable::class,

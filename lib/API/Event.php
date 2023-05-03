@@ -108,16 +108,33 @@ class Event
             // {
             // 	return false;
             // }
-            $event = RegularEventTable::getByPrimary(['ID' => (int)$arguments['idEvent']])->fetchObject();
-			$event->setDateEnd($dateTimeFrom)->save();
+            $event = RegularEventTable::getByPrimary(['ID' => $idEvent])->fetchObject();
+			$IdLastChangedEvent = $event->get('ID_LAST_CHANGED_EVENT');
+			if ($IdLastChangedEvent)
+			{RegularEventTable::update($IdLastChangedEvent, [
+					'ID_TEAM' => $idTeam,
+					'TITLE' => $arguments['titleEvent'],
+					'DATE_TIME_FROM' => $dateTimeFrom,
+					'DATE_TIME_TO' => $dateTimeTo,
+					'DAY_STEP' => $arguments['dayStep'],
+				]);
+				$event->setDateEnd($dateTimeFrom)->save();
+			}
+			else
+			{
+				$changedEvent = RegularEventTable::createObject()
+								 ->setTitle($arguments['titleEvent'])
+								 ->setIdTeam($idTeam)
+								 ->setDateTimeFrom($dateTimeFrom)
+								 ->setDateTimeTo($dateTimeTo)
+								 ->setDayStep($arguments['dayStep'])
+								 ->save();
+				$idChangedEvent = $changedEvent->getId();
 
-			RegularEventTable::createObject()
-				->setTitle($arguments['titleEvent'])
-				->setIdTeam($idTeam)
-                ->setDateTimeFrom($dateTimeFrom)
-                ->setDateTimeTo($dateTimeTo)
-                ->setDayStep($arguments['dayStep'])
-                ->save();
+				$event->setDateEnd($dateTimeFrom)
+					  ->setIdLastChangedEvent($idChangedEvent)
+					  ->save();
+			}
         } else {
             ChangedEventTable::createObject()
                 ->setTitle($arguments['titleEvent'])

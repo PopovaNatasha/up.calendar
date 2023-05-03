@@ -77,3 +77,14 @@ __projectorMigrate(9, function ($updater, $DB) {
 	}
 });
 
+__projectorMigrate(10, function ($updater, $DB) {
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_regular_event')) {
+		$DB->query("ALTER TABLE up_calendar_regular_event ADD ID_ORIGINAL_EVENT INT");
+	}
+});
+
+__projectorMigrate(11, function ($updater, $DB) {
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_regular_event')) {
+		$DB->query("ALTER TABLE up_calendar_regular_event CHANGE COLUMN ID_ORIGINAL_EVENT ID_LAST_CHANGED_EVENT INT");
+	}
+});

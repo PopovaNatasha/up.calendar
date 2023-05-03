@@ -148,13 +148,13 @@ this.BX.Up = this.BX.Up || {};
                 });
               }
               calendar.createEvents([{
-                id: regularEvent['ID'],
+                id: event['ID'],
                 calendarId: regularEvent['ID_TEAM'],
                 title: regularEvent['TITLE'],
                 start: regularEvent['START'],
                 end: regularEvent['END'],
                 category: 'time',
-                recurrenceRule: regularEvent['DAY_STEP']
+                recurrenceRule: event['DAY_STEP']
               }]);
               dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
               dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -415,6 +415,7 @@ this.BX.Up = this.BX.Up || {};
               }
             }).then(function (response) {
               if (response.data) {
+                console.log(response.data);
                 _this3.calendar.clear();
                 _this3.reload();
               } else {

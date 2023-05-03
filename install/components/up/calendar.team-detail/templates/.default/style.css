@@ -59,7 +59,3 @@
     display: none;
     position: fixed !important;
 }
-
-.toastui-calendar-delete-button, .toastui-calendar-edit-button {
-	width: 100% !important;
-}

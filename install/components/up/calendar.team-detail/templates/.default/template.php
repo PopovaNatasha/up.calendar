@@ -262,12 +262,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                           data-target="modal-js-changeEvent">Изменить</span>
 				</span>
                 </button>
-<!--                <div class="toastui-calendar-vertical-line"></div>-->
-<!--                <button type="button" class="toastui-calendar-delete-button">-->
-<!--                    <span class="toastui-calendar-icon toastui-calendar-ic-delete"></span>-->
-<!--                    <span class="toastui-calendar-content">Удалить</span>-->
-<!--                    </span>-->
-<!--                </button>-->
+                <div class="toastui-calendar-vertical-line"></div>
+                <button type="button" class="toastui-calendar-delete-button">
+                    <span class="toastui-calendar-icon toastui-calendar-ic-delete"></span>
+                    <span class="toastui-calendar-content">Удалить</span>
+                    </span>
+                </button>
             </div>
         </div>
         <div class="toastui-calendar-popup-top-line" id="popupTopLine"
@@ -302,7 +302,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <div class="field">
                     <label class="checkbox" id="checkboxIsAllLabel">
                         <input name="isAll" type="checkbox" id="checkboxIsAll">
-                        Изменить все события в серии
+                        Изменить все последующие
                     </label>
                 </div>
                 <div class="field" id="changeRepeat">
