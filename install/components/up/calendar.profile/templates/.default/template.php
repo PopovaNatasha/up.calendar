@@ -88,7 +88,8 @@ var cookie_prefix = '<?=$arResult["COOKIE_PREFIX"]?>';
 <input type="hidden" name="lang" value="<?=LANG?>" />
 <input type="hidden" name="ID" value=<?=$arResult["ID"]?> />
 
-
+<div class="columns">
+<div class="column is-8">
 <table class="profile-table data-table">
 	<tbody>
 	<?
@@ -165,7 +166,7 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 	</tbody>
 </table>
 </div>
-
+</div>
 	<?// ********************* User properties ***************************************************?>
 	<?if($arResult["USER_PROPERTIES"]["SHOW"] == "Y"):?>
 	<div class="profile-link profile-user-div-link"><a title="<?=GetMessage("USER_SHOW_HIDE")?>" href="javascript:void(0)" onclick="SectionClick('user_properties')"><?=trim($arParams["USER_PROPERTY_NAME"]) <> '' ? $arParams["USER_PROPERTY_NAME"] : GetMessage("USER_TYPE_EDIT_TAB")?></a></div>
@@ -192,13 +193,18 @@ document.getElementById('bx_auth_secure').style.display = 'inline-block';
 		</tbody>
 	</table>
 	</div>
+
 	<?endif;?>
 	<?// ******************** /User properties ***************************************************?>
-
-	<div class="buttons" style="display: flex; justify-content: flex-end;">
-		<input class="button is-success" type="submit" name="save" value="<?=(($arResult["ID"]>0) ? GetMessage("MAIN_SAVE") : GetMessage("MAIN_ADD"))?>">&nbsp;&nbsp;
-		<input class="button is-warning" type="reset" value="<?=GetMessage('MAIN_RESET');?>">
+	<div class="columns">
+		<div class="column is-8">
+			<div class="buttons" style="display: flex; justify-content: flex-end;">
+				<input class="button is-success" type="submit" name="save" value="<?=(($arResult["ID"]>0) ? GetMessage("MAIN_SAVE") : GetMessage("MAIN_ADD"))?>">&nbsp;&nbsp;
+				<input class="button is-warning" type="reset" value="<?=GetMessage('MAIN_RESET');?>">
+			</div>
+		</div>
 	</div>
+
 </form>
 <?
 if($arResult["SOCSERV_ENABLED"])
