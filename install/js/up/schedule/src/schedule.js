@@ -149,13 +149,13 @@ export class Schedule {
 				}
                 calendar.createEvents([
                     {
-                        id: regularEvent['ID'],
+                        id: event['ID'],
                         calendarId: regularEvent['ID_TEAM'],
                         title: regularEvent['TITLE'],
                         start: regularEvent['START'],
                         end: regularEvent['END'],
                         category: 'time',
-                        recurrenceRule: regularEvent['DAY_STEP'],
+                        recurrenceRule: event['DAY_STEP'],
                     },
                 ]);
                 dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -417,6 +417,7 @@ export class Schedule {
                 .then((response) => {
 					if (response.data)
 					{
+						console.log(response.data);
 						this.calendar.clear();
 						this.reload();
 					}
