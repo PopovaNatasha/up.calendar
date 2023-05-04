@@ -399,6 +399,8 @@ this.BX.Up = this.BX.Up || {};
           }
           var dateFrom = document.getElementsByClassName('datetimepicker-dummy-input')[2].value;
           var dateTo = document.getElementsByClassName('datetimepicker-dummy-input')[3].value;
+          console.log(dateFrom);
+          var dateFromOrigin = moment(this.event.start.toDate()).format('DD.MM.YYYY HH:mm');
           return new Promise(function (resolve, reject) {
             BX.ajax.runAction('up:calendar.calendar.changeEvent', {
               data: {
@@ -409,10 +411,12 @@ this.BX.Up = this.BX.Up || {};
                   dateTo: dateTo,
                   dayStep: dayStep,
                   idTeam: _this3.idTeam,
-                  isAll: document.getElementById('checkboxIsAll').checked
+                  isAll: document.getElementById('checkboxIsAll').checked,
+                  dateFromOrigin: dateFromOrigin
                 }
               }
             }).then(function (response) {
+              console.log(response.data);
               if (response.data) {
                 _this3.calendar.clear();
                 _this3.reload();
@@ -429,14 +433,6 @@ this.BX.Up = this.BX.Up || {};
         value: function deleteEvent() {
           var _this4 = this;
           var event = this.event;
-          // let dayStep = document.getElementById('changeSelectCount').value;
-          // let selectRepeat = document.getElementById('changeSelectRepeat').value;
-          // if (selectRepeat === 'weekly') {
-          // 	dayStep = '7';
-          // }
-          // let dateFrom = document.getElementsByClassName('datetimepicker-dummy-input')[2].value;
-          // let dateTo = document.getElementsByClassName('datetimepicker-dummy-input')[3].value;
-
           return new Promise(function (resolve, reject) {
             BX.ajax.runAction('up:calendar.calendar.deleteEvent', {
               data: {

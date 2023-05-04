@@ -396,6 +396,8 @@ export class Schedule {
         }
         let dateFrom = document.getElementsByClassName('datetimepicker-dummy-input')[2].value;
         let dateTo = document.getElementsByClassName('datetimepicker-dummy-input')[3].value;
+		console.log(this.event);
+		let dateFromOrigin = moment(this.event.start.toDate()).format('DD.MM.YYYY HH:mm');
 
         return new Promise((resolve, reject) => {
             BX.ajax.runAction(
@@ -409,11 +411,13 @@ export class Schedule {
                             dateTo: dateTo,
                             dayStep: dayStep,
                             idTeam: this.idTeam,
-                            isAll: document.getElementById('checkboxIsAll').checked
+                            isAll: document.getElementById('checkboxIsAll').checked,
+							dateFromOrigin: dateFromOrigin
                         }
                     },
                 })
                 .then((response) => {
+					console.log(response.data)
 					if (response.data)
 					{
 						this.calendar.clear();
