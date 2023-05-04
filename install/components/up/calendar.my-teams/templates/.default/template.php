@@ -54,7 +54,7 @@
                     <label class="label">Название</label>
                     <div class="control">
                         <input name="title" class="input is-primary mb-4 is-large" type="text"
-                               placeholder="Название группы">
+                               placeholder="Название группы" required>
                     </div>
                 </div>
                 <div class="field">
@@ -71,7 +71,7 @@
             </section>
             <footer class="modal-card-foot">
                 <button class="button is-success" type="submit">Создать</button>
-                <button class="button" type="reset">Отмена</button>
+                <button class="button is-warning" type="reset">Сброс</button>
             </footer>
         </div>
     </div>

@@ -1,10 +1,7 @@
 <?
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 ?>
-<?
-ShowMessage($arParams["~AUTH_RESULT"]);
-ShowMessage($arResult['ERROR_MESSAGE']);
-?>
+
 
 <section class="container">
     <!--<div class="bx-auth">-->
@@ -72,6 +69,12 @@ ShowMessage($arResult['ERROR_MESSAGE']);
                                 document.getElementById('bx_auth_secure').style.display = 'inline-block';
                             </script>
                         <? endif ?>
+                        <div style="margin-bottom: 15px;">
+                        <?
+                        ShowMessage($arParams["~AUTH_RESULT"]);
+                        ShowMessage($arResult['ERROR_MESSAGE']);
+                        ?>
+                        </div>
                         <div class="authorize-submit-cell">
                             <input type="submit" class="button is-block is-primary is-fullwidth btn btn-primary"
                                    name="Login" value="<?= GetMessage("AUTH_AUTHORIZE") ?>"/>

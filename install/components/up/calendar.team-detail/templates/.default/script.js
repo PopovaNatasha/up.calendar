@@ -65,7 +65,26 @@ function displayUsgsChange(prefix) {
     }
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    // let buttonSaveEvent = document.getElementById('buttonSaveEvent');
+    // buttonSaveEvent.onclick = function()
+    // {
+    //     let titleEvent = document.getElementById('titleEvent');
+    //     let dateEvent = document.getElementById('date');
+    //     // if (titleEvent.value === '')
+    //     // {
+    //     //     titleEvent.classList.add('is-danger');
+    //     // }
+    //     if (dateEvent.value === '')
+    //     {
+    //         dateEvent.classList.add('is-danger');
+    //     }
+    //     return false;
+    // }
+
+
     // Functions to open and close a modal
     function openModal($el) {
         $el.classList.add('is-active');
@@ -92,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Add a click event on various child elements to close the parent modal
-    (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+    (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete') || []).forEach(($close) => {
         const $target = $close.closest('.modal');
 
         $close.addEventListener('click', () => {

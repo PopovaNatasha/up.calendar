@@ -80,12 +80,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <section class="modal-card-body">
                     <label>Название cобытия</label>
                     <div class="control">
-                        <input name="title" class="input is-primary mb-4" type="text" required>
+                        <input id="titleEvent" name="title" class="input is-primary mb-4" type="text" required>
                     </div>
                     <div class="field">
                         <label>Время</label>
                         <div class="control">
-                            <input name="date" type="date" class="input is-primary mb-4" id="date">
+                            <input name="date" type="date" class="input is-primary mb-4" id="date" required>
                         </div>
                     </div>
                     <div class="field">
@@ -121,8 +121,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                         </div>
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button is-success" type="submit">Сохранить</button>
-                    <button class="button" type="reset">Отмена</button>
+                    <button id="buttonSaveEvent" class="button is-success" type="submit">Сохранить</button>
+                    <button class="button is-warning" type="reset">Cброс</button>
                 </footer>
             </div>
         </div>

@@ -21,9 +21,7 @@ if ($arResult["SHOW_SMS_FIELD"] == true) {
 }
 ?>
 <!--<div class="bx-auth">-->
-<?
-ShowMessage($arParams["~AUTH_RESULT"]);
-?>
+
 <? if ($arResult["SHOW_EMAIL_SENT_CONFIRMATION"]): ?>
     <p><? echo GetMessage("AUTH_EMAIL_SENT") ?></p>
 <? endif; ?>
@@ -89,7 +87,7 @@ ShowMessage($arParams["~AUTH_RESULT"]);
                 <h1 class="title is-4"><?= GetMessage("AUTH_REGISTER") ?></h1>
                 <p class="description">Зарегистрируйтесь для начала работы с календарем</p>
 
-                <form method="post" action="/auth" name="bform" enctype="multipart/form-data">
+                <form method="post" action="" name="bform" enctype="multipart/form-data">
                     <input type="hidden" name="AUTH_FORM" value="Y"/>
                     <input type="hidden" name="TYPE" value="REGISTRATION"/>
 
@@ -285,6 +283,11 @@ ShowMessage($arParams["~AUTH_RESULT"]);
                     <!--		<tr>-->
                     <!--			<td></td>-->
                     <br/>
+                    <div style="margin-bottom: 15px;">
+                        <?
+                        ShowMessage($arParams["~AUTH_RESULT"]);
+                        ?>
+                    </div>
                     <input class="button is-block is-primary is-fullwidth is-medium" type="submit" name="Register"
                            value="<?= GetMessage("AUTH_REGISTER") ?>"/>
                     <br/>
