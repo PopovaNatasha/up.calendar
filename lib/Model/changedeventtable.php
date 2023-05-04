@@ -10,6 +10,7 @@ use Bitrix\Main\Localization\Loc,
     Bitrix\Main\ORM\Fields\Relations\Reference,
     Bitrix\Main\ORM\Query\Join,
     Bitrix\Main\ORM\Fields\Validators\LengthValidator;
+use Bitrix\Main\ORM\Fields\BooleanField;
 
 Loc::loadMessages(__FILE__);
 
@@ -88,6 +89,13 @@ class ChangedEventTable extends DataManager
                     'title' => Loc::getMessage('CHANGED_EVENT_ENTITY_ID_TEAM_FIELD')
                 ]
             ),
+			new BooleanField(
+			'DELETED',
+				[
+				'default' => 0,
+				'title' => Loc::getMessage('CHANGED_EVENT_ENTITY_DELETED_FIELD')
+				]
+			),
             new Reference(
                 'TEAM',
                 TeamTable::class,
