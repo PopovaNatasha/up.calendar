@@ -81,6 +81,7 @@ class Event
         $idTeam = (int)$arguments['idTeam'];
         $dateTimeFrom = new DateTime($arguments['dateFrom'], "d.m.Y H:i");
         $dateTimeTo = new DateTime($arguments['dateTo'], "d.m.Y H:i");
+		$dateTimeOrigin = new DateTime($arguments['dateFromOrigin'], "d.m.Y H:i");
 
         if ($arguments['dayStep'] === '')
 		{
@@ -113,12 +114,11 @@ class Event
 				'select' => ['ID'],
 				'filter' => [
 					'ID_EVENT' => $idEvent,
-					'<=DATE_TIME_FROM' => ConvertDateTime($dateTimeFrom, "yyyy-MM-dd HH:mm:ss"),
-					'>=DATE_TIME_FROM' => ConvertDateTime($dateTimeFrom, "yyyy-MM-dd HH:mm:ss"),
+					'>DATE_TIME_FROM' => $dateTimeOrigin->add('-1 minutes')->toString(),
+					'<=DATE_TIME_FROM' => $dateTimeOrigin->add('+1 minutes')->toString(),
 				],
 				'count_total' => 1
 			]);
-			return $changedEvent->getCount();
 
 			if ($changedEvent->getCount() === 0)
 			{
@@ -147,18 +147,23 @@ class Event
     public static function deleteEvent($arguments): bool
     {
         unset($events);
+		$idEvent = (int)$arguments['idEvent'];
+		$idTeam = (int)$arguments['idTeam'];
+		$dateTimeFrom = new DateTime($arguments['dateFrom'], "d.m.Y H:i");
+		$dateTimeTo = new DateTime($arguments['dateTo'], "d.m.Y H:i");
+
         if ($arguments['dayStep'] === '')
 		{
-            EventTable::delete(['ID' => (int)$arguments['idEvent']]);
+            EventTable::delete(['ID' => $idEvent]);
         }
 		elseif ($arguments['isAll'] === 'true')
 		{
-            RegularEventTable::delete(['ID' => (int)$arguments['idEvent']]);
+            RegularEventTable::delete(['ID' => $idEvent]);
 
             $events = ChangedEventTable::getList([
                 'select' => ['ID'],
                 'filter' => [
-                    'ID_EVENT' => (int)$arguments['idEvent'],
+                    'ID_EVENT' => $idEvent,
                 ]
             ])->fetchAll();
 
@@ -170,7 +175,14 @@ class Event
         }
 		else
 		{
-
+			ChangedEventTable::createObject()
+							 ->setTitle($arguments['titleEvent'])
+							 ->setIdTeam($idTeam)
+							 ->setDateTimeFrom($dateTimeFrom)
+							 ->setDateTimeTo($dateTimeTo)
+							 ->setIdEvent($idEvent)
+							 ->setDeleted(1)
+							 ->save();
 		}
 		return true;
     }

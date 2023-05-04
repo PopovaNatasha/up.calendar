@@ -88,3 +88,13 @@ __projectorMigrate(11, function ($updater, $DB) {
 		$DB->query("ALTER TABLE up_calendar_regular_event CHANGE COLUMN ID_ORIGINAL_EVENT ID_LAST_CHANGED_EVENT INT");
 	}
 });
+
+__projectorMigrate(12, function ($updater, $DB) {
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_changed_event')) {
+		$DB->query("ALTER TABLE up_calendar_changed_event ADD DELETED BINARY DEFAULT 0");
+	}
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_regular_event')) {
+		$DB->query("ALTER TABLE up_calendar_regular_event DROP ID_LAST_CHANGED_EVENT");
+		$DB->query("ALTER TABLE up_calendar_regular_event DROP ID_ORIGINAL_EVENT");
+	}
+});
