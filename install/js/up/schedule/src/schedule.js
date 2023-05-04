@@ -3,12 +3,12 @@ import {Type} from 'main.core';
 export class Schedule {
     constructor(options = {}) {
         this.idTeam = options.idTeam;
-        console.log(this.idTeam);
         this.rootNodeId = options.rootNodeId;
         this.rootNode = document.getElementById(this.rootNodeId);
         this.teams = options.teams;
         this.isUser = options.isUser;
 
+		this.event = null;
         this.singleEventsList = [];
         this.regularEventsList = [];
         this.userStoryEvents = [];
@@ -347,6 +347,7 @@ export class Schedule {
 
     AddOpenEventDetailPopup() {
         this.calendar.on('clickEvent', ({event}) => {
+			this.event = event;
             let popupForm, eventElem, coordinates;
             popupForm = document.getElementById('event-detail-popup');
             eventElem = window.event.srcElement;
@@ -371,7 +372,7 @@ export class Schedule {
             popupForm.style.display = 'block';
 			if (!this.isUser)
 			{
-				this.changeEventForm(event);
+				this.changeEventForm(this.event);
 				this.setViewRule(event);
 			}
         });
@@ -385,8 +386,6 @@ export class Schedule {
         EventDatePickers[1].value(event.start.toDate());
         let endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
         endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
-        // this.setViewRule(event);
-		console.log(event);
     }
 
     changeEvent() {
@@ -417,13 +416,12 @@ export class Schedule {
                 .then((response) => {
 					if (response.data)
 					{
-						console.log(response.data);
 						this.calendar.clear();
 						this.reload();
 					}
 					else
 					{
-						alert('Не удалось изменить соыбытие');
+						alert('Не удалось изменить событие');
 					}
                 })
                 .catch((error) => {
@@ -432,6 +430,43 @@ export class Schedule {
             ;
         });
     }
+
+	deleteEvent()
+	{
+		let event = this.event;
+
+		return new Promise((resolve, reject) => {
+			BX.ajax.runAction(
+					'up:calendar.calendar.deleteEvent',
+					{
+						data: {
+							event: {
+								idEvent: event.id,
+								dateFrom: event.start.toDate(),
+								dateTo: event.end.toDate(),
+								dayStep: event.recurrenceRule,
+								idTeam: this.idTeam,
+								isAll: document.getElementById('checkboxDeleteIsAll').checked
+							}
+						},
+					})
+				.then((response) => {
+					if (response.data)
+					{
+						this.calendar.clear();
+						this.reload();
+					}
+					else
+					{
+						alert('Не удалось удалить событие');
+					}
+				})
+				.catch((error) => {
+					reject(error);
+				})
+			;
+		});
+	}
 
 	displayElementById(idElement, display)
 	{

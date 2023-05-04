@@ -16,4 +16,9 @@ class Calendar extends Controller
     {
         return Event::changeEvent($event);
     }
+
+	public function deleteEventAction($event): bool
+	{
+		return Event::deleteEvent($event);
+	}
 }

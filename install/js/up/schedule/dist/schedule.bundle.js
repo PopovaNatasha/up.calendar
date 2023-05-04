@@ -8,11 +8,11 @@ this.BX.Up = this.BX.Up || {};
         var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
         babelHelpers.classCallCheck(this, Schedule);
         this.idTeam = options.idTeam;
-        console.log(this.idTeam);
         this.rootNodeId = options.rootNodeId;
         this.rootNode = document.getElementById(this.rootNodeId);
         this.teams = options.teams;
         this.isUser = options.isUser;
+        this.event = null;
         this.singleEventsList = [];
         this.regularEventsList = [];
         this.userStoryEvents = [];
@@ -350,6 +350,7 @@ this.BX.Up = this.BX.Up || {};
           var _this2 = this;
           this.calendar.on('clickEvent', function (_ref) {
             var event = _ref.event;
+            _this2.event = event;
             var popupForm, eventElem, coordinates;
             popupForm = document.getElementById('event-detail-popup');
             eventElem = window.event.srcElement;
@@ -372,7 +373,7 @@ this.BX.Up = this.BX.Up || {};
             }
             popupForm.style.display = 'block';
             if (!_this2.isUser) {
-              _this2.changeEventForm(event);
+              _this2.changeEventForm(_this2.event);
               _this2.setViewRule(event);
             }
           });
@@ -386,8 +387,6 @@ this.BX.Up = this.BX.Up || {};
           EventDatePickers[1].value(event.start.toDate());
           var endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
           endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
-          // this.setViewRule(event);
-          console.log(event);
         }
       }, {
         key: "changeEvent",
@@ -415,11 +414,47 @@ this.BX.Up = this.BX.Up || {};
               }
             }).then(function (response) {
               if (response.data) {
-                console.log(response.data);
                 _this3.calendar.clear();
                 _this3.reload();
               } else {
-                alert('Не удалось изменить соыбытие');
+                alert('Не удалось изменить событие');
+              }
+            })["catch"](function (error) {
+              reject(error);
+            });
+          });
+        }
+      }, {
+        key: "deleteEvent",
+        value: function deleteEvent() {
+          var _this4 = this;
+          var event = this.event;
+          // let dayStep = document.getElementById('changeSelectCount').value;
+          // let selectRepeat = document.getElementById('changeSelectRepeat').value;
+          // if (selectRepeat === 'weekly') {
+          // 	dayStep = '7';
+          // }
+          // let dateFrom = document.getElementsByClassName('datetimepicker-dummy-input')[2].value;
+          // let dateTo = document.getElementsByClassName('datetimepicker-dummy-input')[3].value;
+
+          return new Promise(function (resolve, reject) {
+            BX.ajax.runAction('up:calendar.calendar.deleteEvent', {
+              data: {
+                event: {
+                  idEvent: event.id,
+                  dateFrom: event.start.toDate(),
+                  dateTo: event.end.toDate(),
+                  dayStep: event.recurrenceRule,
+                  idTeam: _this4.idTeam,
+                  isAll: document.getElementById('checkboxDeleteIsAll').checked
+                }
+              }
+            }).then(function (response) {
+              if (response.data) {
+                _this4.calendar.clear();
+                _this4.reload();
+              } else {
+                alert('Не удалось удалить событие');
               }
             })["catch"](function (error) {
               reject(error);
@@ -444,6 +479,7 @@ this.BX.Up = this.BX.Up || {};
           checkboxDelete.checked = false;
           blockRepeat.style.display = 'none';
           if (event.recurrenceRule) {
+            // checkboxLabel.style.display = 'block';
             this.displayElementById('checkboxIsAllLabel', 'block');
             this.displayElementById('checkboxDeleteIsAllLabel', 'block');
             checkboxChange.addEventListener('change', function (e) {

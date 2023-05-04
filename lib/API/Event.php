@@ -147,12 +147,15 @@ class Event
         return true;
     }
 
-    public static function deleteEvent($arguments)
+    public static function deleteEvent($arguments): bool
     {
         unset($events);
-        if (!$arguments['day_step']) {
-            EventTable::delete(['ID' => (int)$arguments['id']]);
-        } else {
+        if ($arguments['dayStep'] === '')
+		{
+            EventTable::delete(['ID' => (int)$arguments['idEvent']]);
+        }
+		else
+		{
             RegularEventTable::delete(['ID' => (int)$arguments['id']]);
 
             $events = ChangedEventTable::getList([
@@ -168,5 +171,6 @@ class Event
                 }
             }
         }
+		return true;
     }
 }
