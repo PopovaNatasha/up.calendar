@@ -87,7 +87,7 @@ ShowMessage($arParams["~AUTH_RESULT"]);
         <div class="columns is-mobile is-centered">
             <div class="column is-two-fifths has-text-centered login">
                 <h1 class="title is-4"><?= GetMessage("AUTH_REGISTER") ?></h1>
-                <p class="description">Зарегистрируйтесь для начала работы с календарем</p>
+                <p class="description"><?= GetMessage("AUTH_REGISTER_DESC") ?></p>
 
                 <form method="post" action="/auth" name="bform" enctype="multipart/form-data">
                     <input type="hidden" name="AUTH_FORM" value="Y"/>

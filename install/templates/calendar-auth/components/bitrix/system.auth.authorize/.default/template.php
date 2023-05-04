@@ -18,14 +18,13 @@ ShowMessage($arResult['ERROR_MESSAGE']);
         <div class="column is-8 is-offset-2 register">
             <div class="columns">
                 <div class="column left">
-                    <h1 class="title is-1">Хобби Календарь</h1>
-                    <h2 class="subtitle colored is-4">Ведение расписаний в&nbspодном&nbspместе</h2>
-                    <p>Следите за расписанием любых занятий и встреч. Всегда актуальная информация и новости от
-                        организаторов</p>
+                    <h1 class="title is-1"><?= GetMessage("AUTH_MODULE_NAME") ?></h1>
+                    <h2 class="subtitle colored is-4"><?= GetMessage("AUTH_MODULE_MIN_DESC")?></h2>
+                    <p> <?= GetMessage("AUTH_MODULE_FULL_DESC")?> </p>
                 </div>
                 <div class="column right has-text-centered">
-                    <h1 class="title is-4">Присоединяйтесь к нам!</h1>
-                    <p class="description">Авторизуйтесь для начала работы с календарем</p>
+                    <h1 class="title is-4"><?= GetMessage("AUTH_MODULE_CONNECT_TO_US")?></h1>
+                    <p class="description"><?= GetMessage("AUTH_MODULE_AUTH_DESC")?></p>
 
                     <form name="form_auth" method="post" target="_top" action="/auth">
 

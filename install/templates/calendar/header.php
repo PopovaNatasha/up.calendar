@@ -34,12 +34,12 @@
         <nav class="navbar has-shadow">
             <a class="navbar-item has-text-weight-semibold is-size-4 logo" href="/">
                 <img class="" src="https://em-content.zobj.net/source/skype/289/calendar_1f4c5.png">
-                <div class="model-name"> Hobby Calendar plan</div>
+                <div class="model-name"> Hobby plan</div>
             </a>
 
             <div class="user-info">
                 <div class="full-name"><?= htmlspecialchars($USER->GetFullName()) ?></div>
-                <a class="button is-danger" href="/?logout=yes&<?= bitrix_sessid_get() ?>">Выйти</a>
+                <a class="button is-danger" href="/?logout=yes&">Выйти</a>
             </div>
         </nav>
     </div>
