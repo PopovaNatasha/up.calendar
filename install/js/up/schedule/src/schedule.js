@@ -134,36 +134,56 @@ export class Schedule {
 				let regularEvent = event;
 				regularEvent['START'] = dayTimeStart;
 				regularEvent['END'] = dayTimeEnd;
+				let skipEvent = false;
 
 				if (changedEventsById.length > 0)
 				{
 					changedEventsById.forEach(changedEvent => {
 						let dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
+						if (changedEvent['DELETED'])
+						{
+							return;
+						}
 						if (moment(dayStartChanged).isSame(dayStart))
 						{
 							regularEvent = changedEvent;
 							regularEvent['START'] = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
 							regularEvent['END'] = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+							this.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEvent['START'], changedEvent['END'], dayStep);
+						}
+						else
+						{
+							this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
 						}
 					});
 				}
-                calendar.createEvents([
-                    {
-                        id: event['ID'],
-                        calendarId: regularEvent['ID_TEAM'],
-                        title: regularEvent['TITLE'],
-                        start: regularEvent['START'],
-                        end: regularEvent['END'],
-                        category: 'time',
-                        recurrenceRule: event['DAY_STEP'],
-                    },
-                ]);
+				else
+				{
+					this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
+				}
                 dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
                 dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
 				dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
             }
         });
     }
+
+	createEvent(id, calendarId, title, start, end, recurrenceRule)
+	{
+		let calendar = this.calendar;
+
+		calendar.createEvents([
+			{
+				id: id,
+				calendarId: calendarId,
+				title: title,
+				start: start,
+				end: end,
+				category: 'time',
+				recurrenceRule: recurrenceRule,
+			},
+		]);
+	}
 
     addEventsForUser() {
         let eventsList = this.singleEventsList;
@@ -446,8 +466,9 @@ export class Schedule {
 						data: {
 							event: {
 								idEvent: event.id,
-								dateFrom: event.start.toDate(),
-								dateTo: event.end.toDate(),
+								titleEvent: event.title,
+								dateFrom: moment(event.start.toDate()).format('DD.MM.YYYY HH:mm'),
+								dateTo: moment(event.end.toDate()).format('DD.MM.YYYY HH:mm'),
 								dayStep: event.recurrenceRule,
 								idTeam: this.idTeam,
 								isAll: document.getElementById('checkboxDeleteIsAll').checked
@@ -455,6 +476,7 @@ export class Schedule {
 						},
 					})
 				.then((response) => {
+					console.log(response);
 					if (response.data)
 					{
 						this.calendar.clear();

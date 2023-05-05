@@ -92,7 +92,6 @@ class ChangedEventTable extends DataManager
 			new BooleanField(
 			'DELETED',
 				[
-				'default' => 0,
 				'title' => Loc::getMessage('CHANGED_EVENT_ENTITY_DELETED_FIELD')
 				]
 			),

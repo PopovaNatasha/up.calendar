@@ -98,3 +98,9 @@ __CalendarMigrator(12, function ($updater, $DB) {
 		$DB->query("ALTER TABLE up_calendar_regular_event DROP ID_LAST_CHANGED_EVENT");
 	}
 });
+
+__CalendarMigrator(13, function ($updater, $DB) {
+	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_changed_event')) {
+		$DB->query("ALTER TABLE up_calendar_changed_event CHANGE COLUMN DELETED DELETED BOOL");
+	}
+});

@@ -144,7 +144,7 @@ class Event
         return true;
     }
 
-    public static function deleteEvent($arguments): bool
+    public static function deleteEvent($arguments)
     {
         unset($events);
 		$idEvent = (int)$arguments['idEvent'];
@@ -181,7 +181,7 @@ class Event
 							 ->setDateTimeFrom($dateTimeFrom)
 							 ->setDateTimeTo($dateTimeTo)
 							 ->setIdEvent($idEvent)
-							 ->setDeleted(1)
+							 ->setDeleted(true)
 							 ->save();
 		}
 		return true;
