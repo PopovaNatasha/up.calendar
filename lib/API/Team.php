@@ -92,11 +92,12 @@ class Team
     public static function createTeam($arguments): void
     {
         global $USER;
-        $adminId = (int) $USER->getId();
+        $adminId = (int)$USER->getId();
+
         $result = TeamTable::createObject()
             ->setTitle($arguments['title'])
             ->setDescription($arguments['description'] ?: '')
-            ->setIdAdmin($arguments['adminId'])
+            ->setIdAdmin($adminId)
             ->setIsPrivate(!$arguments['isPrivate'])
             ->save();
 
