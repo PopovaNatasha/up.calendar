@@ -24,6 +24,7 @@ function __CalendarMigrator(int $nextVersion, callable $callback)
     }
 }
 
+
 __CalendarMigrator(2, function ($updater, $DB) {
     if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_team')) {
         $DB->query("ALTER TABLE up_calendar_team ADD INVITE_LINK varchar(255)");
@@ -89,12 +90,11 @@ __CalendarMigrator(11, function ($updater, $DB) {
 	}
 });
 
-__projectorMigrate(12, function ($updater, $DB) {
+__CalendarMigrator(12, function ($updater, $DB) {
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_changed_event')) {
 		$DB->query("ALTER TABLE up_calendar_changed_event ADD DELETED BINARY DEFAULT 0");
 	}
 	if ($updater->CanUpdateDatabase() && $updater->TableExists('up_calendar_regular_event')) {
 		$DB->query("ALTER TABLE up_calendar_regular_event DROP ID_LAST_CHANGED_EVENT");
-		$DB->query("ALTER TABLE up_calendar_regular_event DROP ID_ORIGINAL_EVENT");
 	}
 });
