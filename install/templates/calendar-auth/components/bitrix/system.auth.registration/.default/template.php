@@ -101,9 +101,9 @@ if ($arResult["SHOW_SMS_FIELD"] == true) {
                     <!--		<tr>-->
 
                     <div class="field">
-                        <label class="label"><?= GetMessage("AUTH_NAME") ?></label>
+                        <label class="label">*<?= GetMessage("AUTH_NAME") ?></label>
                         <div class="control">
-                            <input class="input bx-auth-input" type="text" name="USER_NAME"
+                            <input required maxlength="50" class="input bx-auth-input" type="text" name="USER_NAME"
                                    value="<?= $arResult["USER_NAME"] ?>"/>
                         </div>
                     </div>
@@ -118,9 +118,9 @@ if ($arResult["SHOW_SMS_FIELD"] == true) {
                     <? //=$arResult["USER_LAST_NAME"]?><!--" class="bx-auth-input" /></td>-->
                     <!--		</tr>-->
                     <div class="field">
-                        <label class="label"><?= GetMessage("AUTH_LAST_NAME") ?></label>
+                        <label class="label">*<?= GetMessage("AUTH_LAST_NAME") ?></label>
                         <div class="control">
-                            <input class="input bx-auth-input" type="text" name="USER_LAST_NAME"
+                            <input required maxlength="50" class="input bx-auth-input" type="text" name="USER_LAST_NAME"
                                    value="<?= $arResult["USER_LAST_NAME"] ?>"/>
                         </div>
                     </div>
@@ -135,7 +135,7 @@ if ($arResult["SHOW_SMS_FIELD"] == true) {
                         <label class="label"><span class="starrequired">*</span><?= GetMessage("AUTH_LOGIN_MIN") ?>
                         </label>
                         <div class="control">
-                            <input class="input bx-auth-input" type="text" name="USER_LOGIN"
+                            <input required class="input bx-auth-input" type="text" name="USER_LOGIN"
                                    value="<?= $arResult["USER_LOGIN"] ?>"/>
                         </div>
                     </div>
@@ -149,7 +149,7 @@ if ($arResult["SHOW_SMS_FIELD"] == true) {
                         <label class="label"><span class="starrequired">*</span><?= GetMessage("AUTH_PASSWORD_REQ") ?>
                         </label>
                         <div class="control">
-                            <input class="input bx-auth-input" type="password" name="USER_PASSWORD"
+                            <input required class="input bx-auth-input" type="password" name="USER_PASSWORD"
                                    value="<?= $arResult["USER_PASSWORD"] ?>" autocomplete="off"/>
                         </div>
                     </div>
@@ -179,7 +179,7 @@ if ($arResult["SHOW_SMS_FIELD"] == true) {
                         <label class="label"><span class="starrequired">*</span><?= GetMessage("AUTH_CONFIRM") ?>
                         </label>
                         <div class="control">
-                            <input class="input bx-auth-input" type="password" name="USER_CONFIRM_PASSWORD"
+                            <input required class="input bx-auth-input" type="password" name="USER_CONFIRM_PASSWORD"
                                    value="<?= $arResult["USER_CONFIRM_PASSWORD"] ?>" autocomplete="off"/>
                         </div>
                     </div>
@@ -193,7 +193,7 @@ if ($arResult["SHOW_SMS_FIELD"] == true) {
                             <label class="label"><? if ($arResult["EMAIL_REQUIRED"]): ?><span
                                     class="starrequired">*</span><? endif ?><?= GetMessage("AUTH_EMAIL") ?></label>
                             <div class="control">
-                                <input class="input bx-auth-input" type="text" name="USER_EMAIL"
+                                <input required class="input bx-auth-input" type="text" name="USER_EMAIL"
                                        value="<?= $arResult["USER_EMAIL"] ?>"/>
                             </div>
                         </div>
