@@ -121,7 +121,6 @@ export class Schedule {
 
     addRegularEvents() {
         let eventsList = this.regularEventsList;
-        let calendar = this.calendar;
 		let changedEvents = this.changedEvents;
         eventsList.forEach(event => {
 			let changedEventsById = changedEvents.filter(element => element['ID_EVENT'] === event['ID']);
@@ -130,36 +129,36 @@ export class Schedule {
             let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
             let dayStep = Number(event['DAY_STEP']);
 			let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-            while (moment(dayTimeStart).isBefore(repeatUntil)) {
-				let regularEvent = event;
-				regularEvent['START'] = dayTimeStart;
-				regularEvent['END'] = dayTimeEnd;
-				let skipEvent = false;
+            while (moment(dayTimeStart).isBefore(repeatUntil))
+			{
+				// let regularEvent = event;
+				// regularEvent['START'] = dayTimeStart;
+				// regularEvent['END'] = dayTimeEnd;
 
 				if (changedEventsById.length > 0)
 				{
 					changedEventsById.forEach(changedEvent => {
 						let dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
-						if (changedEvent['DELETED'])
+						if (moment(dayStartChanged).isSame(dayStart) && changedEvent['DELETED'])
 						{
 							return;
 						}
-						if (moment(dayStartChanged).isSame(dayStart))
+						if (moment(dayStartChanged).isSame(dayStart) && !changedEvent['DELETED'])
 						{
-							regularEvent = changedEvent;
-							regularEvent['START'] = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-							regularEvent['END'] = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
-							this.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEvent['START'], changedEvent['END'], dayStep);
+							let changedEventStart = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+							let changedEventEnd = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+							console.log(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep)
+							this.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep);
 						}
 						else
 						{
-							this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
+							this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
 						}
 					});
 				}
 				else
 				{
-					this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
+					this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
 				}
                 dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
                 dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');

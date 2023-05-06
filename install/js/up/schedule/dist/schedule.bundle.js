@@ -123,7 +123,6 @@ this.BX.Up = this.BX.Up || {};
         value: function addRegularEvents() {
           var _this2 = this;
           var eventsList = this.regularEventsList;
-          var calendar = this.calendar;
           var changedEvents = this.changedEvents;
           eventsList.forEach(function (event) {
             var changedEventsById = changedEvents.filter(function (element) {
@@ -134,34 +133,32 @@ this.BX.Up = this.BX.Up || {};
             var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
             var dayStep = Number(event['DAY_STEP']);
             var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-            var _loop = function _loop() {
-              var regularEvent = event;
-              regularEvent['START'] = dayTimeStart;
-              regularEvent['END'] = dayTimeEnd;
+            while (moment(dayTimeStart).isBefore(repeatUntil)) {
+              // let regularEvent = event;
+              // regularEvent['START'] = dayTimeStart;
+              // regularEvent['END'] = dayTimeEnd;
+
               if (changedEventsById.length > 0) {
                 changedEventsById.forEach(function (changedEvent) {
                   var dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
-                  if (changedEvent['DELETED']) {
+                  if (moment(dayStartChanged).isSame(dayStart) && changedEvent['DELETED']) {
                     return;
                   }
-                  if (moment(dayStartChanged).isSame(dayStart)) {
-                    regularEvent = changedEvent;
-                    regularEvent['START'] = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-                    regularEvent['END'] = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
-                    _this2.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEvent['START'], changedEvent['END'], dayStep);
+                  if (moment(dayStartChanged).isSame(dayStart) && !changedEvent['DELETED']) {
+                    var changedEventStart = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+                    var changedEventEnd = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+                    console.log(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep);
+                    _this2.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep);
                   } else {
-                    _this2.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
+                    _this2.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
                   }
                 });
               } else {
-                _this2.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
+                _this2.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
               }
               dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
               dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
               dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-            };
-            while (moment(dayTimeStart).isBefore(repeatUntil)) {
-              _loop();
             }
           });
         }
@@ -231,7 +228,7 @@ this.BX.Up = this.BX.Up || {};
             var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
             var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
             var dayStep = Number(event['DAY_STEP']);
-            var _loop2 = function _loop2() {
+            var _loop = function _loop() {
               var nowDay = moment().format('YYYY-MM-DD');
               var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
               if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart)) {
@@ -262,7 +259,7 @@ this.BX.Up = this.BX.Up || {};
               dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
             };
             while (moment(dayTimeStart).isBefore(repeatUntil)) {
-              _loop2();
+              _loop();
             }
           });
           storyEventList.forEach(function (event) {

@@ -39,7 +39,7 @@
 
             <div class="user-info">
                 <div class="full-name"><?= htmlspecialchars($USER->GetFullName()) ?></div>
-                <a class="button is-danger" href="/?logout=yes&">Выйти</a>
+                <a class="button is-danger" href="/?logout=yes&<?= bitrix_sessid_get() ?>">Выйти</a>
             </div>
         </nav>
     </div>
