@@ -25,14 +25,10 @@ class CalendarInviteComponent extends CBitrixComponent
         $team['link'] = $request->get('link');
         $participants = Team::getParticipantsTeam($team['ID']);
 
-        $check = 0;
         foreach ($participants as $participant) {
             if ($participant['ID_USER'] === $USER->getID()) {
-                $check = 1;
+                LocalRedirect('/group/' . $team['ID'] . '/');
             }
-        }
-        if ($check === 1) {
-            LocalRedirect('/group/' . $team['ID'] . '/');
         }
 
         $this->arResult = $team;
