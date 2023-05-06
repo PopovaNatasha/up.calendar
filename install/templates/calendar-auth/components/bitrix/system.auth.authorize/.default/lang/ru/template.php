@@ -1,4 +1,9 @@
 <?
+$MESS["AUTH_MODULE_NAME"] = "Хобби Календарь";
+$MESS["AUTH_MODULE_MIN_DESC"] = "Ведение расписаний в&nbspодном&nbspместе";
+$MESS["AUTH_MODULE_FULL_DESC"] = "Следите за расписанием любых занятий и встреч. Всегда актуальная информация и новости от организаторов";
+$MESS["AUTH_MODULE_CONNECT_TO_US"] = "Присоединяйтесь к нам!";
+$MESS["AUTH_MODULE_AUTH_DESC"] = "Авторизуйтесь для начала работы с календарем";
 $MESS["AUTH_PLEASE_AUTH"] = "Пожалуйста, авторизуйтесь:";
 $MESS["AUTH_LOGIN"] = "Логин:";
 $MESS["AUTH_PASSWORD"] = "Пароль:";

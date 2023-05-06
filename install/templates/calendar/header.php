@@ -34,7 +34,7 @@
         <nav class="navbar has-shadow">
             <a class="navbar-item has-text-weight-semibold is-size-4 logo" href="/">
                 <img class="" src="https://em-content.zobj.net/source/skype/289/calendar_1f4c5.png">
-                <div class="model-name"> Hobby Calendar plan</div>
+                <div class="model-name"> Hobby plan</div>
             </a>
 
             <div class="user-info">

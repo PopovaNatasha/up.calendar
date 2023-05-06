@@ -7,7 +7,7 @@ use Up\Calendar\API\Team,
 
 class AgentStory
 {
-    public static function userHistory(): void
+    public static function userHistory()
     {
         \Bitrix\Main\Loader::includeModule('up.calendar');
         $users = \Bitrix\Main\UserTable::getList([
@@ -71,5 +71,6 @@ class AgentStory
             }
             unset($teamTitle);
         }
+        return 'Up\Calendar\Agents\AgentStory::userHistory();';
     }
 }

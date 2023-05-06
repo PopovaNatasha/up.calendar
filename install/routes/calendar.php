@@ -4,11 +4,11 @@ use Bitrix\Main\Routing\Controllers\PublicPageController,
     Bitrix\Main\Routing\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes) {
-    $routes->get('/', new PublicPageController('/local/modules/up.calendar/views/calendar-main.php'))->where('query', '/^[a-zа-яё\d]{1}[a-zа-яё\d\s]*[a-zа-яё\d]{1}$/i');
+    $routes->get('/', new PublicPageController('/local/modules/up.calendar/views/calendar-main.php'));
     $routes->get('/', new PublicPageController('/local/modules/up.calendar/views/calendar-main.php'));
     $routes->post('/', new PublicPageController('/local/modules/up.calendar/views/calendar-main.php'));
 
-    $routes->get('/groups/my/', new PublicPageController('/local/modules/up.calendar/views/calendar-my-teams.php'))->where('query', '/^[a-zа-яё\d]{1}[a-zа-яё\d\s]*[a-zа-яё\d]{1}$/i');
+    $routes->get('/groups/my/', new PublicPageController('/local/modules/up.calendar/views/calendar-my-teams.php'));
     $routes->post('/groups/my/', new PublicPageController('/local/modules/up.calendar/views/calendar-my-teams.php'));
 
     $routes->get('/groups/', new PublicPageController('/local/modules/up.calendar/views/calendar-teams.php'));

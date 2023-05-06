@@ -3,12 +3,12 @@ import {Type} from 'main.core';
 export class Schedule {
     constructor(options = {}) {
         this.idTeam = options.idTeam;
-        console.log(this.idTeam);
         this.rootNodeId = options.rootNodeId;
         this.rootNode = document.getElementById(this.rootNodeId);
         this.teams = options.teams;
         this.isUser = options.isUser;
 
+		this.event = null;
         this.singleEventsList = [];
         this.regularEventsList = [];
         this.userStoryEvents = [];
@@ -121,7 +121,6 @@ export class Schedule {
 
     addRegularEvents() {
         let eventsList = this.regularEventsList;
-        let calendar = this.calendar;
 		let changedEvents = this.changedEvents;
         eventsList.forEach(event => {
 			let changedEventsById = changedEvents.filter(element => element['ID_EVENT'] === event['ID']);
@@ -130,40 +129,60 @@ export class Schedule {
             let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
             let dayStep = Number(event['DAY_STEP']);
 			let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-            while (moment(dayTimeStart).isBefore(repeatUntil)) {
-				let regularEvent = event;
-				regularEvent['START'] = dayTimeStart;
-				regularEvent['END'] = dayTimeEnd;
+            while (moment(dayTimeStart).isBefore(repeatUntil))
+			{
+				// let regularEvent = event;
+				// regularEvent['START'] = dayTimeStart;
+				// regularEvent['END'] = dayTimeEnd;
 
 				if (changedEventsById.length > 0)
 				{
 					changedEventsById.forEach(changedEvent => {
 						let dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
-						if (moment(dayStartChanged).isSame(dayStart))
+						if (moment(dayStartChanged).isSame(dayStart) && changedEvent['DELETED'])
 						{
-							regularEvent = changedEvent;
-							regularEvent['START'] = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-							regularEvent['END'] = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+							return;
+						}
+						if (moment(dayStartChanged).isSame(dayStart) && !changedEvent['DELETED'])
+						{
+							let changedEventStart = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+							let changedEventEnd = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+							console.log(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep)
+							this.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep);
+						}
+						else
+						{
+							this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
 						}
 					});
 				}
-                calendar.createEvents([
-                    {
-                        id: event['ID'],
-                        calendarId: regularEvent['ID_TEAM'],
-                        title: regularEvent['TITLE'],
-                        start: regularEvent['START'],
-                        end: regularEvent['END'],
-                        category: 'time',
-                        recurrenceRule: event['DAY_STEP'],
-                    },
-                ]);
+				else
+				{
+					this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
+				}
                 dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
                 dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
 				dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
             }
         });
     }
+
+	createEvent(id, calendarId, title, start, end, recurrenceRule)
+	{
+		let calendar = this.calendar;
+
+		calendar.createEvents([
+			{
+				id: id,
+				calendarId: calendarId,
+				title: title,
+				start: start,
+				end: end,
+				category: 'time',
+				recurrenceRule: recurrenceRule,
+			},
+		]);
+	}
 
     addEventsForUser() {
         let eventsList = this.singleEventsList;
@@ -347,6 +366,7 @@ export class Schedule {
 
     AddOpenEventDetailPopup() {
         this.calendar.on('clickEvent', ({event}) => {
+			this.event = event;
             let popupForm, eventElem, coordinates;
             popupForm = document.getElementById('event-detail-popup');
             eventElem = window.event.srcElement;
@@ -371,7 +391,8 @@ export class Schedule {
             popupForm.style.display = 'block';
 			if (!this.isUser)
 			{
-				this.changeEventForm(event);
+				this.changeEventForm(this.event);
+				this.setViewRule(event);
 			}
         });
     }
@@ -382,11 +403,8 @@ export class Schedule {
 
         EventDatePickers[1].clear();
         EventDatePickers[1].value(event.start.toDate());
-        console.log(document.getElementById('date').value)
         let endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
         endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
-        this.setViewRule(event);
-		console.log(event);
     }
 
     changeEvent() {
@@ -397,6 +415,8 @@ export class Schedule {
         }
         let dateFrom = document.getElementsByClassName('datetimepicker-dummy-input')[2].value;
         let dateTo = document.getElementsByClassName('datetimepicker-dummy-input')[3].value;
+		console.log(this.event);
+		let dateFromOrigin = moment(this.event.start.toDate()).format('DD.MM.YYYY HH:mm');
 
         return new Promise((resolve, reject) => {
             BX.ajax.runAction(
@@ -410,20 +430,21 @@ export class Schedule {
                             dateTo: dateTo,
                             dayStep: dayStep,
                             idTeam: this.idTeam,
-                            isAll: document.getElementById('checkboxIsAll').checked
+                            isAll: document.getElementById('checkboxIsAll').checked,
+							dateFromOrigin: dateFromOrigin
                         }
                     },
                 })
                 .then((response) => {
+					console.log(response.data)
 					if (response.data)
 					{
-						console.log(response.data);
 						this.calendar.clear();
 						this.reload();
 					}
 					else
 					{
-						alert('Не удалось изменить соыбытие');
+						alert('Не удалось изменить событие');
 					}
                 })
                 .catch((error) => {
@@ -433,17 +454,66 @@ export class Schedule {
         });
     }
 
+	deleteEvent()
+	{
+		let event = this.event;
+
+		return new Promise((resolve, reject) => {
+			BX.ajax.runAction(
+					'up:calendar.calendar.deleteEvent',
+					{
+						data: {
+							event: {
+								idEvent: event.id,
+								titleEvent: event.title,
+								dateFrom: moment(event.start.toDate()).format('DD.MM.YYYY HH:mm'),
+								dateTo: moment(event.end.toDate()).format('DD.MM.YYYY HH:mm'),
+								dayStep: event.recurrenceRule,
+								idTeam: this.idTeam,
+								isAll: document.getElementById('checkboxDeleteIsAll').checked
+							}
+						},
+					})
+				.then((response) => {
+					console.log(response);
+					if (response.data)
+					{
+						this.calendar.clear();
+						this.reload();
+					}
+					else
+					{
+						alert('Не удалось удалить событие');
+					}
+				})
+				.catch((error) => {
+					reject(error);
+				})
+			;
+		});
+	}
+
+	displayElementById(idElement, display)
+	{
+		let element = document.getElementById(idElement);
+		element.style.display = display;
+	}
+
     setViewRule(event) {
-        let checkbox, checkboxLabel, blockRepeat;
-        checkboxLabel = document.getElementById('checkboxIsAllLabel');
-        checkbox = document.getElementById('checkboxIsAll');
+        let checkboxChange, checkboxDelete, blockRepeat;
+        // checkboxLabel = document.getElementById('checkboxIsAllLabel');
+        checkboxChange = document.getElementById('checkboxIsAll');
+		checkboxDelete = document.getElementById('checkboxDeleteIsAll');
         blockRepeat = document.getElementById('changeRepeat');
-        checkbox.checked = false;
+		checkboxChange.checked = false;
+		checkboxDelete.checked = false;
         blockRepeat.style.display = 'none';
 
         if (event.recurrenceRule) {
-            checkboxLabel.style.display = 'block';
-            checkboxLabel.addEventListener('change', e => {
+            // checkboxLabel.style.display = 'block';
+			this.displayElementById('checkboxIsAllLabel', 'block');
+			this.displayElementById('checkboxDeleteIsAllLabel', 'block');
+			checkboxChange.addEventListener('change', e => {
                 if (e.target.checked) {
                     blockRepeat.style.display = 'block';
                 } else {
@@ -464,7 +534,8 @@ export class Schedule {
                 document.getElementById('changeSelectCount').value = '1';
             }
         } else {
-            checkboxLabel.style.display = 'none';
+			this.displayElementById('checkboxIsAllLabel', 'none');
+			this.displayElementById('checkboxDeleteIsAllLabel', 'none');
             blockRepeat.style.display = 'none';
 			document.getElementById('changeSelectCount').value = '';
         }

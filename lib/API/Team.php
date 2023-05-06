@@ -192,12 +192,13 @@ class Team
         if ($_FILES['img']['name'] !== '') {
             $idImage = self::saveTeamImage();
             $team->setPersonalPhoto($idImage);
+            if(!$idImage)
+            {
+                throw new \Exception('Invalid type file');
+            }
         }
 
-        if(!$idImage)
-        {
-            throw new \Exception('Invalid type file');
-        }
+
 
         $teamTitle = trim($arguments['title']);
         if ($teamTitle === '') {

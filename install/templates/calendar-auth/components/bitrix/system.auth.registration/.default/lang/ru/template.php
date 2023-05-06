@@ -1,5 +1,6 @@
 <?
 $MESS["AUTH_REGISTER"] = "Регистрация";
+$MESS["AUTH_REGISTER_DESC"] = "Зарегистрируйтесь для начала работы с календарем";
 $MESS["AUTH_NAME"] = "Имя:";
 $MESS["AUTH_LAST_NAME"] = "Фамилия:";
 $MESS["AUTH_LOGIN_MIN"] = "Логин (мин. 3 символа):";

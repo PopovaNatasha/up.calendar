@@ -69,7 +69,7 @@ class up_calendar extends CModule
         );
         CopyDirFiles(
             $_SERVER['DOCUMENT_ROOT'] . '/local/modules/up.calendar/install/js',
-            $_SERVER['DOCUMENT_ROOT'] . '/local/routes/',
+            $_SERVER['DOCUMENT_ROOT'] . '/local/js/',
             true,
             true
         );

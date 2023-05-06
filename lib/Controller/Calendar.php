@@ -12,8 +12,13 @@ class Calendar extends Controller
         return Event::getEventsList($idTeam);
     }
 
-    public function changeEventAction($event): bool
+    public function changeEventAction($event)
     {
         return Event::changeEvent($event);
     }
+
+	public function deleteEventAction($event)
+	{
+		return Event::deleteEvent($event);
+	}
 }

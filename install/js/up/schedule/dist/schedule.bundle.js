@@ -8,11 +8,11 @@ this.BX.Up = this.BX.Up || {};
         var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
         babelHelpers.classCallCheck(this, Schedule);
         this.idTeam = options.idTeam;
-        console.log(this.idTeam);
         this.rootNodeId = options.rootNodeId;
         this.rootNode = document.getElementById(this.rootNodeId);
         this.teams = options.teams;
         this.isUser = options.isUser;
+        this.event = null;
         this.singleEventsList = [];
         this.regularEventsList = [];
         this.userStoryEvents = [];
@@ -121,8 +121,8 @@ this.BX.Up = this.BX.Up || {};
       }, {
         key: "addRegularEvents",
         value: function addRegularEvents() {
+          var _this2 = this;
           var eventsList = this.regularEventsList;
-          var calendar = this.calendar;
           var changedEvents = this.changedEvents;
           eventsList.forEach(function (event) {
             var changedEventsById = changedEvents.filter(function (element) {
@@ -133,37 +133,48 @@ this.BX.Up = this.BX.Up || {};
             var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
             var dayStep = Number(event['DAY_STEP']);
             var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-            var _loop = function _loop() {
-              var regularEvent = event;
-              regularEvent['START'] = dayTimeStart;
-              regularEvent['END'] = dayTimeEnd;
+            while (moment(dayTimeStart).isBefore(repeatUntil)) {
+              // let regularEvent = event;
+              // regularEvent['START'] = dayTimeStart;
+              // regularEvent['END'] = dayTimeEnd;
+
               if (changedEventsById.length > 0) {
                 changedEventsById.forEach(function (changedEvent) {
                   var dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
-                  if (moment(dayStartChanged).isSame(dayStart)) {
-                    regularEvent = changedEvent;
-                    regularEvent['START'] = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-                    regularEvent['END'] = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+                  if (moment(dayStartChanged).isSame(dayStart) && changedEvent['DELETED']) {
+                    return;
+                  }
+                  if (moment(dayStartChanged).isSame(dayStart) && !changedEvent['DELETED']) {
+                    var changedEventStart = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
+                    var changedEventEnd = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+                    console.log(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep);
+                    _this2.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep);
+                  } else {
+                    _this2.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
                   }
                 });
+              } else {
+                _this2.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
               }
-              calendar.createEvents([{
-                id: event['ID'],
-                calendarId: regularEvent['ID_TEAM'],
-                title: regularEvent['TITLE'],
-                start: regularEvent['START'],
-                end: regularEvent['END'],
-                category: 'time',
-                recurrenceRule: event['DAY_STEP']
-              }]);
               dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
               dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
               dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-            };
-            while (moment(dayTimeStart).isBefore(repeatUntil)) {
-              _loop();
             }
           });
+        }
+      }, {
+        key: "createEvent",
+        value: function createEvent(id, calendarId, title, start, end, recurrenceRule) {
+          var calendar = this.calendar;
+          calendar.createEvents([{
+            id: id,
+            calendarId: calendarId,
+            title: title,
+            start: start,
+            end: end,
+            category: 'time',
+            recurrenceRule: recurrenceRule
+          }]);
         }
       }, {
         key: "addEventsForUser",
@@ -217,7 +228,7 @@ this.BX.Up = this.BX.Up || {};
             var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
             var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
             var dayStep = Number(event['DAY_STEP']);
-            var _loop2 = function _loop2() {
+            var _loop = function _loop() {
               var nowDay = moment().format('YYYY-MM-DD');
               var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
               if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart)) {
@@ -248,7 +259,7 @@ this.BX.Up = this.BX.Up || {};
               dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
             };
             while (moment(dayTimeStart).isBefore(repeatUntil)) {
-              _loop2();
+              _loop();
             }
           });
           storyEventList.forEach(function (event) {
@@ -347,9 +358,10 @@ this.BX.Up = this.BX.Up || {};
       }, {
         key: "AddOpenEventDetailPopup",
         value: function AddOpenEventDetailPopup() {
-          var _this2 = this;
+          var _this3 = this;
           this.calendar.on('clickEvent', function (_ref) {
             var event = _ref.event;
+            _this3.event = event;
             var popupForm, eventElem, coordinates;
             popupForm = document.getElementById('event-detail-popup');
             eventElem = window.event.srcElement;
@@ -362,8 +374,8 @@ this.BX.Up = this.BX.Up || {};
             end = moment(event.end.toDate()).format('HH:mm');
             document.getElementById('popupDetailDate').innerHTML = start + ' - ' + end;
             document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? 'каждые ' + event.recurrenceRule + ' дней' : 'не повторяется';
-            if (_this2.isUser) {
-              calendarTeam = _this2.geCalendarById(event.calendarId);
+            if (_this3.isUser) {
+              calendarTeam = _this3.geCalendarById(event.calendarId);
               document.getElementById('popupDetailTeam').innerHTML = calendarTeam.name;
               document.getElementById('popupDetailDot').style.backgroundColor = calendarTeam.color;
               document.getElementById('popupTopLine').style.backgroundColor = calendarTeam.color;
@@ -371,8 +383,9 @@ this.BX.Up = this.BX.Up || {};
               document.getElementById('popupTopLine').style.backgroundColor = '#a1b56c';
             }
             popupForm.style.display = 'block';
-            if (!_this2.isUser) {
-              _this2.changeEventForm(event);
+            if (!_this3.isUser) {
+              _this3.changeEventForm(_this3.event);
+              _this3.setViewRule(event);
             }
           });
         }
@@ -383,16 +396,13 @@ this.BX.Up = this.BX.Up || {};
           document.getElementById('popupChangeTitle').value = event.title;
           EventDatePickers[1].clear();
           EventDatePickers[1].value(event.start.toDate());
-          console.log(document.getElementById('date').value);
           var endDate = document.getElementsByClassName('datetimepicker-dummy-input')[3];
           endDate.value = moment(event.end.toDate()).format('DD.MM.YYYY HH:mm');
-          this.setViewRule(event);
-          console.log(event);
         }
       }, {
         key: "changeEvent",
         value: function changeEvent() {
-          var _this3 = this;
+          var _this4 = this;
           var dayStep = document.getElementById('changeSelectCount').value;
           var selectRepeat = document.getElementById('changeSelectRepeat').value;
           if (selectRepeat === 'weekly') {
@@ -400,6 +410,8 @@ this.BX.Up = this.BX.Up || {};
           }
           var dateFrom = document.getElementsByClassName('datetimepicker-dummy-input')[2].value;
           var dateTo = document.getElementsByClassName('datetimepicker-dummy-input')[3].value;
+          console.log(this.event);
+          var dateFromOrigin = moment(this.event.start.toDate()).format('DD.MM.YYYY HH:mm');
           return new Promise(function (resolve, reject) {
             BX.ajax.runAction('up:calendar.calendar.changeEvent', {
               data: {
@@ -409,17 +421,18 @@ this.BX.Up = this.BX.Up || {};
                   dateFrom: dateFrom,
                   dateTo: dateTo,
                   dayStep: dayStep,
-                  idTeam: _this3.idTeam,
-                  isAll: document.getElementById('checkboxIsAll').checked
+                  idTeam: _this4.idTeam,
+                  isAll: document.getElementById('checkboxIsAll').checked,
+                  dateFromOrigin: dateFromOrigin
                 }
               }
             }).then(function (response) {
+              console.log(response.data);
               if (response.data) {
-                console.log(response.data);
-                _this3.calendar.clear();
-                _this3.reload();
+                _this4.calendar.clear();
+                _this4.reload();
               } else {
-                alert('Не удалось изменить соыбытие');
+                alert('Не удалось изменить событие');
               }
             })["catch"](function (error) {
               reject(error);
@@ -427,17 +440,58 @@ this.BX.Up = this.BX.Up || {};
           });
         }
       }, {
+        key: "deleteEvent",
+        value: function deleteEvent() {
+          var _this5 = this;
+          var event = this.event;
+          return new Promise(function (resolve, reject) {
+            BX.ajax.runAction('up:calendar.calendar.deleteEvent', {
+              data: {
+                event: {
+                  idEvent: event.id,
+                  titleEvent: event.title,
+                  dateFrom: moment(event.start.toDate()).format('DD.MM.YYYY HH:mm'),
+                  dateTo: moment(event.end.toDate()).format('DD.MM.YYYY HH:mm'),
+                  dayStep: event.recurrenceRule,
+                  idTeam: _this5.idTeam,
+                  isAll: document.getElementById('checkboxDeleteIsAll').checked
+                }
+              }
+            }).then(function (response) {
+              console.log(response);
+              if (response.data) {
+                _this5.calendar.clear();
+                _this5.reload();
+              } else {
+                alert('Не удалось удалить событие');
+              }
+            })["catch"](function (error) {
+              reject(error);
+            });
+          });
+        }
+      }, {
+        key: "displayElementById",
+        value: function displayElementById(idElement, display) {
+          var element = document.getElementById(idElement);
+          element.style.display = display;
+        }
+      }, {
         key: "setViewRule",
         value: function setViewRule(event) {
-          var checkbox, checkboxLabel, blockRepeat;
-          checkboxLabel = document.getElementById('checkboxIsAllLabel');
-          checkbox = document.getElementById('checkboxIsAll');
+          var checkboxChange, checkboxDelete, blockRepeat;
+          // checkboxLabel = document.getElementById('checkboxIsAllLabel');
+          checkboxChange = document.getElementById('checkboxIsAll');
+          checkboxDelete = document.getElementById('checkboxDeleteIsAll');
           blockRepeat = document.getElementById('changeRepeat');
-          checkbox.checked = false;
+          checkboxChange.checked = false;
+          checkboxDelete.checked = false;
           blockRepeat.style.display = 'none';
           if (event.recurrenceRule) {
-            checkboxLabel.style.display = 'block';
-            checkboxLabel.addEventListener('change', function (e) {
+            // checkboxLabel.style.display = 'block';
+            this.displayElementById('checkboxIsAllLabel', 'block');
+            this.displayElementById('checkboxDeleteIsAllLabel', 'block');
+            checkboxChange.addEventListener('change', function (e) {
               if (e.target.checked) {
                 blockRepeat.style.display = 'block';
               } else {
@@ -458,7 +512,8 @@ this.BX.Up = this.BX.Up || {};
               document.getElementById('changeSelectCount').value = '1';
             }
           } else {
-            checkboxLabel.style.display = 'none';
+            this.displayElementById('checkboxIsAllLabel', 'none');
+            this.displayElementById('checkboxDeleteIsAllLabel', 'none');
             blockRepeat.style.display = 'none';
             document.getElementById('changeSelectCount').value = '';
           }

@@ -90,7 +90,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                     </div>
                     <div class="field">
                         <label>Повторяемость</label>
-                        <div class="columns">
+                        <div class="columns create-event">
                             <div class="column control">
                                 <div class="select is-primary">
                                     <select id="selectRepeat" name="rule_repeat" onchange="displayUsgsChange('create')">
@@ -100,10 +100,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                     </select>
                                 </div>
                             </div>
-                            <div class="column" id="create-every">
+                            <div class="column is-2" id="create-every">
                                 <span class="rule-daily">каждый</span>
                             </div>
-                            <div class="column control" id="create-day-count">
+                            <div class="column control is-2" id="create-day-count">
                                 <div class="select is-primary">
                                     <select name="rule_repeat_count">
                                         <option value="1">1</option>
@@ -220,7 +220,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <input type="hidden" name="action" value="out"/>
         <div class="modal" id="modal-js-leave-team">
             <div class="modal-background"></div>
-            <div class="modal-card">
+            <div class="modal-card leave-team">
                 <header class="modal-card-head" style="border: none">
                     <p class="modal-card-title">Подтверждение</p>
                     <button class="delete" type="reset" aria-label="close"></button>
@@ -265,7 +265,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <div class="toastui-calendar-vertical-line"></div>
                 <button type="button" class="toastui-calendar-delete-button">
                     <span class="toastui-calendar-icon toastui-calendar-ic-delete"></span>
-                    <span class="toastui-calendar-content">Удалить</span>
+                    <span class="toastui-calendar-content js-modal-trigger"
+						  data-target="modal-js-deleteEvent">Удалить</span>
                     </span>
                 </button>
             </div>
@@ -302,12 +303,12 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                 <div class="field">
                     <label class="checkbox" id="checkboxIsAllLabel">
                         <input name="isAll" type="checkbox" id="checkboxIsAll">
-                        Изменить все последующие
+                        Изменить все
                     </label>
                 </div>
                 <div class="field" id="changeRepeat">
                     <label>Повторяемость</label>
-                    <div class="columns">
+                    <div class="columns change-event">
                         <div class="column control">
                             <div class="select is-primary">
                                 <select id="changeSelectRepeat" name="rule_repeat"
@@ -317,10 +318,10 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                                 </select>
                             </div>
                         </div>
-                        <div class="column" id="change-every">
+                        <div class="column is-2" id="change-every">
                             <span class="rule-daily">каждый</span>
                         </div>
-                        <div class="column control" id="change-day-count">
+                        <div class="column control is-2" id="change-day-count">
                             <div class="select is-primary">
                                 <select name="rule_repeat_count" id="changeSelectCount">
                                     <option value="1">1</option>
@@ -344,6 +345,30 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </footer>
         </div>
     </div>
+
+	<div class="modal" id="modal-js-deleteEvent">
+		<div class="modal-background"></div>
+		<div class="modal-card delete-event">
+			<header class="modal-card-head" style="border: none">
+				<p class="modal-card-title">Удалить событие</p>
+				<button class="delete" type="reset" aria-label="close"></button>
+			</header>
+			<section class="modal-card-body" style="background-color: #f5f5f5; ">
+				<p>Вы уверены, что хотите удалить это событие?</p>
+				<div class="field">
+					<label class="checkbox" id="checkboxDeleteIsAllLabel">
+						<input name="isAll" type="checkbox" id="checkboxDeleteIsAll">
+						Удалить все
+					</label>
+				</div>
+			</section>
+			<footer class="modal-card-foot" style="border: none">
+				<button class="button is-danger" onclick="CalendarEventsList.deleteEvent()">Удалить</button>
+				<button class="button" type="reset">Отмена</button>
+			</footer>
+		</div>
+	</div>
+
 </section>
 
 <script>
@@ -372,97 +397,3 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         });
     });
 </script>
-
-<!--<script>-->
-<!--	bulmaCalendar.attach('#date', {-->
-<!--		dateFormat: "DD-MMM-YYYY",-->
-<!--		type: 'date',-->
-<!--		showClearButton: false-->
-<!--	});-->
-<!--	document.querySelector('#date').bulmaCalendar.on('select', date => {console.log(date)});-->
-<!---->
-<!--</script>-->
-
-<!--<script>-->
-<!---->
-<!--	const MONTH_STRING_EN = [-->
-<!--		'Jan',-->
-<!--		'Feb',-->
-<!--		'Mar',-->
-<!--		'Apr',-->
-<!--		'May',-->
-<!--		'Jun',-->
-<!--		'Jul',-->
-<!--		'Aug',-->
-<!--		'Sep',-->
-<!--		'Oct',-->
-<!--		'Nov',-->
-<!--		'Dec'-->
-<!--	]-->
-<!--	var dateInput = document.getElementsByClassName('date-input')[0]-->
-<!---->
-<!--	renderDates();-->
-<!--	dateInput.addEventListener('change', console.log('ggg'))-->
-<!---->
-<!--	function renderDates(){-->
-<!--		var today-->
-<!--		if(dateInput.value)-->
-<!--			today = new Date(dateInput.value)-->
-<!--		else-->
-<!--			today = new Date()-->
-<!---->
-<!--		var year = today.getFullYear();-->
-<!--		var month = today.getMonth();-->
-<!--		var daysOfMonth = getDaysOfMonth(today.getFullYear(), today.getMonth())-->
-<!---->
-<!--		var daysDom = Array.apply(null, {length: daysOfMonth}).map(function(_, i){-->
-<!--			var class_string = '';-->
-<!--			if (i + 1 === today.getDate())-->
-<!--				class_string = 'date-item current';-->
-<!--			else-->
-<!--				class_string = 'date-item'-->
-<!--			return "<span class='" + class_string + "'>" + (i+1) + "</span>"-->
-<!--		}).join('')-->
-<!---->
-<!---->
-<!---->
-<!--		document.getElementsByClassName('dates')[0].innerHTML = daysDom-->
-<!---->
-<!--		document.getElementsByClassName('year-month')[0].innerHTML = MONTH_STRING_EN[today.getMonth()] + " " + today.getFullYear();-->
-<!---->
-<!--		document.getElementsByClassName('dates')[0].addEventListener('click', changeDate.bind({dateInput, year, month}))-->
-<!---->
-<!---->
-<!---->
-<!--	}-->
-<!---->
-<!--	function changeDate(e) {-->
-<!--		var date = this.year + '/' + (this.month + 1) + '/' + e.target.textContent;-->
-<!--		this.dateInput.value = date;-->
-<!--		renderDates();-->
-<!--	}-->
-<!---->
-<!--	function createDomElement(type, props, child){-->
-<!--		var element = document.createElement(type);-->
-<!---->
-<!--		Object.keys(props).forEach(function (key) {-->
-<!--			element.setAttribute(key, props[key]);-->
-<!--		});-->
-<!---->
-<!--		switch (typeof child) {-->
-<!--			case 'number':-->
-<!--			case 'string':-->
-<!--				element.innerHTML = child;-->
-<!--				break;-->
-<!--			case 'object':-->
-<!--				element.innerHTML = child.join('');-->
-<!--				break;-->
-<!--		}-->
-<!---->
-<!--		return element;-->
-<!--	}-->
-<!---->
-<!--	function getDaysOfMonth (year, month) {-->
-<!--		return [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];-->
-<!--	}-->
-<!--</script>-->
