@@ -47,3 +47,4 @@
 
 <section class="section content">
     <div class="container">
+<?php require($_SERVER["DOCUMENT_ROOT"] . "/local/modules/up.calendar/install/templates/calendar/components/bitrix/main.profile/template.php"); ?>
