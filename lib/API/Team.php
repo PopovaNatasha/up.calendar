@@ -93,6 +93,10 @@ class Team
     {
         global $USER;
         $adminId = (int)$USER->getId();
+        if(!$arguments['title'])
+        {
+            LocalRedirect('');
+        }
 
         $result = TeamTable::createObject()
             ->setTitle($arguments['title'])

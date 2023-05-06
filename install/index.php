@@ -73,6 +73,12 @@ class up_calendar extends CModule
             true,
             true
         );
+        CopyDirFiles(
+            $_SERVER['DOCUMENT_ROOT'] . '/local/modules/up.calendar/install/404.php',
+            $_SERVER['DOCUMENT_ROOT'] . '/404.php',
+            true,
+            true
+        );
     }
 
     public function createAgent(): void

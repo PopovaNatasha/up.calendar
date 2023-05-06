@@ -2,7 +2,7 @@
 CHTTP::SetStatus("404 Not Found");
 @define("ERROR_404","Y");
 
-require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
 $APPLICATION->SetTitle("404");
 ?>
 
@@ -17,7 +17,7 @@ $APPLICATION->SetTitle("404");
 	</div>
 </div>
 
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php");?>
 
 
 
