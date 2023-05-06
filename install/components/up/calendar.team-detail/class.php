@@ -23,6 +23,7 @@ class CalendarCalendarComponent extends CBitrixComponent
 			elseif ($post['settings'])
 			{
 				$this->updateTeam($request->get('id'), $post);
+                LocalRedirect('');
 			}
             elseif ($post['rule_repeat'])
             {
