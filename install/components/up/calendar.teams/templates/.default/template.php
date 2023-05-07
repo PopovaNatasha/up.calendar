@@ -21,7 +21,8 @@
                 <div>
                     <figure class="image is-64x64">
                         <?php if ($team['PERSONAL_PHOTO']): ?>
-                            <?= \CFile::ShowImage($team['PERSONAL_PHOTO'], 64, 64) ?>
+							<?php $renderImage = \CFile::ResizeImageGet($team['PERSONAL_PHOTO'], ["width" => 64, "height" => 64], BX_RESIZE_IMAGE_EXACT);?>
+							<?= \CFile::ShowImage($renderImage['src'], 64, 64) ?>
                         <?php else: ?>
                             <img src="https://bulma.io/images/placeholders/64x64.png" alt="Placeholder image">
                         <?php endif; ?>

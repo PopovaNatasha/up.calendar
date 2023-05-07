@@ -91,33 +91,33 @@ class CalendarCalendarComponent extends CBitrixComponent
         Team::updateTeam($idTeam, $post);
 	}
 
-    protected function createEvent($arguments, $teamId): void
-    {
-        if ($arguments['title'] === '' || $arguments['date'] === '')
-        {
-            throw new Exception('Not all required fields are filled');
-        }
-
-        $arguments['team_id'] = $teamId;
-        $eventDate = explode(' - ', $arguments['date']);
-        $arguments['date_from'] = new \Bitrix\Main\Type\DateTime($eventDate[0], "d.m.Y H:i");
-        $arguments['date_to'] = new \Bitrix\Main\Type\DateTime($eventDate[1], "d.m.Y H:i");
-        unset($arguments['date']);
-
-        switch ($arguments['rule_repeat'])
-        {
-            case 'non':
-                Event::createEvent($arguments);
-                break;
-            case 'daily':
-                Event::createRegularEvent($arguments);
-                break;
-            case 'weekly':
-                $arguments['rule_repeat_count'] = 7;
-                Event::createRegularEvent($arguments);
-                break;
-            default:
-                throw new Exception('Invalid type repeat rule');
-        }
-    }
+    // protected function createEvent($arguments, $teamId): void
+    // {
+    //     if ($arguments['title'] === '' || $arguments['date'] === '')
+    //     {
+    //         throw new Exception('Not all required fields are filled');
+    //     }
+	//
+    //     $arguments['team_id'] = $teamId;
+    //     $eventDate = explode(' - ', $arguments['date']);
+    //     $arguments['date_from'] = new \Bitrix\Main\Type\DateTime($eventDate[0], "d.m.Y H:i");
+    //     $arguments['date_to'] = new \Bitrix\Main\Type\DateTime($eventDate[1], "d.m.Y H:i");
+    //     unset($arguments['date']);
+	//
+    //     switch ($arguments['rule_repeat'])
+    //     {
+    //         case 'non':
+    //             Event::createEvent($arguments);
+    //             break;
+    //         case 'daily':
+    //             Event::createRegularEvent($arguments);
+    //             break;
+    //         case 'weekly':
+    //             $arguments['rule_repeat_count'] = 7;
+    //             Event::createRegularEvent($arguments);
+    //             break;
+    //         default:
+    //             throw new Exception('Invalid type repeat rule');
+    //     }
+    // }
 }

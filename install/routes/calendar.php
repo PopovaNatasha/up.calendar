@@ -20,6 +20,7 @@ return function (RoutingConfigurator $routes) {
     $routes->any('/auth', new PublicPageController('/local/modules/up.calendar/views/auth.php'));
 
     $routes->get('/group/{id}/', new PublicPageController('/local/modules/up.calendar/views/calendar-team-detail.php'));
+	$routes->post('/group/{id}/', new PublicPageController('/local/modules/up.calendar/views/calendar-team-detail.php'));
     $routes->post('/group/{id}/create_event/', [Calendar::class, 'createEvent'])->where('id', '[0-9]+');
 
     $routes->get('/invite/{link}/', new PublicPageController('/local/modules/up.calendar/views/calendar-team-invite.php'));

@@ -13,17 +13,16 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
     <div class="box">
         <div class="columns">
             <div class="column has-text-centered">
-                <div class="card">
-                    <div class="card-image" style="display:flex; justify-content: center;">
-                        <figure class="image is-256x256">
-                            <?php if ($arResult['PERSONAL_PHOTO']): ?>
-                                <?= \CFile::ShowImage($arResult['PERSONAL_PHOTO'], 256, 256) ?>
-                            <?php else: ?>
-                                <img src="https://bulma.io/images/placeholders/256x256.png" alt="Placeholder image">
-                            <?php endif; ?>
-                        </figure>
-                    </div>
-                </div>
+				<div class="card-image" style="display:flex; justify-content: center;">
+					<figure class="image team-detail">
+						<?php if ($arResult['PERSONAL_PHOTO']): ?>
+							<?php $renderImage = \CFile::ResizeImageGet($arResult['PERSONAL_PHOTO'], ["width" => 256, "height" => 171], BX_RESIZE_IMAGE_EXACT);?>
+							<?= \CFile::ShowImage($renderImage['src'], 256, 171) ?>
+						<?php else: ?>
+							<img src="https://bulma.io/images/placeholders/256x256.png" alt="Placeholder image">
+						<?php endif; ?>
+					</figure>
+				</div>
             </div>
             <div class="column is-9" style="display: flex">
                 <div style="display: flex; justify-content: space-between;">
