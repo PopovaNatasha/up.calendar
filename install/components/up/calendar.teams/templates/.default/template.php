@@ -15,7 +15,7 @@
 
 <div class="block">
     <?php foreach ($arResult['Teams'] as $team): ?>
-        <a class="group-card block <?= ($team['ID_ADMIN'] == $USER->getID()) ? 'admined' : ''; ?>"
+        <a class="group-card block"
            href="/group/<?= $team['ID'] ?>/">
             <div class="block group">
                 <div>
@@ -28,7 +28,12 @@
                         <?php endif; ?>
                     </figure>
                 </div>
-                <p style="margin-left: 15px; font-size: large"><?= htmlspecialchars($team['TITLE']) ?></p>
+				<div class="teams-title">
+					<p style="font-size: large; margin-bottom: 0 !important;" ><?= htmlspecialchars($team['TITLE']) ?></p>
+					<?php if ($team['ID_ADMIN'] === $USER->getID()): ?>
+						<div class="box admin-mark">ADMIN</div>
+					<?php endif; ?>
+				</div>
             </div>
         </a>
     <?php endforeach; ?>

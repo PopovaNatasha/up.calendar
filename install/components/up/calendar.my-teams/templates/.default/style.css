@@ -4,10 +4,6 @@
     align-items: center;
 }
 
-.GroupPhoto {
-
-}
-
 .GroupName {
     margin: 10px;
     color: black;
@@ -19,4 +15,17 @@
 
 .image.is-64x64 {
     margin-left: 0;
+}
+
+.admin-mark {
+	font-size: 10px;
+	width: min-content;
+	height: min-content;
+	padding: 0.25em 0.7em !important;
+	margin-left: 10px;
+}
+
+.teams-title {
+	display: flex;
+	align-items: center;
 }
