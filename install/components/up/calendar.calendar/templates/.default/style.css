@@ -71,3 +71,7 @@ input.input.is-small.team-color {
     display: none;
     position: fixed !important;
 }
+
+.toastui-calendar-template-time {
+    color: black;
+}
