@@ -25,10 +25,10 @@ class CalendarCalendarComponent extends CBitrixComponent
 				$this->updateTeam($request->get('id'), $post);
                 LocalRedirect('');
 			}
-            elseif ($post['rule_repeat'])
-            {
-                $this->createEvent($post, $request->get('id'));
-            }
+            // elseif ($post['rule_repeat'])
+            // {
+            //     $this->createEvent($post, $request->get('id'));
+            // }
 		}
         $this->includeComponentTemplate();
 	}

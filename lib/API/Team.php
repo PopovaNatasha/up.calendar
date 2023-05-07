@@ -248,7 +248,7 @@ class Team
             $errors = $result->getErrorMessages();
         }
     }
-    function userIsTeamAdmin($idTeam) :bool
+    public static function userIsTeamAdmin($idTeam) :bool
     {
         global $USER;
         $idTeam = (int)$idTeam;

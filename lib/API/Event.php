@@ -2,25 +2,41 @@
 
 namespace Up\Calendar\API;
 
-
 use Bitrix\Main\Type\DateTime,
     Up\Calendar\Model\EventTable,
-    Up\Calendar\Model\RegularEventTable;
-use Bitrix\Translate\Controller\Index\CollectLangPath;
-use Up\Calendar\Model\ChangedEventTable;
-use Up\Calendar\Model\UserStoryTable;
+    Up\Calendar\Model\RegularEventTable,
+	Up\Calendar\Model\ChangedEventTable,
+	Up\Calendar\Model\UserStoryTable;
 
 class Event
 {
-    public static function createEvent($arguments)
+    public static function createEvent(int $idTeam, string $title, DateTime $start, DateTime $end, string $ruleRepeat, int $ruleRepeatCount)
     {
-        EventTable::createObject()
-            ->setIdTeam($arguments['team_id'])
-            ->setTitle($arguments['title'])
-            ->setDateTimeFrom($arguments['date_from'])
-            ->setDateTimeTo($arguments['date_to'])
-            ->save();
+		switch ($ruleRepeat)
+		{
+			case 'non':
+				return Event::createSingleEvent($idTeam, $title, $start, $end);
+			case 'daily':
+				Event::createRegularEvent($idTeam);
+				break;
+			case 'weekly':
+				$arguments['rule_repeat_count'] = 7;
+				Event::createRegularEvent($arguments);
+				break;
+			default:
+				throw new Exception('Invalid type repeat rule');
+		}
     }
+
+	public static function createSingleEvent(int $idTeam, string $title, DateTime $start, DateTime $end)
+	{
+		return EventTable::createObject()
+						 ->setIdTeam($idTeam)
+						 ->setTitle($title)
+						 ->setDateTimeFrom($start)
+						 ->setDateTimeTo($end)
+						 ->save();
+	}
 
     public static function createRegularEvent($arguments)
     {
@@ -83,66 +99,56 @@ class Event
         $dateTimeTo = new DateTime($arguments['dateTo'], "d.m.Y H:i");
 		$dateTimeOrigin = new DateTime($arguments['dateFromOrigin'], "d.m.Y H:i");
 
-        if ($arguments['dayStep'] === '')
+		if ($arguments['dayStep'] === '')
 		{
-            $result = EventTable::update($idEvent, [
-            	'TITLE' => $arguments['titleEvent'],
-            	'DATE_TIME_FROM' => $dateTimeFrom,
-            	'DATE_TIME_TO' => $dateTimeTo
-            ]);
-            if (!$result->isSuccess())
-            {
-            	return false;
-            }
-        }
-		elseif ($arguments['isAll'] === 'true')
-		{
-            $result = RegularEventTable::update($idEvent, [
-            	'TITLE' => $arguments['titleEvent'],
-            	'DATE_TIME_FROM' => $dateTimeFrom,
-            	'DATE_TIME_TO' => $dateTimeTo,
-            	'DAY_STEP' => (int)$arguments['dayStep'],
-            ]);
-            if (!$result->isSuccess())
-            {
-            	return false;
-            }
-        }
-		else
-		{
-			$changedEvent = ChangedEventTable::getList([
-				'select' => ['ID'],
-				'filter' => [
-					'ID_EVENT' => $idEvent,
-					'>DATE_TIME_FROM' => $dateTimeOrigin->add('-1 minutes')->toString(),
-					'<=DATE_TIME_FROM' => $dateTimeOrigin->add('+1 minutes')->toString(),
-				],
-				'count_total' => 1
+			return EventTable::update($idEvent, [
+				'TITLE' => $arguments['titleEvent'],
+				'DATE_TIME_FROM' => $dateTimeFrom,
+				'DATE_TIME_TO' => $dateTimeTo
 			]);
+        }
 
-			if ($changedEvent->getCount() === 0)
-			{
-				ChangedEventTable::createObject()
-								 ->setTitle($arguments['titleEvent'])
-								 ->setIdTeam($idTeam)
-								 ->setDateTimeFrom($dateTimeFrom)
-								 ->setDateTimeTo($dateTimeTo)
-								 ->setIdEvent($arguments['idEvent'])
-								 ->save();
-			}
-			else
-			{
-				$changedEvent->fetchObject()
+		if ($arguments['isAll'] === 'true')
+		{
+			return RegularEventTable::update($idEvent, [
+				'TITLE' => $arguments['titleEvent'],
+				'DATE_TIME_FROM' => $dateTimeFrom,
+				'DATE_TIME_TO' => $dateTimeTo,
+				'DAY_STEP' => (int)$arguments['dayStep'],
+			]);
+		}
+
+		$changedEvent = ChangedEventTable::getList([
+			'select' => ['ID'],
+			'filter' => [
+				'ID_EVENT' => $idEvent,
+				'>DATE_TIME_FROM' => $dateTimeOrigin->add('-1 minutes')->toString(),
+				'<=DATE_TIME_FROM' => $dateTimeOrigin->add('+1 minutes')->toString(),
+			],
+			'count_total' => 1
+		]);
+
+		if ($changedEvent->getCount() === 0)
+		{
+			$originEvent = EventTable::getRowById($idTeam);
+			return ChangedEventTable::createObject()
 							 ->setTitle($arguments['titleEvent'])
 							 ->setIdTeam($idTeam)
 							 ->setDateTimeFrom($dateTimeFrom)
 							 ->setDateTimeTo($dateTimeTo)
 							 ->setIdEvent($arguments['idEvent'])
+							 ->setOriginDatetime($originEvent['DATE_TIME_FROM'])
 							 ->save();
-			}
-        }
-        return true;
-    }
+		}
+
+		return $changedEvent->fetchObject()
+					 ->setTitle($arguments['titleEvent'])
+					 ->setIdTeam($idTeam)
+					 ->setDateTimeFrom($dateTimeFrom)
+					 ->setDateTimeTo($dateTimeTo)
+					 ->setIdEvent($arguments['idEvent'])
+					 ->save();
+	}
 
     public static function deleteEvent($arguments)
     {
@@ -156,34 +162,34 @@ class Event
 		{
             EventTable::delete(['ID' => $idEvent]);
         }
-		elseif ($arguments['isAll'] === 'true')
-		{
-            RegularEventTable::delete(['ID' => $idEvent]);
-
-            $events = ChangedEventTable::getList([
-                'select' => ['ID'],
-                'filter' => [
-                    'ID_EVENT' => $idEvent,
-                ]
-            ])->fetchAll();
-
-            if ($events) {
-                foreach ($events as $event) {
-                    ChangedEventTable::delete($event['ID']);
-                }
-            }
-        }
-		else
-		{
-			ChangedEventTable::createObject()
-							 ->setTitle($arguments['titleEvent'])
-							 ->setIdTeam($idTeam)
-							 ->setDateTimeFrom($dateTimeFrom)
-							 ->setDateTimeTo($dateTimeTo)
-							 ->setIdEvent($idEvent)
-							 ->setDeleted(true)
-							 ->save();
-		}
+		// elseif ($arguments['isAll'] === 'true')
+		// {
+        //     RegularEventTable::delete(['ID' => $idEvent]);
+		//
+        //     $events = ChangedEventTable::getList([
+        //         'select' => ['ID'],
+        //         'filter' => [
+        //             'ID_EVENT' => $idEvent,
+        //         ]
+        //     ])->fetchAll();
+		//
+        //     if ($events) {
+        //         foreach ($events as $event) {
+        //             ChangedEventTable::delete($event['ID']);
+        //         }
+        //     }
+        // }
+		// else
+		// {
+		// 	ChangedEventTable::createObject()
+		// 					 ->setTitle($arguments['titleEvent'])
+		// 					 ->setIdTeam($idTeam)
+		// 					 ->setDateTimeFrom($dateTimeFrom)
+		// 					 ->setDateTimeTo($dateTimeTo)
+		// 					 ->setIdEvent($idEvent)
+		// 					 ->setDeleted(true)
+		// 					 ->save();
+		// }
 		return true;
     }
 }

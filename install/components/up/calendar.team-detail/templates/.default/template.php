@@ -69,7 +69,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         </div>
     </div>
 
-    <form name="create-event" method="post">
+    <form name="create-event" method="post" action="/group/<?= $arResult['ID'] ?>/create_event/">
+		<?=bitrix_sessid_post()?>
         <div class="modal" id="modal-js-crateEvent">
             <div class="modal-background"></div>
             <div class="modal-card">
