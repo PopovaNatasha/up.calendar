@@ -254,22 +254,24 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 				</span>
                 </div>
             </div>
-            <div class="toastui-calendar-popup-section toastui-calendar-section-button">
-                <button type="button" class="toastui-calendar-edit-button">
-                    <span class="toastui-calendar-icon toastui-calendar-ic-edit"></span>
-                    <span class="toastui-calendar-content">
-					<span class="toastui-calendar-template-popupEdit js-modal-trigger"
-                          data-target="modal-js-changeEvent">Изменить</span>
-				</span>
-                </button>
-                <div class="toastui-calendar-vertical-line"></div>
-                <button type="button" class="toastui-calendar-delete-button">
-                    <span class="toastui-calendar-icon toastui-calendar-ic-delete"></span>
-                    <span class="toastui-calendar-content js-modal-trigger"
-						  data-target="modal-js-deleteEvent">Удалить</span>
-                    </span>
-                </button>
-            </div>
+			<?php if ($USER->getID() === $arResult['ID_ADMIN']): ?>
+				<div class="toastui-calendar-popup-section toastui-calendar-section-button">
+					<button type="button" class="toastui-calendar-edit-button">
+						<span class="toastui-calendar-icon toastui-calendar-ic-edit"></span>
+						<span class="toastui-calendar-content">
+						<span class="toastui-calendar-template-popupEdit js-modal-trigger"
+							  data-target="modal-js-changeEvent">Изменить</span>
+					</span>
+					</button>
+					<div class="toastui-calendar-vertical-line"></div>
+					<button type="button" class="toastui-calendar-delete-button">
+						<span class="toastui-calendar-icon toastui-calendar-ic-delete"></span>
+						<span class="toastui-calendar-content js-modal-trigger"
+							  data-target="modal-js-deleteEvent">Удалить</span>
+						</span>
+					</button>
+				</div>
+			<?php endif; ?>
         </div>
         <div class="toastui-calendar-popup-top-line" id="popupTopLine"
              style="background-color: rgb(131, 109, 182);"></div>
@@ -279,7 +281,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </div>
         </div>
     </div>
-
 
     <div class="modal" id="modal-js-changeEvent">
         <div class="modal-background"></div>
