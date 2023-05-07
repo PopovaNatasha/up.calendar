@@ -2,7 +2,9 @@
 
 namespace Up\Calendar\API;
 
-use Bitrix\Main\Type\DateTime,
+use Bitrix\Main\Error,
+	Bitrix\Main\Result,
+	Bitrix\Main\Type\DateTime,
     Up\Calendar\Model\EventTable,
     Up\Calendar\Model\RegularEventTable,
 	Up\Calendar\Model\ChangedEventTable,
@@ -16,15 +18,18 @@ class Event
 		{
 			case 'non':
 				return Event::createSingleEvent($idTeam, $title, $start, $end);
+
 			case 'daily':
-				Event::createRegularEvent($idTeam);
-				break;
+				return Event::createRegularEvent($idTeam, $title, $start, $end, $ruleRepeatCount);
+
 			case 'weekly':
-				$arguments['rule_repeat_count'] = 7;
-				Event::createRegularEvent($arguments);
-				break;
+				$ruleRepeatCount = 7;
+				return Event::createRegularEvent($idTeam, $title, $start, $end, $ruleRepeatCount);
+
 			default:
-				throw new Exception('Invalid type repeat rule');
+				$result = new Result();
+				$result->addError(new Error(Loc::getMessage('UP_CALENDAR_INVALID_REPEAT_RULE')));
+				return $result;
 		}
     }
 
@@ -38,15 +43,15 @@ class Event
 						 ->save();
 	}
 
-    public static function createRegularEvent($arguments)
+    public static function createRegularEvent(int $idTeam, string $title, DateTime $start, DateTime $end, int $ruleRepeatCount)
     {
-        RegularEventTable::createObject()
-            ->setIdTeam($arguments['team_id'])
-            ->setTitle($arguments['title'])
-            ->setDateTimeFrom($arguments['date_from'])
-            ->setDateTimeTo($arguments['date_to'])
-            ->setDayStep($arguments['rule_repeat_count'])
-            ->save();
+        return RegularEventTable::createObject()
+								->setIdTeam($idTeam)
+								->setTitle($title)
+								->setDateTimeFrom($start)
+								->setDateTimeTo($end)
+								->setDayStep($ruleRepeatCount)
+								->save();
     }
 
     public static function getEventsList($idTeam)

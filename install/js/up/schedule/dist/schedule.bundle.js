@@ -154,7 +154,6 @@ this.BX.Up = this.BX.Up || {};
                   }
                 });
               } else {
-                console.log(1);
                 _this2.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
               }
               dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
