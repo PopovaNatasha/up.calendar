@@ -8,9 +8,11 @@ use Bitrix\Main\Application,
 	Up\Calendar\API\Team,
 	Bitrix\Main\Context,
 	Bitrix\Main\Localization\Loc,
-	Bitrix\Main\Type\DateTime,
 	Bitrix\Main\Error,
-	Bitrix\Main\SystemException;
+	Up\Calendar\Services\Schedule;
+use Up\Calendar\Services\FlashMessage;
+
+Loc::loadMessages(__FILE__);
 
 class Calendar extends Controller
 {
@@ -26,50 +28,55 @@ class Calendar extends Controller
 
 		if (!check_bitrix_sessid())
 		{
-			$this->addError(new Error(Loc::getMessage("UP_CALENDAR_VALIDATOR_CSRF")));
+			FlashMessage::set(Loc::getMessage("UP_CALENDAR_VALIDATOR_CSRF"));
+			// $this->addError(new Error(Loc::getMessage("UP_CALENDAR_VALIDATOR_CSRF")));
 			return null;
 		}
 
 		if (!Team::userIsTeamAdmin($idTeam))
 		{
-			$this->addError(new Error(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_ADMIN")));
+			FlashMessage::set(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_ADMIN"));
+			// $this->addError(new Error(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_ADMIN")));
 			return null;
 		}
 
 		$request = Context::getCurrent()->getRequest()->getPostList()->toArray();
+		if (!$this->validateFields($request))
+		{
+			LocalRedirect('/group/' . $idTeam . '/');
+			// return null;
+		}
 
-		if (trim($request['title']) === '' || trim($request['date']) === '')
-			{
-				$this->addError(new Error(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_REQUIRED")));
-				return null;
-			}
+		$eventPeriod = Schedule::splitDateIntoTwo($request['date']);
 
-		$eventPeriod = $this->formatDateTime($request['date']);
+		$result = Event::createEvent($idTeam, $request['title'], $eventPeriod['start'], $eventPeriod['end'], $request['rule_repeat'], (int)$request['rule_repeat_count']);
+		if (!$result->isSuccess())
+		{
+			FlashMessage::setArray($result->getErrorMessages());
+		}
 
-		if ($eventPeriod === false)
-			{
-				$this->addError(new Error(Loc::getMessage('UP_CALENDAR_FORMAT_DATE')));
-				return null;
-			}
-
-		return Event::createEvent($idTeam, $request['title'], $eventPeriod['start'], $eventPeriod['end'], $request['rule_repeat'], (int)$request['rule_repeat_count']);
+		LocalRedirect('/group/' . $idTeam . '/');
 	}
 
-	public function formatDateTime(string $date)
+	public function validateFields(array $fields): bool
 	{
-		$eventDates = explode(' - ', $date);
-		$eventPeriod = [];
-		try
+		if (trim($fields['title']) === '' || trim($fields['date']) === '')
 		{
-			$eventPeriod['start'] = new DateTime($eventDates[0], "d.m.Y H:i");
-			$eventPeriod['end'] = new DateTime($eventDates[1], "d.m.Y H:i");
-		}
-		catch (SystemException $e)
-		{
+			FlashMessage::set(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_REQUIRED"));
+			// $this->addError(new Error(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_REQUIRED")));
 			return false;
 		}
 
-		return $eventPeriod;
+		$eventPeriod = Schedule::splitDateIntoTwo($fields['date']);
+
+		if ($eventPeriod === false)
+		{
+			FlashMessage::set(Loc::getMessage('UP_CALENDAR_FORMAT_DATE'));
+			// $this->addError(new Error(Loc::getMessage('UP_CALENDAR_FORMAT_DATE')));
+			return false;
+		}
+
+		return true;
 	}
 
     public function changeEventAction($event)

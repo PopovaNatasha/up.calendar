@@ -4,7 +4,8 @@
  * @var $USER
  */
 
-use Bitrix\Main\UI\Extension;
+use Bitrix\Main\UI\Extension,
+	Up\Calendar\Services\FlashMessage;
 
 Extension::load('up.schedule');
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
@@ -67,6 +68,13 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </div>
         </div>
     </div>
+
+	<?php if (FlashMessage::isSetError()): ?>
+		<pre style="color: red">
+			<?= FlashMessage::showMessages() ?>
+			<?php FlashMessage::unset(); ?>
+		</pre>
+	<?php endif; ?>
 
     <form name="create-event" method="post" action="/group/<?= $arResult['ID'] ?>/create_event/">
 		<?=bitrix_sessid_post()?>
