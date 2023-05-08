@@ -10,6 +10,14 @@ use Bitrix\Main\UI\Extension,
 Extension::load('up.schedule');
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 ?>
+
+<?php if (FlashMessage::isSetError()): ?>
+	<pre style="color: red; font-size: large">
+			<?= FlashMessage::showMessages() ?>
+			<?php FlashMessage::unset(); ?>
+		</pre>
+<?php endif; ?>
+
 <section class="container">
     <div class="box">
         <div class="columns">
@@ -68,13 +76,6 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
             </div>
         </div>
     </div>
-
-	<?php if (FlashMessage::isSetError()): ?>
-		<pre style="color: red">
-			<?= FlashMessage::showMessages() ?>
-			<?php FlashMessage::unset(); ?>
-		</pre>
-	<?php endif; ?>
 
     <form name="create-event" method="post" action="/group/<?= $arResult['ID'] ?>/create_event/">
 		<?=bitrix_sessid_post()?>

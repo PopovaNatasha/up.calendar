@@ -26,25 +26,16 @@ class Calendar extends Controller
 		$app = Application::getInstance();
 		$idTeam = (int)$app->getCurrentRoute()->getParameterValue('id');
 
-		if (!check_bitrix_sessid())
-		{
-			FlashMessage::set(Loc::getMessage("UP_CALENDAR_VALIDATOR_CSRF"));
-			// $this->addError(new Error(Loc::getMessage("UP_CALENDAR_VALIDATOR_CSRF")));
-			return null;
-		}
-
-		if (!Team::userIsTeamAdmin($idTeam))
+		if (!check_bitrix_sessid() || !Team::userIsTeamAdmin($idTeam))
 		{
 			FlashMessage::set(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_ADMIN"));
-			// $this->addError(new Error(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_ADMIN")));
-			return null;
+			LocalRedirect('/group/' . $idTeam . '/');
 		}
 
 		$request = Context::getCurrent()->getRequest()->getPostList()->toArray();
 		if (!$this->validateFields($request))
 		{
 			LocalRedirect('/group/' . $idTeam . '/');
-			// return null;
 		}
 
 		$eventPeriod = Schedule::splitDateIntoTwo($request['date']);
@@ -63,7 +54,6 @@ class Calendar extends Controller
 		if (trim($fields['title']) === '' || trim($fields['date']) === '')
 		{
 			FlashMessage::set(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_REQUIRED"));
-			// $this->addError(new Error(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_REQUIRED")));
 			return false;
 		}
 
@@ -72,7 +62,6 @@ class Calendar extends Controller
 		if ($eventPeriod === false)
 		{
 			FlashMessage::set(Loc::getMessage('UP_CALENDAR_FORMAT_DATE'));
-			// $this->addError(new Error(Loc::getMessage('UP_CALENDAR_FORMAT_DATE')));
 			return false;
 		}
 

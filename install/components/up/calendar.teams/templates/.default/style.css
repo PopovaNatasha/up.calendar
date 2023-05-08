@@ -9,11 +9,6 @@
     color: black;
 }
 
-.group-card.block.admined:after {
-    content: "       👑";
-
-}
-
 .image.is-64x64 {
     margin-left: 0;
 }
