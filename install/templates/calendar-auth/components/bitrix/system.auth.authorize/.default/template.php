@@ -114,7 +114,7 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         <br>
         <div class="level-right">
             <small class="level-item" style="color: var(--textLight)">
-                &copy; Best Calendar. All Rights Reserved.
+                &copy; Hobby Calendar. All Rights Reserved.
             </small>
         </div>
     </div>
