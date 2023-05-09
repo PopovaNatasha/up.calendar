@@ -2,9 +2,13 @@
 
 namespace Up\Calendar\API;
 
-use Up\Calendar\Model\TeamTable,
+use Bitrix\Main\Error;
+use Bitrix\Main\Localization\Loc,
+	Up\Calendar\Model\TeamTable,
     Up\Calendar\Model\UserTeamTable,
-    Bitrix\Main\UI\PageNavigation;
+    Bitrix\Main\UI\PageNavigation,
+	Up\Calendar\Services\FlashMessage,
+	Bitrix\Main\Result;
 
 class Team
 {
@@ -185,56 +189,56 @@ class Team
         return $team;
     }
 
-    public static function updateTeam($idTeam, $arguments)
-    {
-        $team = TeamTable::getByPrimary(['ID' => (int)$idTeam])->fetchObject();
-        if (!$team) {
-            throw new \Exception('Group not found');
+    public static function updateTeam(int $idTeam, string $title, string $description, string $isPrivate = null): Result
+	{
+        $team = TeamTable::getByPrimary(['ID' => $idTeam])->fetchObject();
+        if (!$team)
+		{
+			return (new Result())->addError(new Error(Loc::getMessage('UP_CALENDAR_INVALID_ID_TEAM')));
         }
 
         $idOldImage = $team->getPersonalPhoto();
-        if ($_FILES['img']['name'] !== '') {
+        if ($_FILES['img']['name'] !== '')
+		{
             $idImage = self::saveTeamImage();
+			if(!$idImage)
+			{
+				return (new Result())->addError(new Error(Loc::getMessage('UP_CALENDAR_FAILED_SAVE_IMG')));
+			}
             $team->setPersonalPhoto($idImage);
-            if(!$idImage)
-            {
-                throw new \Exception('Invalid type file');
-            }
         }
 
+        $result = $team->setTitle($title)
+					   ->setDescription($description ?: '')
+					   ->setIsPrivate(!$isPrivate)
+					   ->save();
 
-
-        $teamTitle = trim($arguments['title']);
-        if ($teamTitle === '') {
-            throw new \Exception('Title can not be empty');
-        }
-
-        $team->setTitle($teamTitle)
-            ->setDescription($arguments['description'] ?: '')
-            ->setIsPrivate(!$arguments['isPrivate'])
-            ->save();
-
-        if ($_FILES['img']['name'] !== '') {
+        if ($_FILES['img']['name'] !== '')
+		{
             \CFile::Delete($idOldImage);
         }
+
+		return $result;
     }
 
-    public static function saveTeamImage()
+    public static function saveTeamImage(): ?int
     {
         $arImage = $_FILES['img'];
         $arImage['MODULE_ID'] = 'up.calendar';
 
         if (!\CFile::IsImage($arImage['name']))
         {
-            return false;
+            return null;
         }
         $idImage = \CFile::SaveFile($arImage, 'up.calendar', false, false, 'team_image');
+		$idImage = (int)$idImage;
 
-        if (!((int)$idImage > 0)) {
-            throw new \Exception('Failed to save file');
+        if (!($idImage > 0))
+		{
+			return null;
         }
 
-        return (int)$idImage;
+        return $idImage;
     }
 
     public static function setUserTeamColor(array $colorTeams): void

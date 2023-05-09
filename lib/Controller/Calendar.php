@@ -8,7 +8,6 @@ use Bitrix\Main\Application,
 	Up\Calendar\API\Team,
 	Bitrix\Main\Context,
 	Bitrix\Main\Localization\Loc,
-	Bitrix\Main\Error,
 	Up\Calendar\Services\Schedule;
 use Up\Calendar\Services\FlashMessage;
 
@@ -21,14 +20,24 @@ class Calendar extends Controller
         return Event::getEventsList($idTeam);
     }
 
-	public function createEventAction()
+	public function checkUserPermission(int $idTeam): bool
+	{
+		if (!check_bitrix_sessid() || !Team::userIsTeamAdmin($idTeam))
+		{
+			FlashMessage::setError(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_ADMIN"));
+			return false;
+		}
+
+		return true;
+	}
+
+	public function createEventAction(): void
 	{
 		$app = Application::getInstance();
 		$idTeam = (int)$app->getCurrentRoute()->getParameterValue('id');
 
-		if (!check_bitrix_sessid() || !Team::userIsTeamAdmin($idTeam))
+		if ($this->checkUserPermission($idTeam))
 		{
-			FlashMessage::set(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_ADMIN"));
 			LocalRedirect('/group/' . $idTeam . '/');
 		}
 
@@ -51,9 +60,9 @@ class Calendar extends Controller
 
 	public function validateFields(array $fields): bool
 	{
-		if (trim($fields['title']) === '' || trim($fields['date']) === '')
+		if ($this->isRequired($fields['title']) || $this->isRequired($fields['date']))
 		{
-			FlashMessage::set(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_REQUIRED"));
+			FlashMessage::setError(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_REQUIRED"));
 			return false;
 		}
 
@@ -61,11 +70,42 @@ class Calendar extends Controller
 
 		if ($eventPeriod === false)
 		{
-			FlashMessage::set(Loc::getMessage('UP_CALENDAR_FORMAT_DATE'));
+			FlashMessage::setError(Loc::getMessage('UP_CALENDAR_FORMAT_DATE'));
 			return false;
 		}
 
 		return true;
+	}
+
+	public function isRequired(string $string): bool
+	{
+		return trim($string) === '';
+	}
+
+	public function updateTeamAction(): void
+	{
+		$app = Application::getInstance();
+		$idTeam = (int)$app->getCurrentRoute()->getParameterValue('id');
+
+		if (!$this->checkUserPermission($idTeam))
+		{
+			LocalRedirect('/group/' . $idTeam . '/');
+		}
+
+		$request = Context::getCurrent()->getRequest()->getPostList()->toArray();
+		if ($this->isRequired($request['title']))
+		{
+			FlashMessage::setError(Loc::getMessage('UP_CALENDAR_VALIDATOR_UPDATE_IS_REQUIRED'));
+			LocalRedirect('/group/' . $idTeam . '/');
+		}
+
+		$result = Team::updateTeam($idTeam, $request['title'], $request['description'], $request['isPrivate']);
+		if (!$result->isSuccess())
+		{
+			FlashMessage::setArray($result->getErrorMessages());
+		}
+
+		LocalRedirect('/group/' . $idTeam . '/');
 	}
 
     public function changeEventAction($event)

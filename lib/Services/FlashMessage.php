@@ -4,7 +4,7 @@ namespace Up\Calendar\Services;
 
 class FlashMessage
 {
-	public static function set(string $message): void
+	public static function setError(string $message): void
 	{
 		$_SESSION['errors'][] = $message;
 	}
@@ -27,7 +27,7 @@ class FlashMessage
 		unset($_SESSION['errors']);
 	}
 
-	public static function isSetError(): bool
+	public static function hasError(): bool
 	{
 		if (isset($_SESSION['errors']))
 		{

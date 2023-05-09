@@ -11,7 +11,7 @@ Extension::load('up.schedule');
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 ?>
 
-<?php if (FlashMessage::isSetError()): ?>
+<?php if (FlashMessage::hasError()): ?>
 	<pre style="color: red; font-size: large">
 			<?= FlashMessage::showMessages() ?>
 			<?php FlashMessage::unset(); ?>
@@ -181,8 +181,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         </div>
     </div>
 
-    <form name="settings" action="" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="settings" value="1"/>
+    <form name="settings" action="/group/<?= $arResult['ID'] ?>/update/" method="post" enctype="multipart/form-data">
+		<?=bitrix_sessid_post()?>
         <div class="modal" id="modal-js-settings">
             <div class="modal-background"></div>
             <div class="modal-card">
