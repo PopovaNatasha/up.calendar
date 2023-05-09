@@ -14,6 +14,7 @@ return function (RoutingConfigurator $routes)
 
     $routes->get('/groups/my/', new PublicPageController('/local/modules/up.calendar/views/calendar-my-teams.php'));
     $routes->post('/groups/my/', new PublicPageController('/local/modules/up.calendar/views/calendar-my-teams.php'));
+	$routes->post('/groups/my/create/', [Teams::class, 'createTeam']);
 
     $routes->get('/groups/', new PublicPageController('/local/modules/up.calendar/views/calendar-teams.php'));
 

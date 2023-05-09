@@ -1,6 +1,7 @@
 <?php
 
-use Bitrix\Main\Loader,
+use Bitrix\Main\Application,
+	Bitrix\Main\Loader,
     Up\Calendar\API\Team,
     Bitrix\Main\Context;
 
@@ -10,7 +11,8 @@ class CalendarInviteComponent extends CBitrixComponent
     {
         Loader::includeModule('up.calendar');
         $request = Context::getCurrent()->getRequest();
-        if ($request->isPost()) {
+        if ($request->isPost())
+		{
             $this->actionPost($request->getPostList());
         }
         $this->actionGet();
@@ -20,13 +22,15 @@ class CalendarInviteComponent extends CBitrixComponent
     protected function actionGet()
     {
         global $USER;
-        $request = \Bitrix\Main\Application::getInstance()->getContext()->getRequest();
+        $request = Application::getInstance()->getContext()->getRequest();
         $team = Team::getTeamByLink($request->get('link'));
         $team['link'] = $request->get('link');
         $participants = Team::getParticipantsTeam($team['ID']);
 
-        foreach ($participants as $participant) {
-            if ($participant['ID_USER'] === $USER->getID()) {
+        foreach ($participants as $participant)
+		{
+            if ($participant['ID_USER'] === $USER->getID())
+			{
                 LocalRedirect('/group/' . $team['ID'] . '/');
             }
         }
@@ -36,7 +40,6 @@ class CalendarInviteComponent extends CBitrixComponent
 
     protected function actionPost($post)
     {
-
         $team = Team::getTeamByLink($post['link']);
         Team::joinTheTeam($team['ID']);
         LocalRedirect("/group/{$team['ID']}/");

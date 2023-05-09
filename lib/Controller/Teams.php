@@ -35,7 +35,6 @@ class Teams extends Controller
 		{
 			FlashMessage::setArray($result->getErrorMessages());
 		}
-
 		LocalRedirect('/group/' . $idTeam . '/');
 	}
 
@@ -55,7 +54,6 @@ class Teams extends Controller
 		{
 			FlashMessage::setArray($result->getErrorMessages());
 		}
-
 		LocalRedirect('/group/' . $idTeam . '/');
 	}
 
@@ -75,8 +73,23 @@ class Teams extends Controller
 		{
 			FlashMessage::setArray($result->getErrorMessages());
 		}
-
 		LocalRedirect('/group/' . $idTeam . '/');
+	}
+
+	public function createTeamAction(): void
+	{
+		$request = Context::getCurrent()->getRequest()->getPostList()->toArray();
+		if ($this->isRequired($request['title']))
+		{
+			FlashMessage::setError(Loc::getMessage("UP_CALENDAR_VALIDATOR_UPDATE_IS_REQUIRED"));
+			LocalRedirect('/groups/my/');
+		}
+		$result = Team::createTeam($request['title'], $request['description'], $request['isPrivate']);
+		if (!$result->isSuccess())
+		{
+			FlashMessage::setArray($result->getErrorMessages());
+		}
+		LocalRedirect('/groups/my/');
 	}
 
 	public function checkUserPermission(int $idTeam): bool

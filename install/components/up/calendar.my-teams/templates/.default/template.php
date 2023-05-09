@@ -1,10 +1,21 @@
 <?php
+
 /**
  * @var object $USER
  * @var array $arResult
  */
 
+use Up\Calendar\Services\FlashMessage;
+
 ?>
+
+<?php if (FlashMessage::hasError()): ?>
+	<pre style="color: red; font-size: large">
+			<?= FlashMessage::showMessages() ?>
+			<?php FlashMessage::unset(); ?>
+		</pre>
+<?php endif; ?>
+
 <div class="columns is-mobile">
     <div class="column is-8">
         <form action="/groups/my/?" method="get">
@@ -45,7 +56,8 @@
     <?php endforeach; ?>
 </div>
 
-<form name="Create Team" action="" method="post">
+<form name="create-team" action="/groups/my/create/" method="post">
+	<?=bitrix_sessid_post()?>
     <div class="modal" id="modal-js-example">
         <div class="modal-background"></div>
         <div class="modal-card">
@@ -59,7 +71,7 @@
                     <label class="label">Название</label>
                     <div class="control">
                         <input name="title" class="input is-primary mb-4 is-large" type="text"
-                               placeholder="Название группы" required>
+							   placeholder="Название группы" required>
                     </div>
                 </div>
                 <div class="field">
@@ -72,7 +84,6 @@
                     <input name="isPrivate" type="checkbox">
                     Публичная группа
                 </label>
-
             </section>
             <footer class="modal-card-foot">
                 <button class="button is-success" type="submit">Создать</button>

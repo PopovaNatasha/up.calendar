@@ -93,28 +93,28 @@ class Team
         return ['teams' => $result->fetchAll(), 'nav' => $nav];
     }
 
-    public static function createTeam($arguments): void
+    public static function createTeam(string $title, string $description = '', string $isPrivate = null)
     {
         global $USER;
         $adminId = (int)$USER->getId();
-        if(!$arguments['title'])
-        {
-            LocalRedirect('');
-        }
 
         $result = TeamTable::createObject()
-            ->setTitle($arguments['title'])
-            ->setDescription($arguments['description'] ?: '')
-            ->setIdAdmin($adminId)
-            ->setIsPrivate(!$arguments['isPrivate'])
-            ->save();
+						   ->setTitle($title)
+						   ->setDescription($description)
+						   ->setIdAdmin($adminId)
+						   ->setIsPrivate(!$isPrivate)
+						   ->save();
+
+		if (!$result->isSuccess())
+		{
+			return $result;
+		}
 
         $idTeam = $result->getId();
-        UserTeamTable::createObject()
-            ->setIdUser($adminId)
-            ->setIdTeam($idTeam)
-            ->save();
-
+        return UserTeamTable::createObject()
+							->setIdUser($adminId)
+							->setIdTeam($idTeam)
+							->save();
     }
 
     public static function getTeamById($id)

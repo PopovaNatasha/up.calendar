@@ -1,8 +1,6 @@
 <?php
 
-use Bitrix\Main\Context,
-	Up\Calendar\API\Team,
-    Up\Calendar\API\Event,
+use Up\Calendar\API\Team,
 	Bitrix\Main\Loader;
 
 class CalendarCalendarComponent extends CBitrixComponent
