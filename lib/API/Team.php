@@ -7,7 +7,8 @@ use Bitrix\Main\Localization\Loc,
 	Up\Calendar\Model\TeamTable,
     Up\Calendar\Model\UserTeamTable,
     Bitrix\Main\UI\PageNavigation,
-	Bitrix\Main\Result;
+	Bitrix\Main\Result,
+	Bitrix\Main\ORM\Data\UpdateResult;
 
 class Team
 {
@@ -240,17 +241,14 @@ class Team
         return $idImage;
     }
 
-    public static function setUserTeamColor(array $colorTeams): void
-    {
+    public static function setUserTeamColor(int $idTeam, string $color): UpdateResult
+	{
         global $USER;
         $idUser = $USER->getId();
-        $idTeam = $colorTeams['id'];
-        $result = UserTeamTable::update(['ID_USER' => $idUser, 'ID_TEAM' => $idTeam], ['COLOR' => $colorTeams['color']]);
 
-        if (!$result->isSuccess()) {
-            $errors = $result->getErrorMessages();
-        }
+        return UserTeamTable::update(['ID_USER' => $idUser, 'ID_TEAM' => $idTeam], ['COLOR' => $color]);
     }
+
     public static function userIsTeamAdmin($idTeam) :bool
     {
         global $USER;

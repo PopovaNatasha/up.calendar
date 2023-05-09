@@ -67,6 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+	document.addEventListener('mousedown', (e) => {
+		const withinBoundaries = e.composedPath().includes(popupForm);
+		if (!withinBoundaries) {
+			popupForm.style.display = 'none'; // скрываем элемент т к клик был за его пределами
+		}
+	});
+
     let closeBtn = document.getElementById('close-button');
     closeBtn.addEventListener('click', e => {
         let form = document.getElementById('change-color-form');

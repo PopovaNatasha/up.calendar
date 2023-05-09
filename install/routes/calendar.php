@@ -3,13 +3,14 @@
 use Bitrix\Main\Routing\Controllers\PublicPageController,
     Bitrix\Main\Routing\RoutingConfigurator,
 	Up\Calendar\Controller\Calendar,
-	Up\Calendar\Controller\Teams;
+	Up\Calendar\Controller\Teams,
+	Up\Calendar\Controller\User;
 
 return function (RoutingConfigurator $routes)
 {
     $routes->get('/', new PublicPageController('/local/modules/up.calendar/views/calendar-main.php'));
     $routes->get('/', new PublicPageController('/local/modules/up.calendar/views/calendar-main.php'));
-    $routes->post('/', new PublicPageController('/local/modules/up.calendar/views/calendar-main.php'));
+    $routes->post('/', [User::class, 'changeColor']);
 
     $routes->get('/groups/my/', new PublicPageController('/local/modules/up.calendar/views/calendar-my-teams.php'));
     $routes->post('/groups/my/', new PublicPageController('/local/modules/up.calendar/views/calendar-my-teams.php'));

@@ -3,11 +3,19 @@
  * @var array $arResult
  */
 
-use Bitrix\Main\UI\Extension;
+use Bitrix\Main\UI\Extension,
+	Up\Calendar\Services\FlashMessage;
 
 Extension::load('up.schedule');
 if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 ?>
+
+<?php if (FlashMessage::hasError()): ?>
+	<pre style="color: red; font-size: large">
+			<?= FlashMessage::showMessages() ?>
+			<?php FlashMessage::unset(); ?>
+		</pre>
+<?php endif; ?>
 
 <div class="box columns">
     <div class="column is-2 calendar">
@@ -59,7 +67,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
 
 <div class="form-popup" id="change-color-form">
     <article class="message">
-        <form class="message-body" name="change-team-color" method="post">
+        <form class="message-body" name="change-team-color" method="post" action="/">
+			<?=bitrix_sessid_post()?>
             <label class="input-team-color">
                 <input id="input-id" name="id" hidden>
                 <input id="input-title" class="input is-small" type="text" name="title" readonly>
@@ -77,23 +86,23 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
     <div class="toastui-calendar-detail-container">
         <div class="toastui-calendar-popup-section toastui-calendar-section-header">
             <div class="toastui-calendar-event-title">
-                <span class="toastui-calendar-template-popupDetailTitle" id="popupDetailTitle">Пленэр в Ботаническом саду</span>
+                <span class="toastui-calendar-template-popupDetailTitle" id="popupDetailTitle"></span>
             </div>
             <div class="toastui-calendar-content">
-                <span class="toastui-calendar-template-popupDetailDate" id="popupDetailDate">2023.04.27 10:00 am - 11:59 am</span>
+                <span class="toastui-calendar-template-popupDetailDate" id="popupDetailDate"></span>
             </div>
         </div>
         <div class="toastui-calendar-popup-section toastui-calendar-section-detail">
             <div class="toastui-calendar-detail-item">
                 <span class="toastui-calendar-icon toastui-calendar-ic-repeat-b"></span>
                 <span class="toastui-calendar-content">
-					<span class="toastui-calendar-template-popupDetailRecurrenceRule" id="popupDetailRecurrenceRule">каждые 7 дней</span>
+					<span class="toastui-calendar-template-popupDetailRecurrenceRule" id="popupDetailRecurrenceRule"></span>
 				</span>
             </div>
             <div class="toastui-calendar-detail-item">
                 <span class="toastui-calendar-icon toastui-calendar-calendar-dot" id="popupDetailDot"
                       style="background-color: rgb(131, 109, 182);"></span>
-                <span class="toastui-calendar-content" id="popupDetailTeam">Художественная школа "Вдохновение"</span>
+                <span class="toastui-calendar-content" id="popupDetailTeam"></span>
             </div>
         </div>
     </div>

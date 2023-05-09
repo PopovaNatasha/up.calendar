@@ -13,12 +13,12 @@ class CalendarCalendarComponent extends CBitrixComponent
         $this->fetchTeams();
         $this->includeComponentTemplate();
 
-		$request = Context::getCurrent()->getRequest();
-		if ($request->isPost())
-		{
-			$post = $request->getPostList()->toArray();
-			$this->changeColor($post);
-		}
+		// $request = Context::getCurrent()->getRequest();
+		// if ($request->isPost())
+		// {
+		// 	$post = $request->getPostList()->toArray();
+		// 	$this->changeColor($post);
+		// }
     }
 
     protected function fetchTeams(): void
