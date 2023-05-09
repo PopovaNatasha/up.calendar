@@ -56,8 +56,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
                             </button>
                         </div>
                     <?php else: ?>
-                        <form class="buttons" method="post">
-                            <input type="hidden" name="action" value="in"/>
+                        <form class="buttons" method="post" action="/group/<?= $arResult['ID'] ?>/join/">
+							<?=bitrix_sessid_post()?>
                             <button class="button is-primary is-light" style="margin-left: auto">Вcтупить</button>
                         </form>
                     <?php endif; ?>
@@ -225,8 +225,8 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
         </div>
     </form>
 
-    <form name="confirmation" method="post">
-        <input type="hidden" name="action" value="out"/>
+    <form name="confirmation" method="post" action="/group/<?= $arResult['ID'] ?>/leave/">
+		<?=bitrix_sessid_post()?>
         <div class="modal" id="modal-js-leave-team">
             <div class="modal-background"></div>
             <div class="modal-card leave-team">

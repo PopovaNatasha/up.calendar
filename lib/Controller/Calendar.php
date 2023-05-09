@@ -108,6 +108,46 @@ class Calendar extends Controller
 		LocalRedirect('/group/' . $idTeam . '/');
 	}
 
+	public function leaveTeamAction(): void
+	{
+		$app = Application::getInstance();
+		$idTeam = (int)$app->getCurrentRoute()->getParameterValue('id');
+
+		if (!check_bitrix_sessid())
+		{
+			FlashMessage::setError(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_ADMIN"));
+			LocalRedirect('/group/' . $idTeam . '/');
+		}
+
+		$result = Team::leaveTeam($idTeam);
+		if (!$result->isSuccess())
+		{
+			FlashMessage::setArray($result->getErrorMessages());
+		}
+
+		LocalRedirect('/group/' . $idTeam . '/');
+	}
+
+	public function joinTeamAction(): void
+	{
+		$app = Application::getInstance();
+		$idTeam = (int)$app->getCurrentRoute()->getParameterValue('id');
+
+		if (!check_bitrix_sessid())
+		{
+			FlashMessage::setError(Loc::getMessage("UP_CALENDAR_VALIDATOR_IS_ADMIN"));
+			LocalRedirect('/group/' . $idTeam . '/');
+		}
+
+		$result = Team::joinTheTeam($idTeam);
+		if (!$result->isSuccess())
+		{
+			FlashMessage::setArray($result->getErrorMessages());
+		}
+
+		LocalRedirect('/group/' . $idTeam . '/');
+	}
+
     public function changeEventAction($event)
     {
         return Event::changeEvent($event);

@@ -13,7 +13,7 @@ class FlashMessage
 	{
 		foreach($messages as $message)
 		{
-			self::set($message);
+			self::setError($message);
 		}
 	}
 

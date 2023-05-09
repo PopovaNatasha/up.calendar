@@ -7,7 +7,6 @@ use Bitrix\Main\Localization\Loc,
 	Up\Calendar\Model\TeamTable,
     Up\Calendar\Model\UserTeamTable,
     Bitrix\Main\UI\PageNavigation,
-	Up\Calendar\Services\FlashMessage,
 	Bitrix\Main\Result;
 
 class Team
@@ -117,11 +116,6 @@ class Team
 
     }
 
-    public static function deleteTeam($id): void
-    {
-        TeamTable::delete($id);
-    }
-
     public static function getTeamById($id)
     {
         $result = TeamTable::getRowById($id);
@@ -151,20 +145,25 @@ class Team
         ])->fetchAll();
     }
 
-    public static function leaveTeam($idTeam)
+    public static function leaveTeam(int $idTeam): Result
     {
         global $USER;
         $row = UserTeamTable::getByPrimary(['ID_USER' => $USER->getID(), 'ID_TEAM' => $idTeam])->fetchObject();
-        $row->delete();
+		if (!$row)
+		{
+			return (new Result())->addError(new Error(Loc::getMessage('UP_CALENDAR_LEAVE_TEAM_ERROR')));
+		}
+
+		return $row->delete();
     }
 
-    public static function joinTheTeam($idTeam)
+    public static function joinTheTeam(int $idTeam): Result
     {
         global $USER;
-        UserTeamTable::createObject()
-            ->setIdUser($USER->getID())
-            ->setIdTeam($idTeam)
-            ->save();
+        return UserTeamTable::createObject()
+							->setIdUser($USER->getID())
+							->setIdTeam($idTeam)
+							->save();
     }
 
     public static function createInviteLink($idTeam)

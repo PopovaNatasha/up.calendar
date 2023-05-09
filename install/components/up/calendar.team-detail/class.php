@@ -3,7 +3,6 @@
 use Bitrix\Main\Application,
 	Bitrix\Main\Loader,
 	Up\Calendar\API\Team,
-    Up\Calendar\API\Event,
 	Bitrix\Main\Context;
 
 class CalendarCalendarComponent extends CBitrixComponent
@@ -12,15 +11,6 @@ class CalendarCalendarComponent extends CBitrixComponent
 	{
 		Loader::includeModule('up.calendar');
         $this->getTeam();
-		$request = Context::getCurrent()->getRequest();
-		if ($request->isPost())
-		{
-			$post = $request->getPostList()->toArray();
-			if ($post['action'])
-			{
-				$this->actionTeam((int)$request->get('id'));
-			}
-		}
         $this->includeComponentTemplate();
 	}
 
@@ -62,23 +52,5 @@ class CalendarCalendarComponent extends CBitrixComponent
 			$this->arResult = $team;
 			$this->arResult['PARTICIPANTS'] = $participants;
 		}
-	}
-
-	protected function actionTeam($idTeam): void
-	{
-		$request = Context::getCurrent()->getRequest()->getPostList()->toArray();
-		if ($request['action'] === 'in')
-		{
-            Team::joinTheTeam($idTeam);
-		}
-		elseif ($request['action'] === 'out')
-		{
-            Team::leaveTeam($idTeam);
-		}
-	}
-
-	protected function updateTeam($idTeam, $post)
-	{
-        Team::updateTeam($idTeam, $post);
 	}
 }
