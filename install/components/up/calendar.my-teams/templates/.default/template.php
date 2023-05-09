@@ -31,7 +31,7 @@ use Up\Calendar\Services\FlashMessage;
 </div>
 
 <div class="block">
-    <?php foreach ($arResult['Teams'] as $team): ?>
+    <?php foreach ($arResult['teams'] as $team): ?>
         <a class="group-card block"
            href="/group/<?= htmlspecialchars($team['ID']) ?>/">
             <div class="block group">

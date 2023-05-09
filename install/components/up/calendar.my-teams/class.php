@@ -28,7 +28,7 @@ class CalendarMyTeamsComponent extends CBitrixComponent
 		}
 		$teams = $result['teams'];
 		$nav = $result['nav'];
-		$this->arResult['Teams'] = $teams;
+		$this->arResult['teams'] = $teams;
 		$this->includeComponentTemplate();
 		$APPLICATION->IncludeComponent(
 			"bitrix:main.pagenavigation",

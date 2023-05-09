@@ -14,7 +14,7 @@
 </div>
 
 <div class="block">
-    <?php foreach ($arResult['Teams'] as $team): ?>
+    <?php foreach ($arResult['teams'] as $team): ?>
         <a class="group-card block"
            href="/group/<?= $team['ID'] ?>/">
             <div class="block group">
