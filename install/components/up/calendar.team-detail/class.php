@@ -2,8 +2,7 @@
 
 use Bitrix\Main\Application,
 	Bitrix\Main\Loader,
-	Up\Calendar\API\Team,
-	Bitrix\Main\Context;
+	Up\Calendar\API\Team;
 
 class CalendarCalendarComponent extends CBitrixComponent
 {
