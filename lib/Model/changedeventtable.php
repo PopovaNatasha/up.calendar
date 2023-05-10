@@ -95,6 +95,12 @@ class ChangedEventTable extends DataManager
 				'title' => Loc::getMessage('CHANGED_EVENT_ENTITY_DELETED_FIELD')
 				]
 			),
+			new DatetimeField(
+				'ORIGIN_DATETIME',
+				[
+					'title' => Loc::getMessage('CHANGED_EVENT_ENTITY_DATE_TIME_TO_FIELD')
+				]
+			),
             new Reference(
                 'TEAM',
                 TeamTable::class,

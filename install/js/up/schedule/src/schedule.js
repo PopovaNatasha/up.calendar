@@ -62,11 +62,7 @@ export class Schedule {
     createCalendar() {
         return new tui.Calendar(`#${this.rootNodeId}`, {
             isReadOnly: true,
-            // showSlidebar: true,
-            // showMenu: true,
-            // useFormPopup: true,
             useDetailPopup: true,
-            // useCreationPopup: false,
             defaultView: 'month',
             taskView: true,
             scheduleView: false,
@@ -102,72 +98,64 @@ export class Schedule {
 
     addEvents() {
         let eventsList = this.singleEventsList;
-        let calendar = this.calendar;
         eventsList.forEach(event => {
-            let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-            let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
-            calendar.createEvents([
-                {
-                    id: event['ID'],
-                    calendarId: event['ID_TEAM'],
-                    title: event['TITLE'],
-                    start: dayTimeStart,
-                    end: dayTimeEnd,
-                    category: 'time',
-                },
-            ]);
+			let dayTimeStart = this.formatToDateTime(event['DATE_TIME_FROM']);
+			let dayTimeEnd = this.formatToDateTime(event['DATE_TIME_TO']);
+			this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd);
         });
     }
+
+	formatToDateTime(dateTime)
+	{
+		return moment(dateTime).format('YYYY-MM-DDTHH:mm:ss');
+	}
+
+	formatToDate(dateTime)
+	{
+		return moment(dateTime).format('YYYY-MM-DD');
+	}
 
     addRegularEvents() {
         let eventsList = this.regularEventsList;
 		let changedEvents = this.changedEvents;
         eventsList.forEach(event => {
 			let changedEventsById = changedEvents.filter(element => element['ID_EVENT'] === event['ID']);
-			let repeatUntil = event['DATE_END'] ? moment(event['DATE_END']).format('YYYY-MM-DD') : '2023-12-31';
-            let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-            let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+			let repeatUntil = event['DATE_END'] ? this.formatToDate(event['DATE_END']) : '2023-12-31';
+            let dayTimeStart = this.formatToDateTime(event['DATE_TIME_FROM']);
+            let dayTimeEnd = this.formatToDateTime(event['DATE_TIME_TO']);
             let dayStep = Number(event['DAY_STEP']);
-			let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
+			let dayStart = this.formatToDate(dayTimeStart);
             while (moment(dayTimeStart).isBefore(repeatUntil))
 			{
-				// let regularEvent = event;
-				// regularEvent['START'] = dayTimeStart;
-				// regularEvent['END'] = dayTimeEnd;
-
 				if (changedEventsById.length > 0)
 				{
 					changedEventsById.forEach(changedEvent => {
-						let dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
-						if (moment(dayStartChanged).isSame(dayStart) && changedEvent['DELETED'])
-						{
-							return;
-						}
+						let dayStartChanged = this.formatToDate(changedEvent['DATE_TIME_FROM']);
+
 						if (moment(dayStartChanged).isSame(dayStart) && !changedEvent['DELETED'])
 						{
-							let changedEventStart = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-							let changedEventEnd = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
-							console.log(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep)
-							this.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep);
+							let changedEventStart = this.formatToDateTime(changedEvent['DATE_TIME_FROM']);
+							let changedEventEnd = this.formatToDateTime(changedEvent['DATE_TIME_TO']);
+							this.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, event['DAY_STEP']);
 						}
 						else
 						{
-							this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
+							this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
 						}
 					});
 				}
 				else
 				{
-					this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
+					this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
 				}
                 dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
                 dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
-				dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
+				dayStart = this.formatToDate(dayTimeStart);
             }
         });
     }
 
-	createEvent(id, calendarId, title, start, end, recurrenceRule)
+	createEvent(id, calendarId, title, start, end, recurrenceRule = '')
 	{
 		let calendar = this.calendar;
 
@@ -187,39 +175,22 @@ export class Schedule {
     addEventsForUser() {
         let eventsList = this.singleEventsList;
         let storyEventList = this.userStoryEvents;
-        let calendar = this.calendar;
         eventsList.forEach(event => {
-            let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-            let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
-            let nowDay = moment().format('YYYY-MM-DD');
-            let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-            if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart)) {
-                calendar.createEvents([
-                    {
-                        id: event['ID'],
-                        calendarId: event['ID_TEAM'],
-                        title: event['TITLE'],
-                        start: dayTimeStart,
-                        end: dayTimeEnd,
-                        category: 'time',
-                    },
-                ]);
+            let dayTimeStart = this.formatToDateTime(event['DATE_TIME_FROM']);
+            let dayTimeEnd = this.formatToDateTime(event['DATE_TIME_TO']);
+            let nowDay = this.formatToDate(moment());
+            let dayStart = this.formatToDate(dayTimeStart);
+            if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart))
+			{
+				this.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd);
             }
         });
         storyEventList.forEach(event => {
-            let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-            let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
-            if (!event['DAY_STEP']) {
-                calendar.createEvents([
-                    {
-                        id: event['ID'],
-                        calendarId: 'story',
-                        title: event['TITLE_EVENT'],
-                        start: dayTimeStart,
-                        end: dayTimeEnd,
-                        category: 'time',
-                    },
-                ]);
+            let dayTimeStart = this.formatToDateTime(event['DATE_TIME_FROM']);
+            let dayTimeEnd = this.formatToDateTime(event['DATE_TIME_TO']);
+            if (!event['DAY_STEP'])
+			{
+				this.createEvent(event['ID'], 'story', event['TITLE_EVENT'], dayTimeStart, dayTimeEnd);
             }
         });
     }
@@ -227,18 +198,18 @@ export class Schedule {
     addRegularEventsForUser() {
         let eventsList = this.regularEventsList;
         let storyEventList = this.userStoryEvents;
-        let calendar = this.calendar;
 		let changedEvents = this.changedEvents;
+		let nowDay = this.formatToDate(moment());
         eventsList.forEach(event => {
 			let changedEventsById = changedEvents.filter(element => element['ID_EVENT'] === event['ID']);
-			let repeatUntil = event['DATE_END'] ? moment(event['DATE_END']).format('YYYY-MM-DD') : '2023-12-31';
-            let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-            let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+			let repeatUntil = event['DATE_END'] ? this.formatToDate(event['DATE_END']) : '2023-12-31';
+            let dayTimeStart = this.formatToDateTime(event['DATE_TIME_FROM']);
+            let dayTimeEnd = this.formatToDateTime(event['DATE_TIME_TO']);
             let dayStep = Number(event['DAY_STEP']);
             while (moment(dayTimeStart).isBefore(repeatUntil)) {
-                let nowDay = moment().format('YYYY-MM-DD');
-                let dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
-                if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart)) {
+                let dayStart = this.formatToDate(dayTimeStart);
+                if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart))
+				{
 					let regularEvent = event;
 					regularEvent['START'] = dayTimeStart;
 					regularEvent['END'] = dayTimeEnd;
@@ -246,26 +217,16 @@ export class Schedule {
 					if (changedEventsById.length > 0)
 					{
 						changedEventsById.forEach(changedEvent => {
-							let dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
+							let dayStartChanged = this.formatToDate(changedEvent['DATE_TIME_FROM']);
 							if (moment(dayStartChanged).isSame(dayStart))
 							{
 								regularEvent = changedEvent;
-								regularEvent['START'] = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-								regularEvent['END'] = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+								regularEvent['START'] = this.formatToDateTime(changedEvent['DATE_TIME_FROM']);
+								regularEvent['END'] = this.formatToDateTime(changedEvent['DATE_TIME_TO']);
 							}
 						});
 					}
-                    calendar.createEvents([
-                        {
-                            id: regularEvent['ID'],
-                            calendarId: regularEvent['ID_TEAM'],
-                            title: regularEvent['TITLE'],
-                            start: regularEvent['START'],
-                            end: regularEvent['END'],
-                            category: 'time',
-                            recurrenceRule: event['DAY_STEP'],
-                        },
-                    ]);
+					this.createEvent(regularEvent['ID'], regularEvent['ID_TEAM'], regularEvent['TITLE'], regularEvent['START'], regularEvent['END'], event['DAY_STEP']);
                 }
                 dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
                 dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -273,24 +234,16 @@ export class Schedule {
         });
         storyEventList.forEach(event => {
             if (event['DAY_STEP']) {
-                let dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-                let dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+                let dayTimeStart = this.formatToDateTime(event['DATE_TIME_FROM']);
+                let dayTimeEnd = this.formatToDateTime(event['DATE_TIME_TO']);
+				let dayStart = this.formatToDate(dayTimeStart);
                 let dayStep = Number(event['DAY_STEP']);
 
-                let nowDay = moment().format('YYYY-MM-DD');
-                while (moment(dayTimeStart).isBefore(nowDay)) {
-                    calendar.createEvents([
-                        {
-                            id: event['ID'],
-                            calendarId: 'story',
-                            title: event['TITLE_EVENT'],
-                            start: dayTimeStart,
-                            end: dayTimeEnd,
-                            category: 'time',
-                        },
-                    ]);
+                while (moment(dayStart).isBefore(nowDay)) {
+					this.createEvent(event['ID'], 'story', event['TITLE_EVENT'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
                     dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
                     dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+					dayStart = this.formatToDate(dayTimeStart);
                 }
             }
         });
@@ -328,7 +281,16 @@ export class Schedule {
 
     getCalendarsList() {
         let teams = this.teams;
-        let calendars = [];
+        let calendars = [
+			{
+				id: 'story',
+				name: 'Прошедшие события',
+				color: '#bbb',
+				backgroundColor: '#bbb',
+				borderColor: '#a1b56c',
+				dragBackgroundColor: '#bbb',
+			}
+		];
         if (this.isUser) {
             teams.forEach(team => {
                 let color = team['COLOR'];
@@ -342,14 +304,6 @@ export class Schedule {
                 });
             });
         }
-        calendars.push({
-            id: 'story',
-            name: 'Прошедшие события',
-            color: '#bbb',
-            backgroundColor: '#bbb',
-            borderColor: '#a1b56c',
-            dragBackgroundColor: '#bbb',
-        });
         return calendars;
     }
 
@@ -415,7 +369,6 @@ export class Schedule {
         }
         let dateFrom = document.getElementsByClassName('datetimepicker-dummy-input')[2].value;
         let dateTo = document.getElementsByClassName('datetimepicker-dummy-input')[3].value;
-		console.log(this.event);
 		let dateFromOrigin = moment(this.event.start.toDate()).format('DD.MM.YYYY HH:mm');
 
         return new Promise((resolve, reject) => {
@@ -436,7 +389,6 @@ export class Schedule {
                     },
                 })
                 .then((response) => {
-					console.log(response.data)
 					if (response.data)
 					{
 						this.calendar.clear();
@@ -475,7 +427,6 @@ export class Schedule {
 						},
 					})
 				.then((response) => {
-					console.log(response);
 					if (response.data)
 					{
 						this.calendar.clear();
@@ -501,7 +452,6 @@ export class Schedule {
 
     setViewRule(event) {
         let checkboxChange, checkboxDelete, blockRepeat;
-        // checkboxLabel = document.getElementById('checkboxIsAllLabel');
         checkboxChange = document.getElementById('checkboxIsAll');
 		checkboxDelete = document.getElementById('checkboxDeleteIsAll');
         blockRepeat = document.getElementById('changeRepeat');
@@ -510,7 +460,6 @@ export class Schedule {
         blockRepeat.style.display = 'none';
 
         if (event.recurrenceRule) {
-            // checkboxLabel.style.display = 'block';
 			this.displayElementById('checkboxIsAllLabel', 'block');
 			this.displayElementById('checkboxDeleteIsAllLabel', 'block');
 			checkboxChange.addEventListener('change', e => {

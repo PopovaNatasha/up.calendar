@@ -54,8 +54,8 @@ class Event
 								->save();
     }
 
-    public static function getEventsList($idTeam)
-    {
+    public static function getEventsList($idTeam): array
+	{
         $singleEvents = EventTable::getList([
             'select' => ['*'],
             'filter' => [
@@ -78,7 +78,7 @@ class Event
         ])->fetchAll();
 
         global $USER;
-        $id = $USER->getID();
+        $id = (int)$USER->getID();
         $userStoryEvents = UserStoryTable::getList([
             'select' => ['*'],
             'filter' => [
@@ -163,38 +163,44 @@ class Event
 		$dateTimeFrom = new DateTime($arguments['dateFrom'], "d.m.Y H:i");
 		$dateTimeTo = new DateTime($arguments['dateTo'], "d.m.Y H:i");
 
-        if ($arguments['dayStep'] === '')
+		if ($arguments['dayStep'] === '')
 		{
-            EventTable::delete(['ID' => $idEvent]);
+            return EventTable::delete(['ID' => $idEvent]);
         }
-		// elseif ($arguments['isAll'] === 'true')
-		// {
-        //     RegularEventTable::delete(['ID' => $idEvent]);
-		//
-        //     $events = ChangedEventTable::getList([
-        //         'select' => ['ID'],
-        //         'filter' => [
-        //             'ID_EVENT' => $idEvent,
-        //         ]
-        //     ])->fetchAll();
-		//
-        //     if ($events) {
-        //         foreach ($events as $event) {
-        //             ChangedEventTable::delete($event['ID']);
-        //         }
-        //     }
-        // }
-		// else
-		// {
-		// 	ChangedEventTable::createObject()
-		// 					 ->setTitle($arguments['titleEvent'])
-		// 					 ->setIdTeam($idTeam)
-		// 					 ->setDateTimeFrom($dateTimeFrom)
-		// 					 ->setDateTimeTo($dateTimeTo)
-		// 					 ->setIdEvent($idEvent)
-		// 					 ->setDeleted(true)
-		// 					 ->save();
-		// }
-		return true;
-    }
+
+		if ($arguments['isAll'] === 'true')
+		{
+			$result = RegularEventTable::delete(['ID' => $idEvent]);
+			if (!$result->isSuccess())
+			{
+				return $result;
+			}
+
+			$events = ChangedEventTable::getList([
+				'select' => ['ID'],
+				'filter' => [
+					'ID_EVENT' => $idEvent,
+				]
+			])->fetchAll();
+
+			if ($events)
+			{
+				foreach ($events as $event)
+				{
+					ChangedEventTable::delete($event['ID']);
+				}
+			}
+
+			return $result;
+		}
+
+		return ChangedEventTable::createObject()
+								->setTitle($arguments['titleEvent'])
+								->setIdTeam($idTeam)
+								->setDateTimeFrom($dateTimeFrom)
+								->setDateTimeTo($dateTimeTo)
+								->setIdEvent($idEvent)
+								->setDeleted(true)
+								->save();
+	}
 }

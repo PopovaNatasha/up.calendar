@@ -63,11 +63,7 @@ this.BX.Up = this.BX.Up || {};
         value: function createCalendar() {
           return new tui.Calendar("#".concat(this.rootNodeId), {
             isReadOnly: true,
-            // showSlidebar: true,
-            // showMenu: true,
-            // useFormPopup: true,
             useDetailPopup: true,
-            // useCreationPopup: false,
             defaultView: 'month',
             taskView: true,
             scheduleView: false,
@@ -103,68 +99,64 @@ this.BX.Up = this.BX.Up || {};
       }, {
         key: "addEvents",
         value: function addEvents() {
+          var _this2 = this;
           var eventsList = this.singleEventsList;
-          var calendar = this.calendar;
           eventsList.forEach(function (event) {
-            var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-            var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
-            calendar.createEvents([{
-              id: event['ID'],
-              calendarId: event['ID_TEAM'],
-              title: event['TITLE'],
-              start: dayTimeStart,
-              end: dayTimeEnd,
-              category: 'time'
-            }]);
+            var dayTimeStart = _this2.formatToDateTime(event['DATE_TIME_FROM']);
+            var dayTimeEnd = _this2.formatToDateTime(event['DATE_TIME_TO']);
+            _this2.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd);
           });
+        }
+      }, {
+        key: "formatToDateTime",
+        value: function formatToDateTime(dateTime) {
+          return moment(dateTime).format('YYYY-MM-DDTHH:mm:ss');
+        }
+      }, {
+        key: "formatToDate",
+        value: function formatToDate(dateTime) {
+          return moment(dateTime).format('YYYY-MM-DD');
         }
       }, {
         key: "addRegularEvents",
         value: function addRegularEvents() {
-          var _this2 = this;
+          var _this3 = this;
           var eventsList = this.regularEventsList;
           var changedEvents = this.changedEvents;
           eventsList.forEach(function (event) {
             var changedEventsById = changedEvents.filter(function (element) {
               return element['ID_EVENT'] === event['ID'];
             });
-            var repeatUntil = event['DATE_END'] ? moment(event['DATE_END']).format('YYYY-MM-DD') : '2023-12-31';
-            var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-            var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+            var repeatUntil = event['DATE_END'] ? _this3.formatToDate(event['DATE_END']) : '2023-12-31';
+            var dayTimeStart = _this3.formatToDateTime(event['DATE_TIME_FROM']);
+            var dayTimeEnd = _this3.formatToDateTime(event['DATE_TIME_TO']);
             var dayStep = Number(event['DAY_STEP']);
-            var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
+            var dayStart = _this3.formatToDate(dayTimeStart);
             while (moment(dayTimeStart).isBefore(repeatUntil)) {
-              // let regularEvent = event;
-              // regularEvent['START'] = dayTimeStart;
-              // regularEvent['END'] = dayTimeEnd;
-
               if (changedEventsById.length > 0) {
                 changedEventsById.forEach(function (changedEvent) {
-                  var dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
-                  if (moment(dayStartChanged).isSame(dayStart) && changedEvent['DELETED']) {
-                    return;
-                  }
+                  var dayStartChanged = _this3.formatToDate(changedEvent['DATE_TIME_FROM']);
                   if (moment(dayStartChanged).isSame(dayStart) && !changedEvent['DELETED']) {
-                    var changedEventStart = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-                    var changedEventEnd = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
-                    console.log(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep);
-                    _this2.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, dayStep);
+                    var changedEventStart = _this3.formatToDateTime(changedEvent['DATE_TIME_FROM']);
+                    var changedEventEnd = _this3.formatToDateTime(changedEvent['DATE_TIME_TO']);
+                    _this3.createEvent(event['ID'], changedEvent['ID_TEAM'], changedEvent['TITLE'], changedEventStart, changedEventEnd, event['DAY_STEP']);
                   } else {
-                    _this2.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
+                    _this3.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
                   }
                 });
               } else {
-                _this2.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, dayStep);
+                _this3.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
               }
               dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
               dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
-              dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
+              dayStart = _this3.formatToDate(dayTimeStart);
             }
           });
         }
       }, {
         key: "createEvent",
-        value: function createEvent(id, calendarId, title, start, end, recurrenceRule) {
+        value: function createEvent(id, calendarId, title, start, end) {
+          var recurrenceRule = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : '';
           var calendar = this.calendar;
           calendar.createEvents([{
             id: id,
@@ -179,81 +171,60 @@ this.BX.Up = this.BX.Up || {};
       }, {
         key: "addEventsForUser",
         value: function addEventsForUser() {
+          var _this4 = this;
           var eventsList = this.singleEventsList;
           var storyEventList = this.userStoryEvents;
-          var calendar = this.calendar;
+          console.log(storyEventList);
           eventsList.forEach(function (event) {
-            var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-            var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
-            var nowDay = moment().format('YYYY-MM-DD');
-            var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
+            var dayTimeStart = _this4.formatToDateTime(event['DATE_TIME_FROM']);
+            var dayTimeEnd = _this4.formatToDateTime(event['DATE_TIME_TO']);
+            var nowDay = _this4.formatToDate(moment());
+            var dayStart = _this4.formatToDate(dayTimeStart);
             if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart)) {
-              calendar.createEvents([{
-                id: event['ID'],
-                calendarId: event['ID_TEAM'],
-                title: event['TITLE'],
-                start: dayTimeStart,
-                end: dayTimeEnd,
-                category: 'time'
-              }]);
+              _this4.createEvent(event['ID'], event['ID_TEAM'], event['TITLE'], dayTimeStart, dayTimeEnd);
             }
           });
           storyEventList.forEach(function (event) {
-            var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-            var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+            var dayTimeStart = _this4.formatToDateTime(event['DATE_TIME_FROM']);
+            var dayTimeEnd = _this4.formatToDateTime(event['DATE_TIME_TO']);
             if (!event['DAY_STEP']) {
-              calendar.createEvents([{
-                id: event['ID'],
-                calendarId: 'story',
-                title: event['TITLE_EVENT'],
-                start: dayTimeStart,
-                end: dayTimeEnd,
-                category: 'time'
-              }]);
+              _this4.createEvent(event['ID'], 'story', event['TITLE_EVENT'], dayTimeStart, dayTimeEnd);
             }
           });
         }
       }, {
         key: "addRegularEventsForUser",
         value: function addRegularEventsForUser() {
+          var _this5 = this;
           var eventsList = this.regularEventsList;
           var storyEventList = this.userStoryEvents;
-          var calendar = this.calendar;
           var changedEvents = this.changedEvents;
+          var nowDay = this.formatToDate(moment());
           eventsList.forEach(function (event) {
             var changedEventsById = changedEvents.filter(function (element) {
               return element['ID_EVENT'] === event['ID'];
             });
-            var repeatUntil = event['DATE_END'] ? moment(event['DATE_END']).format('YYYY-MM-DD') : '2023-12-31';
-            var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-            var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+            var repeatUntil = event['DATE_END'] ? _this5.formatToDate(event['DATE_END']) : '2023-12-31';
+            var dayTimeStart = _this5.formatToDateTime(event['DATE_TIME_FROM']);
+            var dayTimeEnd = _this5.formatToDateTime(event['DATE_TIME_TO']);
             var dayStep = Number(event['DAY_STEP']);
             var _loop = function _loop() {
-              var nowDay = moment().format('YYYY-MM-DD');
-              var dayStart = moment(dayTimeStart).format('YYYY-MM-DD');
+              var dayStart = _this5.formatToDate(dayTimeStart);
               if (moment(nowDay).isBefore(dayStart) || moment(nowDay).isSame(dayStart)) {
                 var regularEvent = event;
                 regularEvent['START'] = dayTimeStart;
                 regularEvent['END'] = dayTimeEnd;
                 if (changedEventsById.length > 0) {
                   changedEventsById.forEach(function (changedEvent) {
-                    var dayStartChanged = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DD');
+                    var dayStartChanged = _this5.formatToDate(changedEvent['DATE_TIME_FROM']);
                     if (moment(dayStartChanged).isSame(dayStart)) {
                       regularEvent = changedEvent;
-                      regularEvent['START'] = moment(changedEvent['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-                      regularEvent['END'] = moment(changedEvent['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+                      regularEvent['START'] = _this5.formatToDateTime(changedEvent['DATE_TIME_FROM']);
+                      regularEvent['END'] = _this5.formatToDateTime(changedEvent['DATE_TIME_TO']);
                     }
                   });
                 }
-                calendar.createEvents([{
-                  id: regularEvent['ID'],
-                  calendarId: regularEvent['ID_TEAM'],
-                  title: regularEvent['TITLE'],
-                  start: regularEvent['START'],
-                  end: regularEvent['END'],
-                  category: 'time',
-                  recurrenceRule: event['DAY_STEP']
-                }]);
+                _this5.createEvent(regularEvent['ID'], regularEvent['ID_TEAM'], regularEvent['TITLE'], regularEvent['START'], regularEvent['END'], event['DAY_STEP']);
               }
               dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
               dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
@@ -264,21 +235,15 @@ this.BX.Up = this.BX.Up || {};
           });
           storyEventList.forEach(function (event) {
             if (event['DAY_STEP']) {
-              var dayTimeStart = moment(event['DATE_TIME_FROM']).format('YYYY-MM-DDTHH:mm:ss');
-              var dayTimeEnd = moment(event['DATE_TIME_TO']).format('YYYY-MM-DDTHH:mm:ss');
+              var dayTimeStart = _this5.formatToDateTime(event['DATE_TIME_FROM']);
+              var dayTimeEnd = _this5.formatToDateTime(event['DATE_TIME_TO']);
+              var dayStart = _this5.formatToDate(dayTimeStart);
               var dayStep = Number(event['DAY_STEP']);
-              var nowDay = moment().format('YYYY-MM-DD');
-              while (moment(dayTimeStart).isBefore(nowDay)) {
-                calendar.createEvents([{
-                  id: event['ID'],
-                  calendarId: 'story',
-                  title: event['TITLE_EVENT'],
-                  start: dayTimeStart,
-                  end: dayTimeEnd,
-                  category: 'time'
-                }]);
+              while (moment(dayStart).isBefore(nowDay)) {
+                _this5.createEvent(event['ID'], 'story', event['TITLE_EVENT'], dayTimeStart, dayTimeEnd, event['DAY_STEP']);
                 dayTimeStart = moment(dayTimeStart).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
                 dayTimeEnd = moment(dayTimeEnd).add(dayStep, 'days').format('YYYY-MM-DDTHH:mm:ss');
+                dayStart = _this5.formatToDate(dayTimeStart);
               }
             }
           });
@@ -319,7 +284,14 @@ this.BX.Up = this.BX.Up || {};
         key: "getCalendarsList",
         value: function getCalendarsList() {
           var teams = this.teams;
-          var calendars = [];
+          var calendars = [{
+            id: 'story',
+            name: 'Прошедшие события',
+            color: '#bbb',
+            backgroundColor: '#bbb',
+            borderColor: '#a1b56c',
+            dragBackgroundColor: '#bbb'
+          }];
           if (this.isUser) {
             teams.forEach(function (team) {
               var color = team['COLOR'];
@@ -333,14 +305,6 @@ this.BX.Up = this.BX.Up || {};
               });
             });
           }
-          calendars.push({
-            id: 'story',
-            name: 'Прошедшие события',
-            color: '#bbb',
-            backgroundColor: '#bbb',
-            borderColor: '#a1b56c',
-            dragBackgroundColor: '#bbb'
-          });
           return calendars;
         }
       }, {
@@ -358,10 +322,10 @@ this.BX.Up = this.BX.Up || {};
       }, {
         key: "AddOpenEventDetailPopup",
         value: function AddOpenEventDetailPopup() {
-          var _this3 = this;
+          var _this6 = this;
           this.calendar.on('clickEvent', function (_ref) {
             var event = _ref.event;
-            _this3.event = event;
+            _this6.event = event;
             var popupForm, eventElem, coordinates;
             popupForm = document.getElementById('event-detail-popup');
             eventElem = window.event.srcElement;
@@ -374,8 +338,8 @@ this.BX.Up = this.BX.Up || {};
             end = moment(event.end.toDate()).format('HH:mm');
             document.getElementById('popupDetailDate').innerHTML = start + ' - ' + end;
             document.getElementById('popupDetailRecurrenceRule').innerHTML = event.recurrenceRule ? 'каждые ' + event.recurrenceRule + ' дней' : 'не повторяется';
-            if (_this3.isUser) {
-              calendarTeam = _this3.geCalendarById(event.calendarId);
+            if (_this6.isUser) {
+              calendarTeam = _this6.geCalendarById(event.calendarId);
               document.getElementById('popupDetailTeam').innerHTML = calendarTeam.name;
               document.getElementById('popupDetailDot').style.backgroundColor = calendarTeam.color;
               document.getElementById('popupTopLine').style.backgroundColor = calendarTeam.color;
@@ -383,9 +347,9 @@ this.BX.Up = this.BX.Up || {};
               document.getElementById('popupTopLine').style.backgroundColor = '#a1b56c';
             }
             popupForm.style.display = 'block';
-            if (!_this3.isUser) {
-              _this3.changeEventForm(_this3.event);
-              _this3.setViewRule(event);
+            if (!_this6.isUser) {
+              _this6.changeEventForm(_this6.event);
+              _this6.setViewRule(event);
             }
           });
         }
@@ -402,7 +366,7 @@ this.BX.Up = this.BX.Up || {};
       }, {
         key: "changeEvent",
         value: function changeEvent() {
-          var _this4 = this;
+          var _this7 = this;
           var dayStep = document.getElementById('changeSelectCount').value;
           var selectRepeat = document.getElementById('changeSelectRepeat').value;
           if (selectRepeat === 'weekly') {
@@ -421,16 +385,15 @@ this.BX.Up = this.BX.Up || {};
                   dateFrom: dateFrom,
                   dateTo: dateTo,
                   dayStep: dayStep,
-                  idTeam: _this4.idTeam,
+                  idTeam: _this7.idTeam,
                   isAll: document.getElementById('checkboxIsAll').checked,
                   dateFromOrigin: dateFromOrigin
                 }
               }
             }).then(function (response) {
-              console.log(response.data);
               if (response.data) {
-                _this4.calendar.clear();
-                _this4.reload();
+                _this7.calendar.clear();
+                _this7.reload();
               } else {
                 alert('Не удалось изменить событие');
               }
@@ -442,7 +405,7 @@ this.BX.Up = this.BX.Up || {};
       }, {
         key: "deleteEvent",
         value: function deleteEvent() {
-          var _this5 = this;
+          var _this8 = this;
           var event = this.event;
           return new Promise(function (resolve, reject) {
             BX.ajax.runAction('up:calendar.calendar.deleteEvent', {
@@ -453,15 +416,14 @@ this.BX.Up = this.BX.Up || {};
                   dateFrom: moment(event.start.toDate()).format('DD.MM.YYYY HH:mm'),
                   dateTo: moment(event.end.toDate()).format('DD.MM.YYYY HH:mm'),
                   dayStep: event.recurrenceRule,
-                  idTeam: _this5.idTeam,
+                  idTeam: _this8.idTeam,
                   isAll: document.getElementById('checkboxDeleteIsAll').checked
                 }
               }
             }).then(function (response) {
-              console.log(response);
               if (response.data) {
-                _this5.calendar.clear();
-                _this5.reload();
+                _this8.calendar.clear();
+                _this8.reload();
               } else {
                 alert('Не удалось удалить событие');
               }
@@ -480,7 +442,6 @@ this.BX.Up = this.BX.Up || {};
         key: "setViewRule",
         value: function setViewRule(event) {
           var checkboxChange, checkboxDelete, blockRepeat;
-          // checkboxLabel = document.getElementById('checkboxIsAllLabel');
           checkboxChange = document.getElementById('checkboxIsAll');
           checkboxDelete = document.getElementById('checkboxDeleteIsAll');
           blockRepeat = document.getElementById('changeRepeat');
@@ -488,7 +449,6 @@ this.BX.Up = this.BX.Up || {};
           checkboxDelete.checked = false;
           blockRepeat.style.display = 'none';
           if (event.recurrenceRule) {
-            // checkboxLabel.style.display = 'block';
             this.displayElementById('checkboxIsAllLabel', 'block');
             this.displayElementById('checkboxDeleteIsAllLabel', 'block');
             checkboxChange.addEventListener('change', function (e) {
