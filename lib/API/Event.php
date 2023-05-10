@@ -142,7 +142,6 @@ class Event
 							 ->setDateTimeFrom($dateTimeFrom)
 							 ->setDateTimeTo($dateTimeTo)
 							 ->setIdEvent($arguments['idEvent'])
-							 ->setOriginDatetime($originEvent['DATE_TIME_FROM'])
 							 ->save();
 		}
 
